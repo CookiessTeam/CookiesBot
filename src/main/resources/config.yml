@@ -1,0 +1,26 @@
+# Config version 0.2
+
+system:
+  debug:
+    enable: true
+    level: low
+database:
+  type: mysql/sqlite
+  mysql:
+    login: "user"
+    password: "password"
+    url-connect: "jdbc:mysql://127.0.0.1:3306/BotDatabase?autoReconnect=true"
+bot:
+  token: "token"
+  activity:
+    type: playing
+    text: I like cookie!
+    streaming-url: https://www.twitch.tv/ender_games__
+lavalink:
+  node:
+    1:
+      name: "Cool node #1"
+      url: "ws://127.0.0.1:2333"
+      password: "WeryGoodPassword1234_Qwerty"
+web-api:
+  port: 1111
