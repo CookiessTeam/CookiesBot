@@ -10,17 +10,23 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
+import ru.devprizrakk.voidbot.commands.discord.system.help.Help;
+import ru.devprizrakk.voidbot.commands.discord.system.help.HelpSelectelMenu;
 import ru.devprizrakk.voidbot.utils.LangManager;
+import ru.devprizrakk.voidbot.utils.LoggerManager;
 import ru.devprizrakk.voidbot.utils.UtilsManager;
 
 public class Main extends UtilsManager {
     static JDA jda;
-    public static String currentVersion = "1.2.0";
+    public static String currentVersion = "2.0.0-beta.1";
     public static void main(String[] args) {
         /*Init Module*/
+        new LoggerManager();
         LangManager.init();
+        jda();
     }
-    public void jda() {
+    public static void jda() {
 
         Activity activity;
         switch (getConfig().getProperty("bot.activity.type")) {
@@ -48,7 +54,10 @@ public class Main extends UtilsManager {
             getLogger().error("An unexpected error occurred!", e);
             System.exit(1);
         }
-
+        CommandManager commandManager = new CommandManager();
+        commandManager.add(new Help());
+        jda.addEventListener(new HelpSelectelMenu());
+        jda.addEventListener(commandManager);
         //lavalinkManager = new LavalinkManager(configManager.getProperty("bot.token"), jda);
         jda.addEventListener(new OnReady());
     }

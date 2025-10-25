@@ -100,9 +100,9 @@ public class CommandManager extends ListenerAdapter {
         if (!event.getMember().hasPermission(requiredPermissions)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.RED);
-            embedBuilder.setTitle(UtilsManager.getLangMessage("system.no-permission.title"));
-            embedBuilder.setDescription(UtilsManager.getLangMessage("system.no-permission.description").replace("%hasPermission%", requiredPermissions.toString()));
-            embedBuilder.setFooter(UtilsManager.getLangMessage("system.no-permission.footer").replace("%time%", timestamp));
+            embedBuilder.setTitle(UtilsManager.getLangMessage("command/system.yml","system.no-permission.title"));
+            embedBuilder.setDescription(UtilsManager.getLangMessage("command/system.yml","system.no-permission.description").replace("%hasPermission%", requiredPermissions.toString()));
+            embedBuilder.setFooter(UtilsManager.getLangMessage("command/system.yml","system.no-permission.footer"));
             event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
             return false;
         }
