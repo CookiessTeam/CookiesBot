@@ -5,4 +5,4 @@ system:
       description: |
         При использование даннной команды произошла ошибка у пользователя нехватает прав!
         Требуемые права: `%hasPermission%`
-      footer: "Время вызова: %current-time% | VoidBot v2 :3"
+      footer: "Время вызова: %current-time% | VoidBot %version% :3"
