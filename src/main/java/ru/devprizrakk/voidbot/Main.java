@@ -14,6 +14,7 @@ import ru.devprizrakk.voidbot.commands.discord.fun.Emote;
 import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
 import ru.devprizrakk.voidbot.commands.discord.system.help.Help;
 import ru.devprizrakk.voidbot.commands.discord.system.help.HelpSelectelMenu;
+import ru.devprizrakk.voidbot.database.DatabaseManager;
 import ru.devprizrakk.voidbot.utils.LangManager;
 import ru.devprizrakk.voidbot.utils.LoggerManager;
 import ru.devprizrakk.voidbot.utils.UtilsManager;
@@ -24,6 +25,16 @@ public class Main extends UtilsManager {
     public static void main(String[] args) {
         /*Init Module*/
         new LoggerManager();
+        switch (getConfig().getProperty("database.type")) {
+            case "mysql" -> new DatabaseManager(
+                    getConfig().getProperty("database.mysql.url-connect"),
+                    getConfig().getProperty("database.mysql.login"),
+                    getConfig().getProperty("database.mysql.password"));
+            case "postgres" -> new DatabaseManager(
+                    getConfig().getProperty("database.postgres.url-connect"),
+                    getConfig().getProperty("database.postgres.login"),
+                    getConfig().getProperty("database.postgres.password"));
+        }
         LangManager.init();
         jda();
     }
