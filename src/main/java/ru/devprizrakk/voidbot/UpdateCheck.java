@@ -1,12 +1,14 @@
 package ru.devprizrakk.voidbot;
 
+import ru.devprizrakk.voidbot.utils.UtilsManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class UpdateCheck {
+public class UpdateCheck extends UtilsManager {
     private static String getLatestReleaseVersion(String owner, String repo) throws IOException {
         String url = "https://api.github.com/repos/" + owner + "/" + repo + "/releases/latest";
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -15,7 +17,7 @@ public class UpdateCheck {
 
         int responseCode = connection.getResponseCode();
         if (responseCode != 200) {
-            System.err.println("Failed to get the latest release version. HTTP response code: " + responseCode);
+            getLogger().error("github", "Failed to get the latest release version. HTTP response code: " + responseCode);
             return null;
         }
 
@@ -34,7 +36,7 @@ public class UpdateCheck {
                 int endIndex = response.indexOf("\"", startIndex);
                 return response.substring(startIndex, endIndex);
             } else {
-                System.err.println("Failed to parse the latest release version from GitHub response.");
+                getLogger().error("github", "Failed to parse the latest release version from GitHub response.");
                 return null;
             }
         }
