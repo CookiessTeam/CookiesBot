@@ -71,42 +71,41 @@ public class LoggerManager extends UtilsManager {
         return dateFormat.format(new Date());
     }
 
-    private void log(String level, String colorCode, String message) {
+    private void log(String level,String type , String colorCode, String message) {
         String timestamp = getTimestamp();
         String[] lines = message.split("\n");
         for (String line : lines) {
-            System.out.println("[" + timestamp + " " + colorCode + level + getColor().ANSI_RESET + "] " + line);
+            System.out.println("[" + timestamp + " " + colorCode + level + getColor().ANSI_RESET + "] " + getColor().ANSI_CYAN + "[" + type + "] " + getColor().ANSI_RESET + line);
         }
     }
 
-    public void info(String message) {
-        log("INFO", getColor().ANSI_GREEN, message + getColor().ANSI_RESET);
+    public void info(String type, String message) {
+        log("INFO",type, getColor().ANSI_GREEN, message + getColor().ANSI_RESET);
+
     }
 
-    public void debug(String message) {
+    public void debug(String type, String message) {
         if(logDebug) {
-            log("DEBUG", getColor().ANSI_BLUE, message + getColor().ANSI_RESET);
+            log("DEBUG", type, getColor().ANSI_BLUE, message + getColor().ANSI_RESET);
         }
     }
 
-    public void warn(String message) {
-        log("WARN", getColor().ANSI_YELLOW, message + getColor().ANSI_RESET);
+    public void warn(String type, String message) {
+        log("WARN", type, getColor().ANSI_YELLOW, message + getColor().ANSI_RESET);
     }
 
-    public void error(String message) {
-        log("ERROR", getColor().ANSI_RED, message + getColor().ANSI_RESET);
+    public void error(String type, String message) {
+        log("ERROR", type, getColor().ANSI_RED, message + getColor().ANSI_RESET);
     }
 
-    public void error(String message, Exception e) {
-        error(message);
+    public void error(String type, String message, Exception e) {
+        error(type, message);
         if (e != null) {
-            log("ERROR", getColor().ANSI_RED, e.toString());
+            log("ERROR", type, getColor().ANSI_RED, e.toString());
             for (StackTraceElement element : e.getStackTrace()) {
-                log("ERROR", getColor().ANSI_RED, "\tat " + element.toString());
+                log("ERROR", type, getColor().ANSI_RED, "\tat " + element.toString());
             }
         }
     }
-    public void criticalError(String message) {
-        log("!!!ALERT!!!", getColor().ANSI_RED, message + getColor().ANSI_RESET);
-    }
+
 }

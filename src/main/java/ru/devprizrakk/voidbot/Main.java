@@ -48,11 +48,11 @@ public class Main extends UtilsManager {
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                     .build();
         } catch (InvalidTokenException e) {
-            getLogger().error("The provided token is invalid!", e);
+            getLogger().error("JDA","The provided token is invalid!", e);
             System.exit(1);
         }
         catch (Exception e) {
-            getLogger().error("An unexpected error occurred!", e);
+            getLogger().error("JDA","An unexpected error occurred!", e);
             System.exit(1);
         }
         CommandManager commandManager = new CommandManager();

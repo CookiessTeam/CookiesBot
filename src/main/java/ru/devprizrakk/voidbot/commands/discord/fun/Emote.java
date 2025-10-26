@@ -96,7 +96,7 @@ public class Emote extends UtilsManager implements ICommand {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            getLogger().error("", e);
+            getLogger().error("command | emote","", e);
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle(getLangMessage("system.yml", "system.wrong-error.embed.title"));
             embed.setDescription(getLangMessage("system.yml", "system.wrong-error.embed.description")
