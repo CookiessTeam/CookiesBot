@@ -24,7 +24,7 @@ public class Help extends UtilsManager implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Команда хелп";
+        return UtilsManager.getLangMessage("command/system/help.yml", "help.description-command");
     }
 
     @Override

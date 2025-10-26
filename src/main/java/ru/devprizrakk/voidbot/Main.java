@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import ru.devprizrakk.voidbot.commands.discord.fun.Emote;
 import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
 import ru.devprizrakk.voidbot.commands.discord.system.help.Help;
 import ru.devprizrakk.voidbot.commands.discord.system.help.HelpSelectelMenu;
@@ -57,6 +58,10 @@ public class Main extends UtilsManager {
         CommandManager commandManager = new CommandManager();
         commandManager.add(new Help());
         jda.addEventListener(new HelpSelectelMenu());
+
+
+
+        commandManager.add(new Emote());
         jda.addEventListener(commandManager);
         //lavalinkManager = new LavalinkManager(configManager.getProperty("bot.token"), jda);
         jda.addEventListener(new OnReady());

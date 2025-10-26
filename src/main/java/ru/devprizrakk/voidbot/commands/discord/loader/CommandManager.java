@@ -35,7 +35,7 @@ public class CommandManager extends ListenerAdapter {
     public void onReady(@NotNull final ReadyEvent event) {
         if (!commandsRegistered) {
             for (final Guild guild : event.getJDA().getGuilds()) {
-                for (final ICommand command : this.commands) {
+                for (final ICommand command : commands) {
                     if (command.getOptions() == null) {
                         guild.upsertCommand(command.getName(), command.getDescription()).queue();
                     } else {
@@ -100,9 +100,9 @@ public class CommandManager extends ListenerAdapter {
         if (!event.getMember().hasPermission(requiredPermissions)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.RED);
-            embedBuilder.setTitle(UtilsManager.getLangMessage("command/system.yml","system.no-permission.title"));
-            embedBuilder.setDescription(UtilsManager.getLangMessage("command/system.yml","system.no-permission.description").replace("%hasPermission%", requiredPermissions.toString()));
-            embedBuilder.setFooter(UtilsManager.getLangMessage("command/system.yml","system.no-permission.footer"));
+            embedBuilder.setTitle(UtilsManager.getLangMessage("system.yml","system.no-permission.title"));
+            embedBuilder.setDescription(UtilsManager.getLangMessage("system.yml","system.no-permission.description").replace("%hasPermission%", requiredPermissions.toString()));
+            embedBuilder.setFooter(UtilsManager.getLangMessage("system.yml","system.no-permission.footer"));
             event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
             return false;
         }

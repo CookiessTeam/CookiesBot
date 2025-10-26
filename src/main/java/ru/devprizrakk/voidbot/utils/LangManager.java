@@ -214,7 +214,8 @@ public class LangManager extends UtilsManager {
         // ⚠️ Если ты собираешь через Maven — явно укажи список файлов.
         String[] files = {
                 "system.yml",
-                "command/system/help.yml"
+                "command/system/help.yml",
+                "command/fun/emote.yml"
         };
 
         for (String file : files) {
