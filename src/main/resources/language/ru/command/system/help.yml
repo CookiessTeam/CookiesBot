@@ -20,7 +20,7 @@ help:
     info:
       embed:
         title: "Информация о VoidBot"
-        description: "* Описание отсутсвует *"
+        description: "* Описание отсутствует *"
         footer: "Время вызова: %current-time% | VoidBot %version% :3"
         fields:
           developers:
@@ -30,7 +30,7 @@ help:
             title: "Язык программирования"
             description: "Java 17"
           discordLibs:
-            title: "Библеотека Discord"
+            title: "Библиотека Discord"
             description: "JDA 6.1.0"
           version:
             title: "Версия бота"
