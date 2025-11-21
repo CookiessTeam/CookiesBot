@@ -38,6 +38,7 @@ public class CommandManager extends ListenerAdapter {
                 for (final ICommand command : commands) {
                     if (command.getOptions() == null) {
                         guild.upsertCommand(command.getName(), command.getDescription()).queue();
+                        UtilsManager.getLogger().info("command", "loader", "Команда " + command.getName() + "загружена");
                     } else {
                         guild.upsertCommand(command.getName(), command.getDescription()).addOptions((Collection<? extends OptionData>)command.getOptions()).queue();
                     }
@@ -74,7 +75,7 @@ public class CommandManager extends ListenerAdapter {
                     command.execute(event);
                 }
                 catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    UtilsManager.getLogger().error("command", "loader", "", e);
                 }
             }
         }

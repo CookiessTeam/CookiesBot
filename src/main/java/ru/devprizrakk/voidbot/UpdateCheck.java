@@ -17,7 +17,7 @@ public class UpdateCheck extends UtilsManager {
 
         int responseCode = connection.getResponseCode();
         if (responseCode != 200) {
-            getLogger().error("github", "Failed to get the latest release version. HTTP response code: " + responseCode);
+            getLogger().error("github", "update", "Failed to get the latest release version. HTTP response code: " + responseCode);
             return null;
         }
 
@@ -36,7 +36,7 @@ public class UpdateCheck extends UtilsManager {
                 int endIndex = response.indexOf("\"", startIndex);
                 return response.substring(startIndex, endIndex);
             } else {
-                getLogger().error("github", "Failed to parse the latest release version from GitHub response.");
+                getLogger().error("github", "update", "Failed to parse the latest release version from GitHub response.");
                 return null;
             }
         }

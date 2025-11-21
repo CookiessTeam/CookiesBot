@@ -26,14 +26,14 @@ public class ConfigManager extends UtilsManager {
     private void extractDefaultConfig() {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CONFIG_NAME)) {
             if (inputStream == null) {
-                getLogger().error("config","Default config.yml not found in resources!");
+                getLogger().error("config","create","Default config.yml not found in resources!");
                 return;
             }
 
             Files.copy(inputStream, this.configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            getLogger().info("config","Config copied to: " + this.configFile.getAbsolutePath());
+            getLogger().info("config","create","Config copied to: " + this.configFile.getAbsolutePath());
         } catch (IOException e) {
-            getLogger().error("config","Failed to extract config", e);
+            getLogger().error("config","create","Failed to extract config", e);
         }
     }
 
@@ -44,7 +44,7 @@ public class ConfigManager extends UtilsManager {
             this.properties = yaml.load(inputStream);
             //getLogger().debug("Config loaded: " + this.configFile.getAbsolutePath());
         } catch (IOException e) {
-            getLogger().error("config","Failed to load config", e);
+            getLogger().error("config", "load","Failed to load config", e);
         }
     }
 
@@ -89,9 +89,9 @@ public class ConfigManager extends UtilsManager {
         try (FileWriter writer = new FileWriter(this.configFile)) {
             Yaml yaml = new Yaml();
             yaml.dump(this.properties, writer);
-            getLogger().info("config","Config saved successfully!");
+            getLogger().info("config","save","Config saved successfully!");
         } catch (IOException e) {
-            getLogger().error("config","Failed to save config", e);
+            getLogger().error("config","save","Failed to save config", e);
         }
     }
 }

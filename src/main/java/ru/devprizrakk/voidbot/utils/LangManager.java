@@ -34,7 +34,7 @@ public class LangManager extends UtilsManager {
     public static void init() {
         File langFolder = new File(LANG_DIR);
         if (!langFolder.exists() || Objects.requireNonNull(langFolder.listFiles()).length == 0) {
-            getLogger().warn("language","Папка language пуста — копирую языки из ресурсов...");
+            getLogger().warn("loader","language","Папка language пуста — копирую языки из ресурсов...");
             copyLanguagesFromResources();
         }
         loadAllLanguages();
@@ -47,7 +47,7 @@ public class LangManager extends UtilsManager {
         CACHE.clear();
         File[] langDirs = new File(LANG_DIR).listFiles(File::isDirectory);
         if (langDirs == null || langDirs.length == 0) {
-            getLogger().error("language","Не найдено ни одной локали в /language/");
+            getLogger().error("loader","language","Не найдено ни одной локали в /language/");
             return;
         }
 
@@ -56,7 +56,7 @@ public class LangManager extends UtilsManager {
             Map<String, String> flatData = new HashMap<>();
             loadRecursively(langDir, "", flatData);
             CACHE.put(langCode, flatData);
-            getLogger().info("language","Загружено " + flatData.size() + " ключей для языка " + langCode);
+            getLogger().info("loader","language","Загружено " + flatData.size() + " ключей для языка " + langCode);
         }
     }
 
@@ -76,7 +76,7 @@ public class LangManager extends UtilsManager {
                 Map<String, Object> yamlData = YAML.load(is);
                 if (yamlData != null) flattenMap(fileKey, yamlData, data);
             } catch (IOException e) {
-                getLogger().error("language","Ошибка при загрузке " + file.getPath(), e);
+                getLogger().error("loader","language","Ошибка при загрузке " + file.getPath(), e);
             }
         }
     }
@@ -115,7 +115,7 @@ public class LangManager extends UtilsManager {
             Object result = getNestedValue(yamlData, key);
             return result != null ? result.toString() : "§cMissing key: " + key;
         } catch (Exception e) {
-            getLogger().error("language","Ошибка чтения " + filePath, e);
+            getLogger().error("loader","language","Ошибка чтения " + filePath, e);
             return "§cError reading: " + filePath;
         }
     }
@@ -135,7 +135,7 @@ public class LangManager extends UtilsManager {
     public static String get(String lang, String key) {
         Map<String, String> langData = CACHE.get(lang.toLowerCase(Locale.ROOT));
         if (langData == null) {
-            getLogger().warn("language","Язык не найден: " + lang + ", использую " + DEFAULT_LANG);
+            getLogger().warn("loader","language","Язык не найден: " + lang + ", использую " + DEFAULT_LANG);
             langData = CACHE.get(DEFAULT_LANG);
         }
         if (langData == null) return "§c[No language loaded]";
@@ -153,7 +153,7 @@ public class LangManager extends UtilsManager {
     // -------------------- RELOAD --------------------
 
     public static void reload() {
-        getLogger().info("language","Перезагружаю языки...");
+        getLogger().info("loader","language","Перезагружаю языки...");
         loadAllLanguages();
     }
 
@@ -174,7 +174,7 @@ public class LangManager extends UtilsManager {
                     for (WatchEvent<?> event : key.pollEvents()) {
                         String fileName = event.context().toString();
                         if (fileName.endsWith(".yml")) {
-                            getLogger().info("language","Изменён файл локали: " + fileName + " — перезагрузка...");
+                            getLogger().info("loader","language","Изменён файл локали: " + fileName + " — перезагрузка...");
                             needReload = true;
                         }
                     }
@@ -183,7 +183,7 @@ public class LangManager extends UtilsManager {
                     key.reset();
                 }
             } catch (Exception e) {
-                getLogger().error("language","Ошибка при отслеживании изменений в языках", e);
+                getLogger().error("loader","language","Ошибка при отслеживании изменений в языках", e);
             }
         }, "LangWatcher").start();
     }
@@ -199,11 +199,11 @@ public class LangManager extends UtilsManager {
                 Enumeration<URL> resources = cl.getResources("language/" + lang);
                 if (!resources.hasMoreElements()) continue;
 
-                getLogger().info("language","Копирую язык из ресурсов: " + lang);
+                getLogger().info("loader","language","Копирую язык из ресурсов: " + lang);
                 copyDirectoryFromResources("language/" + lang, Paths.get(LANG_DIR, lang));
             }
         } catch (IOException e) {
-            getLogger().error("language","Не удалось скопировать языки из ресурсов", e);
+            getLogger().error("loader","language","Не удалось скопировать языки из ресурсов", e);
         }
     }
 
