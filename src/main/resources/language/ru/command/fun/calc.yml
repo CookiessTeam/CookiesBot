@@ -1,0 +1,13 @@
+calc:
+  description:
+    command: "Вычисляет арифметическое выражение."
+    option:
+      calc: "Арифметическое выражение для вычисления."
+  embed:
+    title: "Калькулятор"
+    description: |
+      Ваш результат: %result%
+      Версия калькулятора: %version:FUN_CALC_ENGINE%
+    footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
+  error:
+    wrong: "Извините, я не смог посчитать, это слишком сложно для меня."
