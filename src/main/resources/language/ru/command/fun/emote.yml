@@ -10,7 +10,7 @@ emote:
   embed:
     title: "%user-author% использовал %emote%"
     description: "%emote-description%"
-    footer: "Время вызова: %current-time% | VoidBot %version% :3"
+    footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
 
   # Локализоаванные Названия эмоций
   type:

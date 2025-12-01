@@ -6,7 +6,7 @@ help:
     embed:
       title: "Справочная информация VoidBot"
       description: "Справочная информация по боту VoidBot"
-      footer: "Время вызова: %current-time% | VoidBot %version% :3"
+      footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
       actionRow:
         placeholder: "Выберите что-то...."
         info:
@@ -21,25 +21,25 @@ help:
       embed:
         title: "Информация о VoidBot"
         description: "* Описание отсутствует *"
-        footer: "Время вызова: %current-time% | VoidBot %version% :3"
+        footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
         fields:
           developers:
             title: "Разработали"
             description: "dev_prizrakk (Разработчик), sahesha (Корректор текста)"
           programLang:
             title: "Язык программирования"
-            description: "Java 17"
+            description: "%version:JAVA%"
           discordLibs:
             title: "Библиотека Discord"
-            description: "JDA 6.1.0"
+            description: "%version:LIB_JDA%"
           version:
             title: "Версия бота"
-            description: "%version%"
+            description: "%version:BOT%"
     command:
       embed:
         title: "Выберите категорию, которая вам нужна"
         description: "Тут вы можете ознакомится с командами и из опциональными значениями"
-        footer: "Время вызова: %current-time% | VoidBot %version% :3"
+        footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
         actionRow:
           server:
             title: "Серверные"
@@ -63,7 +63,7 @@ help:
       interact:
         embed:
           title: "Категория команд: %command-category%"
-          footer: "Время вызова: %current-time% | VoidBot %version% :3"
+          footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
           category:
             server: "серверные команды"
             admin: "админ команды"
