@@ -2,16 +2,16 @@ package ru.devprizrakk.voidbot;
 
 
 import net.dv8tion.jda.api.JDA;
-import ru.devprizrakk.voidbot.loader.JDALoader;
-import ru.devprizrakk.voidbot.utils.LangManager;
-import ru.devprizrakk.voidbot.utils.LoggerManager;
-import ru.devprizrakk.voidbot.utils.UtilsManager;
+import ru.devprizrakk.voidbot.core.loader.discord.jda.JDALoader;
+import ru.devprizrakk.voidbot.core.loader.libraries.LibraryManager;
+import ru.devprizrakk.voidbot.core.system.lang.LangManager;
+import ru.devprizrakk.voidbot.core.system.logger.LoggerLib;
 
 public class Main {
     static JDA jda;
-    public static String currentVersion = "2.0.0-beta.1";
     public static void main(String[] args) {
         /*Init Module*/
+        new LibraryManager().init();
         // Инициализация логера
         new LoggerLib();
         // Инициализация локализации
