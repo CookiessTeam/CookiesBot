@@ -1,7 +1,7 @@
-package ru.devprizrakk.voidbot.loader;
+package ru.devprizrakk.voidbot.core.loader.discord.jda;
 
 import net.dv8tion.jda.api.JDA;
-import ru.devprizrakk.voidbot.commands.discord.fun.Emote;
+import ru.devprizrakk.voidbot.commands.discord.fun.*;
 import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
 import ru.devprizrakk.voidbot.commands.discord.system.help.Help;
 import ru.devprizrakk.voidbot.commands.discord.system.help.HelpSelectelMenu;
@@ -11,30 +11,29 @@ import ru.devprizrakk.voidbot.core.system.logger.Logger;
 
 public class CommandsLoader extends Utils {
 
-public class CommandsLoader extends UtilsManager {
-    JDA jda;
+    private final CommandManager commandManager = new CommandManager();
+
     public CommandsLoader(JDA jda) {
-        this.jda = jda;
-        onFunLoader();
-        onServerLoader();
+        loadFunCommands();
+        loadServerCommands();
+
+        jda.addEventListener(commandManager);
+        jda.addEventListener(new HelpSelectelMenu());
     }
 
     private void loadFunCommands() {
         Logger.getLogger().log(LogType.INFO,"loader","jda-commands", "Подгружаю развлекательные команды");
 
         commandManager.add(new Emote());
-
-        jda.addEventListener(commandManager);
+        commandManager.add(new Avatar());
+        commandManager.add(new CoinFlip());
+        commandManager.add(new Joke());
+        commandManager.add(new RPS());
     }
-    private void onServerLoader() {
-        getLogger().info("loader","jda-commands", "Подгружаю серверные команды");
 
     private void loadServerCommands() {
         Logger.getLogger().log(LogType.INFO,"loader","jda-commands", "Подгружаю серверные команды");
 
         commandManager.add(new Help());
-        jda.addEventListener(new HelpSelectelMenu());
-
-        jda.addEventListener(commandManager);
     }
 }

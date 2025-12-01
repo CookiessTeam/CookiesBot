@@ -8,15 +8,14 @@ import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import ru.devprizrakk.voidbot.commands.discord.loader.BaseCommand;
 import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
-import ru.devprizrakk.voidbot.commands.discord.loader.ICommand;
-import ru.devprizrakk.voidbot.utils.UtilsManager;
 
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class Help extends UtilsManager implements ICommand {
+public class Help extends BaseCommand {
     @Override
     public String getName() {
         return "help";
@@ -33,7 +32,7 @@ public class Help extends UtilsManager implements ICommand {
     }
     @Override
     public CommandCategory getCategory() {
-        return CommandCategory.SYSTEM;
+        return CommandCategory.SERVER;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class Help extends UtilsManager implements ICommand {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) throws SQLException {
+    public void onExecute() throws SQLException {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
         embed.setTitle(getLangManager(event).getDescriptionLocale("command/system/help.yml","help.command.embed.title"));
@@ -57,8 +56,6 @@ public class Help extends UtilsManager implements ICommand {
                 .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.info.title"), "info")
                         .withDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.info.description"))
                         .withEmoji(Emoji.fromUnicode("ℹ️")))
-                .addOptions(SelectOption.of(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.command.title"), "command")
-                        .withDescription(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.command.description"))
                 .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.command.title"), "command")
                         .withDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.command.description"))
                         .withEmoji(Emoji.fromUnicode("⌨️")))

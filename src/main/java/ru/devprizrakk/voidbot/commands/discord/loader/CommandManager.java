@@ -1,9 +1,7 @@
 package ru.devprizrakk.voidbot.commands.discord.loader;
 
-import java.awt.*;
 import java.sql.SQLException;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -19,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import ru.devprizrakk.voidbot.utils.LangManager;
-import ru.devprizrakk.voidbot.utils.UtilsManager;
 import ru.devprizrakk.voidbot.core.Utils;
 import ru.devprizrakk.voidbot.core.system.logger.LogType;
 import ru.devprizrakk.voidbot.core.system.logger.Logger;
@@ -100,14 +96,8 @@ public class CommandManager extends ListenerAdapter {
         if (requiredPermissions.isEmpty()) {
             return true;  // Если прав не требуется
         }
-
         if (!event.getMember().hasPermission(requiredPermissions)) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setColor(Color.RED);
-            embedBuilder.setTitle(UtilsManager.getLangMessage("system.yml","system.no-permission.title"));
-            embedBuilder.setDescription(UtilsManager.getLangMessage("system.yml","system.no-permission.description").replace("%hasPermission%", requiredPermissions.toString()));
-            embedBuilder.setFooter(UtilsManager.getLangMessage("system.yml","system.no-permission.footer"));
-            event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
+            event.replyEmbeds(Utils.getErrorMessage(event).noPermissionExtension(requiredPermissions.toString()).build()).setEphemeral(true).queue();
             return false;
         }
         return true;

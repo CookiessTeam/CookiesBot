@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.loader;
+package ru.devprizrakk.voidbot.core.loader.discord.jda;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
