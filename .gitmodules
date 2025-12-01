@@ -1,0 +1,3 @@
+[submodule "localisation"]
+	path = localisation
+	url = https://github.com/voidforge-community/localisation
