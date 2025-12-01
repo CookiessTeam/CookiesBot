@@ -24,7 +24,7 @@ public class Help extends UtilsManager implements ICommand {
 
     @Override
     public String getDescription() {
-        return UtilsManager.getLangMessage("command/system/help.yml", "help.description-command");
+        return getLangManager(event).getInfoLocale("command/system/help.yml", "help.description-command");
     }
 
     @Override
@@ -45,20 +45,22 @@ public class Help extends UtilsManager implements ICommand {
     public void execute(SlashCommandInteractionEvent event) throws SQLException {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangMessage("command/system/help.yml","help.command.embed.title"));
-        embed.setDescription(getLangMessage("command/system/help.yml","help.command.embed.description"));
-        embed.setFooter(getLangMessage("command/system/help.yml","help.command.embed.footer"));
-        event.replyEmbeds(embed.build()).addComponents(createSelectMenu()).queue();
+        embed.setTitle(getLangManager(event).getDescriptionLocale("command/system/help.yml","help.command.embed.title"));
+        embed.setDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml","help.command.embed.description"));
+        embed.setFooter(getLangManager(event).getDescriptionLocale("command/system/help.yml","help.command.embed.footer"));
+        event.replyEmbeds(embed.build()).addComponents(createSelectMenu(event)).queue();
     }
 
-    public static ActionRow createSelectMenu() {
+    public static ActionRow createSelectMenu(SlashCommandInteractionEvent event) {
         StringSelectMenu menu = StringSelectMenu.create("helpmenu")
-                .setPlaceholder(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.placeholder"))
-                .addOptions(SelectOption.of(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.info.title"), "info")
-                        .withDescription(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.info.description"))
+                .setPlaceholder(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.placeholder"))
+                .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.info.title"), "info")
+                        .withDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.info.description"))
                         .withEmoji(Emoji.fromUnicode("ℹ️")))
                 .addOptions(SelectOption.of(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.command.title"), "command")
                         .withDescription(getLangMessage("command/system/help.yml", "help.command.embed.actionRow.command.description"))
+                .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.command.title"), "command")
+                        .withDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.command.description"))
                         .withEmoji(Emoji.fromUnicode("⌨️")))
                 .build();
 

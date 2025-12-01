@@ -13,10 +13,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
 import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
 import ru.devprizrakk.voidbot.commands.discord.loader.ICommand;
-import ru.devprizrakk.voidbot.utils.UtilsManager;
+import ru.devprizrakk.voidbot.core.Utils;
 
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class HelpSelectelMenu extends ListenerAdapter {
@@ -29,34 +28,34 @@ public class HelpSelectelMenu extends ListenerAdapter {
             switch (selectedValue) {
                 case "info" -> {
                     EmbedBuilder embed = new EmbedBuilder();
-                    embed.setTitle(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.title"));
-                    embed.setDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.description"));
-                    embed.setFooter(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.footer"));
+                    embed.setTitle(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.title"));
+                    embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.description"));
+                    embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.footer"));
                     embed.addField(
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.developers.title"),
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.developers.description"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.developers.title"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.developers.description"),
                             true);
                     embed.addField(
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.programLang.title"),
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.programLang.description"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.programLang.title"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.programLang.description"),
                             true);
                     embed.addField(
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.discordLibs.title"),
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.discordLibs.description"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.discordLibs.title"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.discordLibs.description"),
                             true);
                     embed.addField(
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.version.title"),
-                            UtilsManager.getLangMessage("command/system/help.yml", "help.interact.info.embed.fields.version.description").replace("%version%", UtilsManager.getVersion()),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.version.title"),
+                            Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.info.embed.fields.version.description"),
                             true);
                     event.replyEmbeds(embed.build()).setEphemeral(true).queue();
                 }
                 case "command" -> {
                     EmbedBuilder embed = new EmbedBuilder();
                     embed.setColor(new Color(255, 104, 0));
-                    embed.setTitle(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.title"));
-                    embed.setDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.description"));
-                    embed.setFooter(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.footer"));
-                    event.replyEmbeds(embed.build()).addComponents(createActionRow()).setEphemeral(true).queue();
+                    embed.setTitle(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.title"));
+                    embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.description"));
+                    embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.footer"));
+                    event.replyEmbeds(embed.build()).addComponents(createActionRow(event)).setEphemeral(true).queue();
                 }
             }
         }
@@ -91,15 +90,15 @@ public class HelpSelectelMenu extends ListenerAdapter {
                     categoryLocal = "other";
                     break;
                 default:
-                    embed.setDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.category.notFoundCategory"));
+                    embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.category.notFoundCategory"));
                     categoryLocal = "notFoundCategory";
                     category = null;
                     break;
             }
             embed.setColor(new Color(255, 104, 0));
-            embed.setTitle(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.title")
-                    .replace("%command-category%", UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.category." + categoryLocal)));
-            embed.setFooter(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.footer"));
+            embed.setTitle(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.title")
+                    .replace("%command-category%", Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.category." + categoryLocal)));
+            embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.footer"));
 
 
             if (category != null) {
@@ -116,15 +115,15 @@ public class HelpSelectelMenu extends ListenerAdapter {
                                         .append("\n");
                             }
                         }
-                        embed.addField(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.name.title"),
-                                UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.name.description")
+                        embed.addField(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.name.title"),
+                                Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.name.description")
                                         .replace("%name-command%",command.getName()), false);
-                        embed.addField(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.description.title"),
-                                UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.description.description")
+                        embed.addField(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.description.title"),
+                                Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.description.description")
                                         .replace("%description-command%", command.getDescription()), true);
-                        embed.addField(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.option.title"),
-                                UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.option.description")
-                                        .replace("%option-command%", (optionsDescription.length() > 0 ? optionsDescription.toString() : UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.interact.embed.field.option.not-option"))) , true);
+                        embed.addField(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.option.title"),
+                                Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.option.description")
+                                        .replace("%option-command%", (optionsDescription.length() > 0 ? optionsDescription.toString() : Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.interact.embed.field.option.not-option"))) , true);
                     }
                 }
             }
@@ -132,26 +131,28 @@ public class HelpSelectelMenu extends ListenerAdapter {
             event.replyEmbeds(embed.build()).setEphemeral(true).queue();
         }
     }
-    private ActionRow createActionRow() {
+    private ActionRow createActionRow(StringSelectInteractionEvent event) {
         StringSelectMenu stringSelectMenu = StringSelectMenu.create("helpcommand")
                 .addOptions(
-                        SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.server.title"), "server")
-                                .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.server.description"))
+                        SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.server.title"), "server")
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.server.description"))
                                 .withEmoji(Emoji.fromUnicode("🏠")),
-                        SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.admin.title"), "admin")
-                                .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.admin.description"))
+                        SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.admin.title"), "admin")
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.admin.description"))
                                 .withEmoji(Emoji.fromUnicode("🔧")),
-                        SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.fun.title"), "fun")
-                                .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.fun.description"))
+                        SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.fun.title"), "fun")
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.fun.description"))
                                 .withEmoji(Emoji.fromUnicode("🎉")),
-                        SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.music.title"), "music")
-                                .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.music.description"))
+                        SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.music.title"), "music")
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.music.description"))
                                 .withEmoji(Emoji.fromUnicode("🎵")),
                         SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.user.title"), "user")
                                 .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.user.description"))
+                        SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.user.title"), "user")
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.user.description"))
                                 .withEmoji(Emoji.fromUnicode("🔤")),
-                        SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.other.title"), "other")
-                                .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.other.description"))
+                        SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.other.title"), "other")
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.other.description"))
                                 .withEmoji(Emoji.fromUnicode("❓"))
                 ).build();
         return ActionRow.of(stringSelectMenu);

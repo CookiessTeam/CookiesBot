@@ -2,14 +2,14 @@ package ru.devprizrakk.voidbot;
 
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import static ru.devprizrakk.voidbot.utils.UtilsManager.getLogger;
+import ru.devprizrakk.voidbot.core.system.logger.LogType;
+import ru.devprizrakk.voidbot.core.system.logger.Logger;
 
 
 public class OnReady extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        getLogger().info("loader", "jda-main", "Подключение к API Discord прошло успешно");
+        Logger.getLogger().log(LogType.INFO,"loader", "jda-main", "Подключение к API Discord прошло успешно");
     }
 }

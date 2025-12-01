@@ -2,6 +2,9 @@ package ru.devprizrakk.voidbot.utils;
 
 import net.dv8tion.jda.api.entities.Member;
 import org.yaml.snakeyaml.Yaml;
+import ru.devprizrakk.voidbot.core.Utils;
+import ru.devprizrakk.voidbot.core.system.logger.LogType;
+import ru.devprizrakk.voidbot.core.system.logger.Logger;
 
 import java.io.*;
 import java.net.URL;
@@ -20,7 +23,7 @@ import java.util.*;
  * - Можно просто вызывать:
  *   LangManager.get("command.system.help.title");
  */
-public class LangManager extends UtilsManager {
+public class LangManager extends Utils {
 
     private static final String LANG_DIR = "language";
     private static final String DEFAULT_LANG = "ru";

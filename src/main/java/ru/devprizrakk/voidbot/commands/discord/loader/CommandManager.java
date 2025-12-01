@@ -21,6 +21,9 @@ import java.util.List;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import ru.devprizrakk.voidbot.utils.LangManager;
 import ru.devprizrakk.voidbot.utils.UtilsManager;
+import ru.devprizrakk.voidbot.core.Utils;
+import ru.devprizrakk.voidbot.core.system.logger.LogType;
+import ru.devprizrakk.voidbot.core.system.logger.Logger;
 
 public class CommandManager extends ListenerAdapter {
 
@@ -38,7 +41,7 @@ public class CommandManager extends ListenerAdapter {
                 for (final ICommand command : commands) {
                     if (command.getOptions() == null) {
                         guild.upsertCommand(command.getName(), command.getDescription()).queue();
-                        UtilsManager.getLogger().info("command", "loader", "Команда " + command.getName() + "загружена");
+                        Logger.getLogger().log(LogType.INFO,"command", "loader", "Команда " + command.getName() + "загружена");
                     } else {
                         guild.upsertCommand(command.getName(), command.getDescription()).addOptions((Collection<? extends OptionData>)command.getOptions()).queue();
                     }
@@ -75,7 +78,7 @@ public class CommandManager extends ListenerAdapter {
                     command.execute(event);
                 }
                 catch (SQLException e) {
-                    UtilsManager.getLogger().error("command", "loader", "", e);
+                    Logger.getLogger().log(LogType.ERROR,"command", "execute", "", e);
                 }
             }
         }
