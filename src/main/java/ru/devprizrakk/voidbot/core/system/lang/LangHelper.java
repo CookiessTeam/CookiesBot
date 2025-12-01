@@ -37,18 +37,18 @@ public class LangHelper {
         return sb.toString();
     }
 
-    public String getDescriptionLocale(String ymlFilePath, String path) {
-        String message = LangManager.get("ru", ymlFilePath, path);
-        if (message != null) {
+    public String getDescriptionLocale(String path) {
+        String message = LangManager.get("ru", path);
+        if (!(message == null || message.startsWith("§cMissing key"))) {
             return formatter(message);
         } else {
             event.replyEmbeds(Utils.getErrorMessage(event).wrongError("Ключ/файл локализации не найден!").build()).queue();
             return null;
         }
     }
-    public String getInfoLocale(String ymlFilePath, String path) {
-        String message = LangManager.get("ru", ymlFilePath, path);
-        if (message != null) {
+    public String getInfoLocale(String path) {
+        String message = LangManager.get("ru", path);
+        if (!(message == null || message.startsWith("§cMissing key"))) {
             return formatter(message);
         } else {
             return "Localisation key is not found please report administration!";

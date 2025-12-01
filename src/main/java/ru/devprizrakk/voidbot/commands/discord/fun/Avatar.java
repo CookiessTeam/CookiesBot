@@ -19,12 +19,12 @@ public class Avatar extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/avatar.yml", "avatar.description.command");
+        return getLangManager(event).getInfoLocale("avatar.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale("command/fun/avatar.yml", "avatar.description.option.user"), false));
+        return List.of(new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale("avatar.description.option.user"), false));
     }
 
     @Override
@@ -43,25 +43,25 @@ public class Avatar extends BaseCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         if (event.getOption("name") == null) {
             embedBuilder.setTitle(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-no-mentioned.title")
+                    getLangManager(event).getDescriptionLocale("avatar.embed-no-mentioned.title")
                             .replace("%user-author%", user.getEffectiveName()));
             embedBuilder.setDescription(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-no-mentioned.description")
+                    getLangManager(event).getDescriptionLocale("avatar.embed-no-mentioned.description")
             );
             embedBuilder.setImage(user.getAvatarUrl());
             embedBuilder.setFooter(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-no-mentioned.footer")
+                    getLangManager(event).getDescriptionLocale("avatar.embed-no-mentioned.footer")
             );
         } else {
             embedBuilder.setTitle(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-mentioned.title")
+                    getLangManager(event).getDescriptionLocale("avatar.embed-mentioned.title")
                             .replace("%user-author%", user.getEffectiveName()));
             embedBuilder.setDescription(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-mentioned.description")
+                    getLangManager(event).getDescriptionLocale("avatar.embed-mentioned.description")
             );
             embedBuilder.setImage(user.getAvatarUrl());
             embedBuilder.setFooter(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-mentioned.footer")
+                    getLangManager(event).getDescriptionLocale("avatar.embed-mentioned.footer")
             );
         }
         event.replyEmbeds(embedBuilder.build()).queue();

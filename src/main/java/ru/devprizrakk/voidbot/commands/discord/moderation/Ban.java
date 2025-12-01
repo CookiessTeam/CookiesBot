@@ -19,15 +19,15 @@ public class Ban extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/moderation/ban.yml","ban.description.command");
+        return getLangManager(event).getInfoLocale("ban.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale("command/moderation/ban.yml","ban.description.option.target-user"), true));
-        options.add(new OptionData(OptionType.STRING, "time", getLangManager(event).getDescriptionLocale("command/moderation/ban.yml","ban.description.option.time"), false));
-        options.add(new OptionData(OptionType.STRING, "user", getLangManager(event).getDescriptionLocale("command/moderation/ban.yml","ban.description.option.reason"), true));
+        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale("ban.description.option.target-user"), true));
+        options.add(new OptionData(OptionType.STRING, "time", getLangManager(event).getDescriptionLocale("ban.description.option.time"), false));
+        options.add(new OptionData(OptionType.STRING, "user", getLangManager(event).getDescriptionLocale("ban.description.option.reason"), true));
         return options;
     }
 

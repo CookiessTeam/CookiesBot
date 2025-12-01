@@ -9,13 +9,11 @@ import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
 import ru.devprizrakk.voidbot.core.system.logger.LogType;
 import ru.devprizrakk.voidbot.core.system.logger.Logger;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.function.DoubleUnaryOperator;
 
 public class Calc extends BaseCommand {
     private static final Map<String, DoubleUnaryOperator> functions = new HashMap<>();
@@ -35,12 +33,12 @@ public class Calc extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/calc.yml", "calc.description.command");
+        return getLangManager(event).getInfoLocale("calc.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale("command/fun/calc.yml", "calc.description.option.calc"), true));
+        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale("calc.description.option.calc"), true));
     }
 
     @Override
@@ -58,14 +56,14 @@ public class Calc extends BaseCommand {
         try {
             double result = evaluate(expression);
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.embed.title"));
-            embed.setDescription(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.embed.description")
+            embed.setTitle(getLangManager(event).getDescriptionLocale("calc.embed.title"));
+            embed.setDescription(getLangManager(event).getDescriptionLocale("calc.embed.description")
                     .replace("%result%", String.valueOf(result)));
-            embed.setFooter(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.embed.footer"));
+            embed.setFooter(getLangManager(event).getDescriptionLocale("calc.embed.footer"));
             event.replyEmbeds(embed.build()).queue();
         } catch (Exception e) {
             Logger.getLogger().log(LogType.ERROR,"command", "calc","Error in calculation: ", e);
-            event.replyEmbeds(getErrorMessage(event).wrongError(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.error.wrong")).build()).queue();
+            event.replyEmbeds(getErrorMessage(event).wrongError(getLangManager(event).getDescriptionLocale("calc.error.wrong")).build()).queue();
         }
     }
     private double evaluate(String expression) {
