@@ -1,6 +1,0 @@
-level:
-  up:
-    embed:
-      title: "Поздравляем с новым уровнем! Юхууу :3"
-      description: "Вы получили на сервере %server-name% %level% уровень теперь! Вам надо %required-experience% очков опыта для достижения нового уровня"
-      footer: "Время вызова: %current-time% | VoidBot %version:BOT% :3"
