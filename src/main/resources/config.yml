@@ -32,3 +32,7 @@ other:
   kawaii-api:
     enable: true
     token: ""
+  minecraft:
+    enable: true
+    websocket-api: "ws://127.0.0.1:8765"
+    channel: 1392542412735385843
