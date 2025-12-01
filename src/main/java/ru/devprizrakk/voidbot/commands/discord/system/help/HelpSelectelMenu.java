@@ -1,11 +1,9 @@
 package ru.devprizrakk.voidbot.commands.discord.system.help;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.selections.SelectOption;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu;
-import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -146,8 +144,6 @@ public class HelpSelectelMenu extends ListenerAdapter {
                         SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.music.title"), "music")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.music.description"))
                                 .withEmoji(Emoji.fromUnicode("🎵")),
-                        SelectOption.of(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.user.title"), "user")
-                                .withDescription(UtilsManager.getLangMessage("command/system/help.yml", "help.interact.command.embed.actionRow.user.description"))
                         SelectOption.of(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.user.title"), "user")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.interact.command.embed.actionRow.user.description"))
                                 .withEmoji(Emoji.fromUnicode("🔤")),
