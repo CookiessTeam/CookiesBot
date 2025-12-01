@@ -2,7 +2,7 @@
 
 system:
   debug:
-    enable: true
+    enable: false
     level: low
 database:
   type: mysql/sqlite
