@@ -12,7 +12,7 @@ public class LangManager {
     public static final String DEFAULT_LANG = "ru";
 
     public static void init() {
-        Logger.getLogger().log(LogType.INFO,"loader","language","Инициализация языковой системы...");
+        Logger.getLogger().log(LogType.INFO,"loader", "Инициализация языковой системы...");
 
         // 1 — скачать локализации из GitHub
         LangRepositorySync.sync();
@@ -25,29 +25,23 @@ public class LangManager {
     }
 
     public static void reload() {
-        Logger.getLogger().log(LogType.INFO,"loader","language","Перезагрузка локалей...");
+        Logger.getLogger().log(LogType.INFO,"loader", "Перезагрузка локалей...");
         LangLoader.loadAllLanguages();
     }
 
-    public static String get(String lang, String key) {
-        Map<String, String> data = LangLoader.CACHE.get(lang.toLowerCase(Locale.ROOT));
+    public static String get(String lang, String file, String key) {
+        lang = lang.toLowerCase(Locale.ROOT);
+        file = file.toLowerCase(Locale.ROOT);
 
-        if (data == null) {
-            Logger.getLogger().log(LogType.WARN,"loader","language",
-                    "Язык не найден: " + lang + ", использую " + DEFAULT_LANG);
-            data = LangLoader.CACHE.get(DEFAULT_LANG);
-        }
+        Map<String, Map<String, String>> langData = LangLoader.CACHE.get(lang);
+        if (langData == null) langData = LangLoader.CACHE.get(DEFAULT_LANG);
 
-        if (data == null) return "§c[No language loaded]";
+        if (langData == null) return "§c[No language loaded]";
 
-        return data.getOrDefault(key, "§cMissing key: " + key);
-    }
+        Map<String, String> fileData = langData.get(file);
+        if (fileData == null)
+            return "§cMissing file: " + file;
 
-    public static String get(String lang, String key, Map<String, String> placeholders) {
-        String msg = get(lang, key);
-        for (var e : placeholders.entrySet()) {
-            msg = msg.replace("%" + e.getKey() + "%", e.getValue());
-        }
-        return msg;
+        return fileData.getOrDefault(key, "§cMissing key: " + key);
     }
 }

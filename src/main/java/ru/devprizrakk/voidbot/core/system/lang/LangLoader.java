@@ -5,11 +5,11 @@ import ru.devprizrakk.voidbot.core.system.logger.*;
 
 import java.io.*;
 import java.util.*;
-import java.nio.file.*;
 
 public class LangLoader {
 
-    static final Map<String, Map<String, String>> CACHE = new HashMap<>();
+    // CACHE[lang][filePath][key] = value
+    static final Map<String, Map<String, Map<String, String>>> CACHE = new HashMap<>();
     private static final Yaml YAML = new Yaml();
 
     public static void loadAllLanguages() {
@@ -19,40 +19,48 @@ public class LangLoader {
         File[] langDirs = langRoot.listFiles(File::isDirectory);
 
         if (langDirs == null || langDirs.length == 0) {
-            Logger.getLogger().log(LogType.ERROR,"loader","language",
+            Logger.getLogger().log(LogType.ERROR, "loader",
                     "Не найдено ни одной локали в /language/");
             return;
         }
 
         for (File langDir : langDirs) {
             String langCode = langDir.getName().toLowerCase(Locale.ROOT);
-            Map<String, String> flat = new HashMap<>();
 
-            loadRecursive(langDir, "", flat);
+            Map<String, Map<String, String>> langFiles = new HashMap<>();
 
-            CACHE.put(langCode, flat);
-            Logger.getLogger().log(LogType.INFO,"loader","language",
-                    "Загружено " + flat.size() + " ключей для языка " + langCode);
+            loadRecursive(langDir, "", langFiles);
+
+            CACHE.put(langCode, langFiles);
+            Logger.getLogger().log(LogType.INFO, "loader",
+                    "Загружено " + langFiles.size() + " файлов локалей для языка " + langCode);
         }
     }
 
-    private static void loadRecursive(File folder, String prefix, Map<String, String> out) {
-        File[] files = folder.listFiles();
-        if (files == null) return;
+    private static void loadRecursive(File folder, String relativePath,
+                                      Map<String, Map<String, String>> target) {
 
-        for (File f : files) {
+        for (File f : folder.listFiles()) {
+
+            String newPath = relativePath.isEmpty()
+                    ? f.getName()
+                    : relativePath + "/" + f.getName();
+
             if (f.isDirectory()) {
-                loadRecursive(f, prefix + f.getName() + ".", out);
+                loadRecursive(f, newPath, target);
                 continue;
             }
 
             if (!f.getName().endsWith(".yml")) continue;
 
-            String fileKey = prefix + f.getName().replace(".yml", "") + ".";
-
             try (InputStream is = new FileInputStream(f)) {
-                Map<String, Object> yaml = YAML.load(is);
-                if (yaml != null) flatten(fileKey, yaml, out);
+                Map<String, Object> parsed = YAML.load(is);
+                Map<String, String> flat = new HashMap<>();
+
+                if (parsed != null) flatten("", parsed, flat);
+
+                target.put(newPath.toLowerCase(Locale.ROOT), flat);
+
             } catch (Exception e) {
                 Logger.getLogger().log(LogType.ERROR,"loader","language",
                         "Ошибка загрузки файла " + f.getPath(), e);
@@ -60,18 +68,16 @@ public class LangLoader {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void flatten(String prefix, Map<?, ?> src, Map<String, String> out) {
-        for (var entry : src.entrySet()) {
-            String key = prefix + entry.getKey();
-            Object val = entry.getValue();
+        for (var e : src.entrySet()) {
+            String key = prefix.isEmpty() ? e.getKey().toString()
+                    : prefix + "." + e.getKey();
+
+            Object val = e.getValue();
 
             if (val instanceof Map<?,?> map) {
-                flatten(key + ".", map, out);
-            } else if (val instanceof List<?> list) {
-                out.put(key, String.join("\n",
-                        list.stream().map(Object::toString).toList()));
-            } else if (val != null) {
+                flatten(key, map, out);
+            } else {
                 out.put(key, val.toString());
             }
         }

@@ -24,7 +24,7 @@ public class LangWatcher {
 
                     for (WatchEvent<?> event : key.pollEvents()) {
                         if (event.context().toString().endsWith(".yml")) {
-                            Logger.getLogger().log(LogType.INFO,"loader","language",
+                            Logger.getLogger().log(LogType.INFO,"loader",
                                     "Изменён файл локали: " + event.context());
                             reload = true;
                         }
