@@ -19,7 +19,7 @@ public class CoinFlip extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("coinflip.embed-no-mentioned.title");
+        return getLangManager(event).getInfoLocale("command/fun/coinflip.yml", "coinflip.description.command");
     }
 
     @Override
@@ -42,21 +42,21 @@ public class CoinFlip extends BaseCommand {
         boolean nextBoolean = random.nextBoolean();
         String result;
         if (nextBoolean) {
-            result = getLangManager(event).getDescriptionLocale("coinflip.flip.eagle");
+            result = getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.flip.eagle");
         } else {
-            result = getLangManager(event).getDescriptionLocale("coinflip.flip.tails");
+            result = getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.flip.tails");
         }
         event.reply("Результат подбрасывания: **" + result + "**").queue();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(
-                getLangManager(event).getDescriptionLocale("coinflip.embed.title")
+                getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.embed.title")
         );
         embedBuilder.setDescription(
-                getLangManager(event).getDescriptionLocale("coinflip.embed.description")
+                getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.embed.description")
                         .replace("%coinflip%", result)
         );
         embedBuilder.setFooter(
-                getLangManager(event).getDescriptionLocale("coinflip.embed.footer")
+                getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.embed.footer")
         );
         event.replyEmbeds(embedBuilder.build()).queue();
     }

@@ -20,7 +20,7 @@ public class Joke extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("joke.description.command");
+        return getLangManager(event).getInfoLocale("command/fun/joke.yml", "joke.description.command");
     }
 
     @Override
@@ -40,14 +40,14 @@ public class Joke extends BaseCommand {
 
     @Override
     public void onExecute() {
-        int length = random.nextInt(Integer.parseInt(getLangManager(event).getDescriptionLocale("joke.joke.length")));
-        String joke = getLangManager(event).getDescriptionLocale("joke.joke." + length);
+        int length = random.nextInt(Integer.parseInt(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.joke.length")));
+        String joke = getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.joke." + length);
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(getLangManager(event).getDescriptionLocale("joke.embed.title")
+        embedBuilder.setTitle(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.embed.title")
                 .replace("%number%", length + ""));
-        embedBuilder.setDescription(getLangManager(event).getDescriptionLocale("joke.embed.description")
+        embedBuilder.setDescription(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.embed.description")
                 .replace("%joke%", joke));
-        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale("joke.embed.footer"));
+        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.embed.footer"));
 
         event.replyEmbeds(embedBuilder.build()).queue();
     }

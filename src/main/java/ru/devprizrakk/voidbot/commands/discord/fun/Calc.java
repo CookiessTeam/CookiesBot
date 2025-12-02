@@ -33,12 +33,12 @@ public class Calc extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("calc.description.command");
+        return getLangManager(event).getInfoLocale("command/fun/avatar.yml", "calc.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale("calc.description.option.calc"), true));
+        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale("command/fun/avatar.yml", "calc.description.option.calc"), true));
     }
 
     @Override
@@ -56,14 +56,14 @@ public class Calc extends BaseCommand {
         try {
             double result = evaluate(expression);
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle(getLangManager(event).getDescriptionLocale("calc.embed.title"));
-            embed.setDescription(getLangManager(event).getDescriptionLocale("calc.embed.description")
+            embed.setTitle(getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "calc.embed.title"));
+            embed.setDescription(getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "calc.embed.description")
                     .replace("%result%", String.valueOf(result)));
-            embed.setFooter(getLangManager(event).getDescriptionLocale("calc.embed.footer"));
+            embed.setFooter(getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "calc.embed.footer"));
             event.replyEmbeds(embed.build()).queue();
         } catch (Exception e) {
             Logger.getLogger().log(LogType.ERROR,"command", "calc","Error in calculation: ", e);
-            event.replyEmbeds(getErrorMessage(event).wrongError(getLangManager(event).getDescriptionLocale("calc.error.wrong")).build()).queue();
+            event.replyEmbeds(getErrorMessage(event).wrongError(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.error.wrong")).build()).queue();
         }
     }
     private double evaluate(String expression) {

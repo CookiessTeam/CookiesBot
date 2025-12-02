@@ -10,6 +10,6 @@ public class OnReady extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        Logger.getLogger().log(LogType.INFO,"loader", "jda-main", "Подключение к API Discord прошло успешно");
+        Logger.getLogger().log(LogType.INFO,"loader", "Подключение к API Discord прошло успешно");
     }
 }
