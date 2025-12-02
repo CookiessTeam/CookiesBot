@@ -33,34 +33,34 @@ public class LibraryDownloader {
 
             double globalPercent = ((double) done / totalLibs) * 100;
 
-            Logger.getLogger().log(LogType.INFO, "loader","libraries","----------------------------");
-            Logger.getLogger().log(LogType.INFO, "loader","libraries",
+            Logger.getLogger().log(LogType.INFO, "loader", "----------------------------");
+            Logger.getLogger().log(LogType.INFO, "loader",
                     "| Загружено библиотек: " + (int) globalPercent + "% |");
 
             if (Files.exists(localPath)) {
-                Logger.getLogger().log(LogType.INFO, "loader","libraries",
+                Logger.getLogger().log(LogType.INFO, "loader",
                         "| Уже скачано: " + jarName + " |");
-                Logger.getLogger().log(LogType.INFO, "loader","libraries","----------------------------");
+                Logger.getLogger().log(LogType.INFO, "loader", "----------------------------");
                 done++;
                 continue;
             }
 
-            Logger.getLogger().log(LogType.INFO, "loader","libraries",
+            Logger.getLogger().log(LogType.INFO, "loader",
                     "| Скачиваю файл: " + jarName + " |");
 
             try {
                 downloadProgressBar(jsonUrl.replace("libraries.json","") + jarName, localPath);
-                Logger.getLogger().log(LogType.INFO,"loader","libraries",
+                Logger.getLogger().log(LogType.INFO,"loader",
                         "| Скачано: " + jarName + " |");
-                Logger.getLogger().log(LogType.INFO,"loader","libraries",
+                Logger.getLogger().log(LogType.INFO,"loader",
                         "| Статус: скачано        |");
             } catch (Exception e) {
                 failed.add(jarName + " (" + e.getMessage() + ")");
-                Logger.getLogger().log(LogType.INFO,"loader","libraries",
+                Logger.getLogger().log(LogType.INFO,"loader",
                         "| Статус: не удалось     |");
             }
 
-            Logger.getLogger().log(LogType.INFO, "loader","libraries","----------------------------");
+            Logger.getLogger().log(LogType.INFO, "loader", "----------------------------");
             done++;
         }
 

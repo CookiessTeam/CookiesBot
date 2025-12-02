@@ -18,7 +18,7 @@ public class UpdateCheck  {
 
         int responseCode = connection.getResponseCode();
         if (responseCode != 200) {
-            Logger.getLogger().log(LogType.ERROR,"github", "update", "Failed to get the latest release version. HTTP response code: " + responseCode);
+            Logger.getLogger().log(LogType.ERROR,"github", "Failed to get the latest release version. HTTP response code: " + responseCode);
             return null;
         }
 
@@ -37,7 +37,7 @@ public class UpdateCheck  {
                 int endIndex = response.indexOf("\"", startIndex);
                 return response.substring(startIndex, endIndex);
             } else {
-                Logger.getLogger().log(LogType.ERROR,"github", "update", "Failed to parse the latest release version from GitHub response.");
+                Logger.getLogger().log(LogType.ERROR,"github", "Failed to parse the latest release version from GitHub response.");
                 return null;
             }
         }

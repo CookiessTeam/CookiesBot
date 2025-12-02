@@ -12,11 +12,11 @@ public class EventsLoader extends Utils {
         //onUserLoader();
     }
     private void onSystemLoader(JDA jda) {
-        Logger.getLogger().log(LogType.INFO,"loader","jda-events", "Подгружаю системные события");
+        Logger.getLogger().log(LogType.INFO,"loader", "Подгружаю системные события");
 
         jda.addEventListener(new OnReady());
     }
     private void onUserLoader() {
-        Logger.getLogger().log(LogType.INFO,"loader","jda-events", "Подгружаю пользовательские события");
+        Logger.getLogger().log(LogType.INFO,"loader", "Подгружаю пользовательские события");
     }
 }

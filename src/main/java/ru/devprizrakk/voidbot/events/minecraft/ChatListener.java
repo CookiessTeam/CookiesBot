@@ -18,7 +18,7 @@ public class ChatListener extends Utils {
         client = new WebSocketClient(new URI(getConfigManager().getConfig().getString("other.websocket-api"))) {
             @Override
             public void onOpen(ServerHandshake handshake) {
-                Logger.getLogger().log(LogType.INFO,"event","minecraft", "Подключение к чату через веб-сокет");
+                Logger.getLogger().log(LogType.INFO,"event", "Подключение к чату через веб-сокет");
             }
 
             @Override
@@ -31,7 +31,7 @@ public class ChatListener extends Utils {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                Logger.getLogger().log(LogType.INFO,"event","minecraft", "Отключение от вебсокета");
+                Logger.getLogger().log(LogType.INFO,"event", "Отключение от вебсокета");
             }
 
             @Override

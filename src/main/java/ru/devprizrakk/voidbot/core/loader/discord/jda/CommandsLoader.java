@@ -22,7 +22,7 @@ public class CommandsLoader extends Utils {
     }
 
     private void loadFunCommands() {
-        Logger.getLogger().log(LogType.INFO,"loader","jda-commands", "Подгружаю развлекательные команды");
+        Logger.getLogger().log(LogType.INFO,"loader", "Подгружаю развлекательные команды");
 
         commandManager.add(new Emote());
         commandManager.add(new Avatar());
@@ -32,7 +32,7 @@ public class CommandsLoader extends Utils {
     }
 
     private void loadServerCommands() {
-        Logger.getLogger().log(LogType.INFO,"loader","jda-commands", "Подгружаю серверные команды");
+        Logger.getLogger().log(LogType.INFO,"loader", "Подгружаю серверные команды");
 
         commandManager.add(new Help());
     }

@@ -20,7 +20,7 @@ public class JDALoader extends Utils {
         jdaInit();
     }
     public void jdaInit() {
-        Logger.getLogger().log(LogType.INFO,"loader","jda-main", "Подключение API Discord...");
+        Logger.getLogger().log(LogType.INFO,"loader", "Подключение API Discord...");
 
         Activity activity;
         switch (getConfigManager().getConfig().getString("bot.activity.type")) {

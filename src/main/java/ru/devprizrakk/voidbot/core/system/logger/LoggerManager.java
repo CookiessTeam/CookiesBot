@@ -11,7 +11,6 @@ public class LoggerManager {
 
     // Настройка выравнивания — можно подстроить под ширину своих категорий
     private static final int CATEGORY_WIDTH = 10;
-    private static final int TYPE_WIDTH = 24;
 
     private String getTimestamp() {
         return dateFormat.format(new Date());
@@ -22,20 +21,18 @@ public class LoggerManager {
         return String.format("%-" + length + "s", text);
     }
 
-    private void print(String level, String category, String type, String colorCode, String message) {
+    private void print(String level, String category, String colorCode, String message) {
         String timestamp = getTimestamp();
 
         // Форматированная строка категории и типа с фиксированной шириной
         String categoryPadded = padRight(category, CATEGORY_WIDTH);
-        String typePadded = padRight(type, TYPE_WIDTH);
 
         String header = String.format("[%s %s%s%s] [%s | %s] ",
                 timestamp,
                 colorCode,
                 level,
                 ColorConsole.ANSI_RESET,
-                ColorConsole.ANSI_CYAN + categoryPadded + ColorConsole.ANSI_RESET,
-                ColorConsole.ANSI_CYAN + typePadded + ColorConsole.ANSI_RESET
+                ColorConsole.ANSI_CYAN + categoryPadded + ColorConsole.ANSI_RESET
         );
 
         String[] lines = message.split("\n");
@@ -43,45 +40,45 @@ public class LoggerManager {
             System.out.println(header + line);
         }
     }
-    public void log(LogType type, String category, String methode, String message) {
+    public void log(LogType type, String category, String message) {
         switch (type) {
-            case INFO -> info(category, methode, message);
-            case DEBUG -> debug(category, methode, message);
-            case WARN -> warn(category, methode, message);
-            case ERROR -> error(category, methode, message);
+            case INFO -> info(category, message);
+            case DEBUG -> debug(category, message);
+            case WARN -> warn(category, message);
+            case ERROR -> error(category, message);
         }
     }
     public void log(LogType type, String category, String methode, String message, Exception e) {
         switch (type) {
-            case INFO -> info(category, methode, message);
-            case DEBUG -> debug(category, methode, message);
-            case WARN -> warn(category, methode, message);
-            case ERROR -> error(category, methode, message, e);
+            case INFO -> info(category, message);
+            case DEBUG -> debug(category, message);
+            case WARN -> warn(category, message);
+            case ERROR -> error(category, message, e);
         }
     }
 
-    private void info(String category, String type, String message) {
-        print("INFO", category, type, ColorConsole.ANSI_GREEN, message);
+    private void info(String category, String message) {
+        print("INFO", category, ColorConsole.ANSI_GREEN, message);
     }
 
-    private void debug(String category, String type, String message) {
-        if (true) print("DEBUG", category, type, ColorConsole.ANSI_BLUE, message);
+    private void debug(String category, String message) {
+        if (true) print("DEBUG", category, ColorConsole.ANSI_BLUE, message);
     }
 
-    private void warn(String category, String type, String message) {
-        print("WARN", category, type, ColorConsole.ANSI_YELLOW, message);
+    private void warn(String category, String message) {
+        print("WARN", category, ColorConsole.ANSI_YELLOW, message);
     }
 
-    private void error(String category, String type, String message) {
-        print("ERROR", category, type, ColorConsole.ANSI_RED, message);
+    private void error(String category, String message) {
+        print("ERROR", category, ColorConsole.ANSI_RED, message);
     }
 
-    private void error(String category, String type, String message, Exception e) {
-        error(category, type, message);
+    private void error(String category, String message, Exception e) {
+        error(category, message);
         if (e != null) {
-            print("ERROR", category, type, ColorConsole.ANSI_RED, e.toString());
+            print("ERROR", category, ColorConsole.ANSI_RED, e.toString());
             for (StackTraceElement element : e.getStackTrace()) {
-                print("ERROR", category, type, ColorConsole.ANSI_RED, "\tat " + element);
+                print("ERROR", category, ColorConsole.ANSI_RED, "\tat " + element);
             }
         }
     }

@@ -37,7 +37,7 @@ public class CommandManager extends ListenerAdapter {
                 for (final ICommand command : commands) {
                     if (command.getOptions() == null) {
                         guild.upsertCommand(command.getName(), command.getDescription()).queue();
-                        Logger.getLogger().log(LogType.INFO,"command", "loader", "Команда " + command.getName() + "загружена");
+                        Logger.getLogger().log(LogType.INFO,"command", "Команда " + command.getName() + "загружена");
                     } else {
                         guild.upsertCommand(command.getName(), command.getDescription()).addOptions((Collection<? extends OptionData>)command.getOptions()).queue();
                     }

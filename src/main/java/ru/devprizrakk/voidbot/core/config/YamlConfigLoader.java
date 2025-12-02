@@ -1,7 +1,6 @@
 package ru.devprizrakk.voidbot.core.config;
 
 import org.yaml.snakeyaml.Yaml;
-import ru.devprizrakk.voidbot.core.Utils;
 import ru.devprizrakk.voidbot.core.system.logger.LogType;
 import ru.devprizrakk.voidbot.core.system.logger.Logger;
 
@@ -14,7 +13,7 @@ public class YamlConfigLoader {
             return new Yaml().load(inputStream);
         } catch (IOException e) {
             Logger.getLogger().log(LogType.ERROR, "config", "load", "Ошибка загрузки конфигурационного файла", new RuntimeException("Failed to load YAML", e));
-            Logger.getLogger().log(LogType.ERROR, "config", "load", "Дальнейшая работа бота не возможна!");
+            Logger.getLogger().log(LogType.ERROR, "config", "Дальнейшая работа бота не возможна!");
             System.exit(500);
             return null;
         }
