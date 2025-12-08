@@ -27,7 +27,7 @@ public class LoggerManager {
         // Форматированная строка категории и типа с фиксированной шириной
         String categoryPadded = padRight(category, CATEGORY_WIDTH);
 
-        String header = String.format("[%s %s%s%s] [%s | %s] ",
+        String header = String.format("[%s %s%s%s] [%s] ",
                 timestamp,
                 colorCode,
                 level,
