@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import ru.devprizrakk.voidbot.commands.discord.loader.BaseCommand;
-import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.BaseCommand;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.CommandCategory;
 
 import java.awt.*;
 import java.sql.SQLException;

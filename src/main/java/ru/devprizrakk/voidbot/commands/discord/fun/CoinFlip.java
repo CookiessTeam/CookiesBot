@@ -1,8 +1,8 @@
 package ru.devprizrakk.voidbot.commands.discord.fun;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import ru.devprizrakk.voidbot.commands.discord.loader.BaseCommand;
-import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.BaseCommand;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.CommandCategory;
 
 import java.util.List;
 import java.util.Random;

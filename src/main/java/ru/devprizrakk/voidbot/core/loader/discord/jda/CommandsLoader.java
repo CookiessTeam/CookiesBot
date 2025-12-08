@@ -2,7 +2,7 @@ package ru.devprizrakk.voidbot.core.loader.discord.jda;
 
 import net.dv8tion.jda.api.JDA;
 import ru.devprizrakk.voidbot.commands.discord.fun.*;
-import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.CommandManager;
 import ru.devprizrakk.voidbot.commands.discord.system.help.Help;
 import ru.devprizrakk.voidbot.commands.discord.system.help.HelpSelectelMenu;
 import ru.devprizrakk.voidbot.core.Utils;

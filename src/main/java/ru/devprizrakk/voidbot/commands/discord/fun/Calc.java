@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import ru.devprizrakk.voidbot.commands.discord.loader.BaseCommand;
-import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.BaseCommand;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.CommandCategory;
 import ru.devprizrakk.voidbot.core.system.logger.LogType;
 import ru.devprizrakk.voidbot.core.system.logger.Logger;
 

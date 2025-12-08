@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.discord.loader;
+package ru.devprizrakk.voidbot.core.loader.discord.loader;
 
 public enum CommandCategory {
     FUN,

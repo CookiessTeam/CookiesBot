@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.discord.loader;
+package ru.devprizrakk.voidbot.core.loader.discord.loader;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import ru.devprizrakk.voidbot.core.Utils;

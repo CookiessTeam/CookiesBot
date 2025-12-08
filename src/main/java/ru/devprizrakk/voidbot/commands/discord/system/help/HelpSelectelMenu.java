@@ -8,9 +8,9 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import ru.devprizrakk.voidbot.commands.discord.loader.CommandCategory;
-import ru.devprizrakk.voidbot.commands.discord.loader.CommandManager;
-import ru.devprizrakk.voidbot.commands.discord.loader.ICommand;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.CommandCategory;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.CommandManager;
+import ru.devprizrakk.voidbot.core.loader.discord.loader.ICommand;
 import ru.devprizrakk.voidbot.core.Utils;
 
 import java.awt.*;
