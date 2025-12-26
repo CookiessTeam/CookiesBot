@@ -1,9 +1,6 @@
 package ru.devprizrakk.voidbot.utils;
 
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
-import ru.devprizrakk.voidbot.core.config.ConfigManager;
-import ru.devprizrakk.voidbot.core.system.applicationinfo.ApplicationInfo;
-import ru.devprizrakk.voidbot.core.system.lang.LangHelper;
 import ru.devprizrakk.voidbot.config.ConfigManager;
 import ru.devprizrakk.voidbot.utils.applicationinfo.ApplicationInfo;
 import ru.devprizrakk.voidbot.language.LangHelper;
@@ -24,7 +21,5 @@ public class Utils {
         return applicationInfo;
     }
 
-    public static ErrorMessage getErrorMessage(IReplyCallback event) {
-        return new ErrorMessage(event);
-    }
+
 }

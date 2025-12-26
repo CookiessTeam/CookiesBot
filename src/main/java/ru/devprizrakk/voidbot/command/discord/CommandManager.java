@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import ru.devprizrakk.voidbot.core.Utils;
-import ru.devprizrakk.voidbot.core.system.logger.LogType;
-import ru.devprizrakk.voidbot.core.system.logger.Logger;
+import ru.devprizrakk.voidbot.exceptions.discord.NoPermissionErrorEmbedFactory;
 import ru.devprizrakk.voidbot.utils.Utils;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
@@ -99,7 +97,7 @@ public class CommandManager extends ListenerAdapter {
             return true;  // Если прав не требуется
         }
         if (!event.getMember().hasPermission(requiredPermissions)) {
-            event.replyEmbeds(Utils.getErrorMessage(event).noPermissionExtension(requiredPermissions.toString()).build()).setEphemeral(true).queue();
+            event.replyEmbeds(new NoPermissionErrorEmbedFactory(event).noPermission(requiredPermissions.toString()).build()).setEphemeral(true).queue();
             return false;
         }
         return true;

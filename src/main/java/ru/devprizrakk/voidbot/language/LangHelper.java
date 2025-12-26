@@ -1,9 +1,7 @@
-package ru.devprizrakk.voidbot.core.system.lang;
+package ru.devprizrakk.voidbot.language;
 
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
-import ru.devprizrakk.voidbot.core.Utils;
-import ru.devprizrakk.voidbot.core.system.applicationinfo.ApplicationInfo;
-import ru.devprizrakk.voidbot.core.system.applicationinfo.Module;
+import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.utils.Utils;
 import ru.devprizrakk.voidbot.utils.applicationinfo.ApplicationInfo;
 import ru.devprizrakk.voidbot.utils.applicationinfo.Module;
@@ -45,7 +43,7 @@ public class LangHelper {
         if (!(message == null || message.startsWith("§cMissing key") || message.startsWith("§c[No language loaded]"))) {
             return formatter(message);
         } else {
-            event.replyEmbeds(Utils.getErrorMessage(event).wrongError("Ключ/файл локализации не найден!").build()).queue();
+            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("Ключ/файл локализации не найден!").build()).queue();
             return null;
         }
     }
