@@ -1,7 +1,7 @@
 package ru.devprizrakk.voidbot;
 
-import ru.devprizrakk.voidbot.core.system.logger.LogType;
-import ru.devprizrakk.voidbot.core.system.logger.Logger;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

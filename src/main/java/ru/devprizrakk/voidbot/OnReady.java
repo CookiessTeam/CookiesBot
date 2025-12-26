@@ -2,8 +2,8 @@ package ru.devprizrakk.voidbot;
 
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import ru.devprizrakk.voidbot.core.system.logger.LogType;
-import ru.devprizrakk.voidbot.core.system.logger.Logger;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
 
 
 public class OnReady extends ListenerAdapter {
