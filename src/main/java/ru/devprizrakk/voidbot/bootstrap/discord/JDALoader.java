@@ -9,10 +9,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import ru.devprizrakk.voidbot.core.Utils;
-import ru.devprizrakk.voidbot.core.system.logger.LogType;
-import ru.devprizrakk.voidbot.core.system.logger.Logger;
 import ru.devprizrakk.voidbot.OnReady;
+import ru.devprizrakk.voidbot.events.EventManager;
+import ru.devprizrakk.voidbot.utils.Utils;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 
@@ -47,8 +46,13 @@ public class JDALoader extends Utils {
             Logger.getLogger().log(LogType.ERROR,"loader", "Другая ошибка", e);
             System.exit(1);
         }
-        new EventsLoader(jda);
-        new CommandsLoader(jda);
 
+        new EventManager(jda);
+        jda.addEventListener(new OnReady());
+        return jda;
+
+    }
+    public JDA getJda() {
+        return jda;
     }
 }

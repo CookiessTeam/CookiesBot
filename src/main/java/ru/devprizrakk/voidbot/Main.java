@@ -14,14 +14,20 @@ import java.io.File;
 public class Main {
     static JDA jda;
     public static void main(String[] args) {
-        /*Init Module*/
-        new LibraryManager().init();
-        // Инициализация логера
         new LoggerLib();
-        // Инициализация локализации
         LangManager.init();
-        // Финальная инициализация API Discord
-        new JDALoader(jda);
+
+        JDALoader jdaLoader = new JDALoader();
+        JDA jda = jdaLoader.init();
+
+        CoreContext context = new CoreContext(jda);
+
+        ModuleRegistry registry = new ModuleRegistry();
+        ModuleLoader loader = new ModuleLoader(registry, context); // см. ниже
+        loader.loadModules(new File("module"));
+        registry.enableAll();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(registry::disableAll));
     }
 
 
