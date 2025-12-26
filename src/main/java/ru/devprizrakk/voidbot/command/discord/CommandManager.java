@@ -20,13 +20,16 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import ru.devprizrakk.voidbot.core.Utils;
 import ru.devprizrakk.voidbot.core.system.logger.LogType;
 import ru.devprizrakk.voidbot.core.system.logger.Logger;
+import ru.devprizrakk.voidbot.utils.Utils;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
 
 public class CommandManager extends ListenerAdapter {
 
     public CommandManager() {
         commands = new ArrayList<ICommand>();
     }
-    public static List<ICommand> commands;
+    public List<ICommand> commands;
 
     private boolean commandsRegistered = false;
 
@@ -74,7 +77,7 @@ public class CommandManager extends ListenerAdapter {
                     command.execute(event);
                 }
                 catch (SQLException e) {
-                    Logger.getLogger().log(LogType.ERROR,"command", "execute", "", e);
+                    Logger.getLogger().log(LogType.ERROR,"command", "", e);
                 }
             }
         }
@@ -91,7 +94,6 @@ public class CommandManager extends ListenerAdapter {
     }
 
     public static boolean hasRequiredPermissions(SlashCommandInteractionEvent event, ICommand command) {
-        String timestamp = getTimestamp();
         List<Permission> requiredPermissions = command.getRequiredPermissions();
         if (requiredPermissions.isEmpty()) {
             return true;  // Если прав не требуется

@@ -43,7 +43,7 @@ public class LangRepositorySync {
             forceSync();
 
         } catch (Exception e) {
-            Logger.getLogger().log(LogType.ERROR,"loader","language",
+            Logger.getLogger().log(LogType.ERROR,"loader",
                     "Ошибка загрузки локализаций из GitHub", e);
         }
     }

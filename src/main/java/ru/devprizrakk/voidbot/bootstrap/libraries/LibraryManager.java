@@ -32,7 +32,7 @@ public class LibraryManager {
 
             Logger.getLogger().log(LogType.INFO,"loader", "Библиотеки подключены!");
         } catch (Exception e) {
-            Logger.getLogger().log(LogType.ERROR,"loader","libraries", "Ошибка!", e);
+            Logger.getLogger().log(LogType.ERROR,"loader", "Ошибка!", e);
             System.exit(1);
         }
     }

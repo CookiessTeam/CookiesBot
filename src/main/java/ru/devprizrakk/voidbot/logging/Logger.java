@@ -6,6 +6,4 @@ public class Logger {
     public static LoggerManager getLogger() {
         return loggerManager;
     }
-    public static void initLoggerLib() {
-    }
 }

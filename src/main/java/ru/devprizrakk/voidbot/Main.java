@@ -2,13 +2,14 @@ package ru.devprizrakk.voidbot;
 
 
 import net.dv8tion.jda.api.JDA;
-import ru.devprizrakk.voidbot.core.loader.discord.jda.JDALoader;
-import ru.devprizrakk.voidbot.core.loader.libraries.LibraryManager;
-import ru.devprizrakk.voidbot.core.system.lang.LangManager;
-import ru.devprizrakk.voidbot.core.system.logger.LoggerLib;
 import ru.devprizrakk.voidbot.bootstrap.discord.JDALoader;
+import ru.devprizrakk.voidbot.bootstrap.libraries.LibraryManager;
+import ru.devprizrakk.voidbot.bootstrap.module.ModuleLoader;
+import ru.devprizrakk.voidbot.bootstrap.module.ModuleRegistry;
 import ru.devprizrakk.voidbot.language.LangManager;
 import ru.devprizrakk.voidbot.logging.LoggerLib;
+
+import java.io.File;
 
 public class Main {
     static JDA jda;

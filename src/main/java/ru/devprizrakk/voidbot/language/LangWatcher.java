@@ -36,7 +36,7 @@ public class LangWatcher {
                 }
 
             } catch (Exception e) {
-                Logger.getLogger().log(LogType.ERROR,"loader","language",
+                Logger.getLogger().log(LogType.ERROR,"loader",
                         "Ошибка в Language Watcher", e);
             }
         }, "LangWatcher").start();

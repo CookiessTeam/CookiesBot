@@ -12,7 +12,7 @@ public class YamlConfigLoader {
         try (InputStream inputStream = new FileInputStream(file)) {
             return new Yaml().load(inputStream);
         } catch (IOException e) {
-            Logger.getLogger().log(LogType.ERROR, "config", "load", "Ошибка загрузки конфигурационного файла", new RuntimeException("Failed to load YAML", e));
+            Logger.getLogger().log(LogType.ERROR, "config", "Ошибка загрузки конфигурационного файла", new RuntimeException("Failed to load YAML", e));
             Logger.getLogger().log(LogType.ERROR, "config", "Дальнейшая работа бота не возможна!");
             System.exit(500);
             return null;
@@ -23,7 +23,7 @@ public class YamlConfigLoader {
         try (FileWriter writer = new FileWriter(file)) {
             new Yaml().dump(data, writer);
         } catch (IOException e) {
-            Logger.getLogger().log(LogType.ERROR, "config", "save", "Ошибка сохранения конфигурационного файла", new RuntimeException("Failed to save YAML", e));
+            Logger.getLogger().log(LogType.ERROR, "config", "Ошибка сохранения конфигурационного файла", new RuntimeException("Failed to save YAML", e));
         }
     }
 }

@@ -48,7 +48,7 @@ public class LoggerManager {
             case ERROR -> error(category, message);
         }
     }
-    public void log(LogType type, String category, String methode, String message, Exception e) {
+    public void log(LogType type, String category, String message, Exception e) {
         switch (type) {
             case INFO -> info(category, message);
             case DEBUG -> debug(category, message);

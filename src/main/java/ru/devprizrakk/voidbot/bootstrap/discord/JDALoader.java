@@ -40,11 +40,11 @@ public class JDALoader extends Utils {
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                     .build();
         } catch (InvalidTokenException e) {
-            Logger.getLogger().log(LogType.ERROR,"loader","jda-main","Неправильный токен доступа", e);
+            Logger.getLogger().log(LogType.ERROR,"loader", "Неправильный токен доступа", e);
             System.exit(1);
         }
         catch (Exception e) {
-            Logger.getLogger().log(LogType.ERROR,"loader","jda-main","Другая ошибка", e);
+            Logger.getLogger().log(LogType.ERROR,"loader", "Другая ошибка", e);
             System.exit(1);
         }
         new EventsLoader(jda);

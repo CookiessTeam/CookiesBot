@@ -63,7 +63,7 @@ public class LangLoader {
                 target.put(newPath.toLowerCase(Locale.ROOT), flat);
 
             } catch (Exception e) {
-                Logger.getLogger().log(LogType.ERROR,"loader","language",
+                Logger.getLogger().log(LogType.ERROR,"loader",
                         "Ошибка загрузки файла " + f.getPath(), e);
             }
         }

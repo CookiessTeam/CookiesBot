@@ -27,11 +27,11 @@ public class ConfigFileProvider extends Utils {
     private void extractDefault(File file) {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(CONFIG_NAME)) {
             if (input == null)
-                Logger.getLogger().log(LogType.ERROR, "config", "init", "Default config.yml not found!", new FileNotFoundException("Default config.yml not found!"));
+                Logger.getLogger().log(LogType.ERROR, "config", "Default config.yml not found!", new FileNotFoundException("Default config.yml not found!"));
 
             Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            Logger.getLogger().log(LogType.ERROR, "config", "init", "Failed to copy default config.yml", e);
+            Logger.getLogger().log(LogType.ERROR, "config", "Failed to copy default config.yml", e);
         }
     }
 }
