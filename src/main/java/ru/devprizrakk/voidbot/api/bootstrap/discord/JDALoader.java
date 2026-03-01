@@ -42,7 +42,6 @@ public class JDALoader extends Utils {
                     .enableCache(CacheFlag.ONLINE_STATUS)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
-                    .build();
                     .awaitReady();
         } catch (InvalidTokenException e) {
             Logger.getLogger().log(LogType.ERROR,"loader", "Неправильный токен доступа", e);
