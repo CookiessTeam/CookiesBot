@@ -32,6 +32,8 @@ other:
   kawaii-api:
     enable: true
     token: ""
+  youtube-api:
+    token: ""
   minecraft:
     enable: true
     websocket-api: "ws://127.0.0.1:8765"

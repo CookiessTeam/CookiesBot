@@ -7,10 +7,10 @@ import ru.devprizrakk.voidbot.api.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.api.language.LangManager;
 import ru.devprizrakk.voidbot.api.logging.LoggerLib;
 import ru.devprizrakk.voidbot.module.fun.FunMain;
+import ru.devprizrakk.voidbot.module.music.MusicMain;
 import ru.devprizrakk.voidbot.module.server.ServerMain;
 
 public class Main {
-    static JDA jda;
     public static void main(String[] args) {
         new LoggerLib();
         LangManager.init();
@@ -24,6 +24,7 @@ public class Main {
 
     }
     public static void onLoad(CoreContext coreContext) {
+        MusicMain.onLoad(coreContext, JDALoader.getLavalinkManager().getLavalinkClient());
         ServerMain.onLoad(coreContext);
         FunMain.onLoad(coreContext);
     }
