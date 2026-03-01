@@ -10,6 +10,10 @@ import ru.devprizrakk.voidbot.language.LangManager;
 import ru.devprizrakk.voidbot.logging.LoggerLib;
 
 import java.io.File;
+import ru.devprizrakk.voidbot.api.CoreContext;
+import ru.devprizrakk.voidbot.api.bootstrap.discord.JDALoader;
+import ru.devprizrakk.voidbot.api.language.LangManager;
+import ru.devprizrakk.voidbot.api.logging.LoggerLib;
 
 public class Main {
     static JDA jda;
