@@ -2,7 +2,7 @@ package ru.devprizrakk.voidbot.api.utils.applicationinfo;
 public enum Module {
     BOT("Bot","2.0.0-beta.02", "Основной модуль"),
     FUN_CALC_ENGINE("Calc Engine","0.2", "Калькулятор"),
-    LIB_JDA("Java Discord Api","6.1.0", "Библиотека дискорд"),
+    LIB_JDA("Java Discord Api","6.3.1", "Библиотека дискорд"),
     JAVA("Java","17", "Язык программирования"),
     GITHUB_API("Github Api","1.101","Библиотека для упрощенного доступа к API github"),
     LAVALINK_CLIENT("LavaLink Client","3.2.0", "Для подключению и работы с LavaLink Play"),
