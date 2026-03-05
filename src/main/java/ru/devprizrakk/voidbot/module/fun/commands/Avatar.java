@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 
 
 import java.util.List;
@@ -20,12 +21,21 @@ public class Avatar extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/avatar.yml", "avatar.description.command");
+        return getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Fun.Avatar.FILE,
+                LangMessage.Commands.Fun.Avatar.Description.COMMAND
+        );
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale("command/fun/avatar.yml", "avatar.description.option.user"), false));
+        return List.of(
+                new OptionData(OptionType.USER,
+                        "user",
+                        getLangManager(event).getInfoLocale(
+                                LangMessage.Commands.Fun.Avatar.FILE,
+                                LangMessage.Commands.Fun.Avatar.Description.Option.USER),
+                        false));
     }
 
     @Override
@@ -44,25 +54,41 @@ public class Avatar extends BaseCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         if (event.getOption("name") == null) {
             embedBuilder.setTitle(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-no-mentioned.title")
-                            .replace("%user-author%", user.getEffectiveName()));
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Avatar.FILE,
+                            LangMessage.Commands.Fun.Avatar.EmbedNoMentioned.TITLE
+                            ).replace("%user-author%", user.getEffectiveName()));
             embedBuilder.setDescription(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-no-mentioned.description")
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Avatar.FILE,
+                            LangMessage.Commands.Fun.Avatar.EmbedNoMentioned.DESCRIPTION
+                    )
             );
             embedBuilder.setImage(user.getAvatarUrl());
             embedBuilder.setFooter(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-no-mentioned.footer")
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Avatar.FILE,
+                            LangMessage.Commands.Fun.Avatar.EmbedNoMentioned.FOOTER
+                    )
             );
         } else {
             embedBuilder.setTitle(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-mentioned.title")
-                            .replace("%user-author%", user.getEffectiveName()));
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Avatar.FILE,
+                                    LangMessage.Commands.Fun.Avatar.EmbedMentioned.TITLE
+                            ).replace("%user-author%", user.getEffectiveName()));
             embedBuilder.setDescription(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-mentioned.description")
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Avatar.FILE,
+                            LangMessage.Commands.Fun.Avatar.EmbedMentioned.DESCRIPTION
+                    )
             );
             embedBuilder.setImage(user.getAvatarUrl());
             embedBuilder.setFooter(
-                    getLangManager(event).getDescriptionLocale("command/fun/avatar.yml", "avatar.embed-mentioned.footer")
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Avatar.FILE,
+                            LangMessage.Commands.Fun.Avatar.EmbedMentioned.FOOTER
+                    )
             );
         }
         event.replyEmbeds(embedBuilder.build()).queue();

@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 
 
 import java.util.List;
@@ -22,15 +23,15 @@ public class RPS extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/rps.yml" , "rps.description.command");
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE , "rps.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.STRING, "choice", getLangManager(event).getInfoLocale("command/fun/rps.yml", "rps.description.option.choice"), true)
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/rps.yml", "rps.type.rock"),"rock")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/rps.yml", "rps.type.paper"),"paper")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/rps.yml", "rps.type.scissors"),"scissors")
+        return List.of(new OptionData(OptionType.STRING, "choice", getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Description.Option.CHOICE), true)
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK),"rock")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER),"paper")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS),"scissors")
         );
     }
 
@@ -47,9 +48,9 @@ public class RPS extends BaseCommand {
     @Override
     public void onExecute() {
         String[] options = new String[3];
-        options[0] = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.rock");
-        options[1] = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.paper");
-        options[2] = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.scissors");
+        options[0] = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
+        options[1] = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
+        options[2] = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
         String botChoice = options[random.nextInt(options.length)];
         String userChoice = Objects.requireNonNull(event.getOption("choice")).getAsString().toLowerCase();
 
@@ -57,47 +58,47 @@ public class RPS extends BaseCommand {
         String userChoiceLocal;
 
         switch (botChoice) {
-            case "rock" -> botChoiceLocal = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.rock");
-            case "paper" -> botChoiceLocal = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.paper");
-            case "scissors" -> botChoiceLocal = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.scissors");
+            case "rock" -> botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
+            case "paper" -> botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
+            case "scissors" -> botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
             default -> botChoiceLocal = "undefiled";
         }
         switch (userChoice) {
-            case "rock" -> userChoiceLocal = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.rock");
-            case "paper" -> userChoiceLocal = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.paper");
-            case "scissors" -> userChoiceLocal = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.type.scissors");
+            case "rock" -> userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
+            case "paper" -> userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
+            case "scissors" -> userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
             default -> userChoiceLocal = "undefiled";
         }
         if (userChoiceLocal.equals("undefied")) {
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle(getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "system.wrong-error.embed.title"));
-            embed.setDescription(getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "system.wrong-error.embed.description")
-                    .replace("%error-code%", getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.error.undefied-choice")));
-            embed.setFooter(getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "system.wrong-error.embed.footer"));
+            embed.setTitle(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "system.wrong-error.embed.title"));
+            embed.setDescription(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "system.wrong-error.embed.description")
+                    .replace("%error-code%", getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "rps.error.undefied-choice")));
+            embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "system.wrong-error.embed.footer"));
             event.replyEmbeds(embed.build()).queue();
             return;
         }
 
         String result;
-        if (userChoice.equals(botChoice)) result = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.status.draw");
+        if (userChoice.equals(botChoice)) result = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Status.DRAW);
         else if ((userChoice.equals("rock") && botChoice.equals("scissors")) ||
                 (userChoice.equals("scissors") && botChoice.equals("paper")) ||
                 (userChoice.equals("paper") && botChoice.equals("rock")))
-            result = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.status.win");
+            result = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Status.WIN);
         else
-            result = getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.status.lose");
+            result = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Status.LOSE);
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(
-                getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.embed.title")
+                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Embed.TITLE)
         );
         embedBuilder.setDescription(
-                getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.embed.description")
+                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Embed.DESCRIPTION)
                         .replace("%user-choice%", userChoiceLocal)
                         .replace("%bot-choice%", botChoiceLocal)
                         .replace("%result%", result)
         );
-        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale("command/fun/rps.yml", "rps.embed.footer"));
+        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Embed.FOOTER));
         event.replyEmbeds(embedBuilder.build()).queue();
     }
 }

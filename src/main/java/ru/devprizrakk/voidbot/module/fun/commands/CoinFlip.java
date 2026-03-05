@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 
 
 import java.util.List;
@@ -20,7 +21,10 @@ public class CoinFlip extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/coinflip.yml", "coinflip.description.command");
+        return getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Fun.CoinFlip.FILE,
+                LangMessage.Commands.Fun.CoinFlip.Description.COMMAND
+        );
     }
 
     @Override
@@ -44,21 +48,35 @@ public class CoinFlip extends BaseCommand {
         boolean nextBoolean = random.nextBoolean();
         String result;
         if (nextBoolean) {
-            result = getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.flip.eagle");
+            result = getLangManager(event).getDescriptionLocale(
+                    LangMessage.Commands.Fun.CoinFlip.FILE,
+                    LangMessage.Commands.Fun.CoinFlip.Flip.EAGLE
+            );
         } else {
-            result = getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.flip.tails");
+            result = getLangManager(event).getDescriptionLocale(
+                    LangMessage.Commands.Fun.CoinFlip.FILE,
+                    LangMessage.Commands.Fun.CoinFlip.Flip.TAILS
+            );
         }
-        event.reply("Результат подбрасывания: **" + result + "**").queue();
+//        event.reply("Результат подбрасывания: **" + result + "**").queue();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(
-                getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.embed.title")
+                getLangManager(event).getDescriptionLocale(
+                        LangMessage.Commands.Fun.CoinFlip.FILE,
+                        LangMessage.Commands.Fun.CoinFlip.Embed.TITLE
+                )
         );
         embedBuilder.setDescription(
-                getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.embed.description")
-                        .replace("%coinflip%", result)
+                getLangManager(event).getDescriptionLocale(
+                        LangMessage.Commands.Fun.CoinFlip.FILE,
+                                LangMessage.Commands.Fun.CoinFlip.Embed.DESCRIPTION
+                        ).replace("%coinflip%", result)
         );
         embedBuilder.setFooter(
-                getLangManager(event).getDescriptionLocale("command/fun/coinflip.yml", "coinflip.embed.footer")
+                getLangManager(event).getDescriptionLocale(
+                        LangMessage.Commands.Fun.CoinFlip.FILE,
+                        LangMessage.Commands.Fun.CoinFlip.Embed.FOOTER
+                )
         );
         event.replyEmbeds(embedBuilder.build()).queue();
     }

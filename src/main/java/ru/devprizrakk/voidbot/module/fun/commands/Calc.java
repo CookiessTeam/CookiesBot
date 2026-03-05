@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
 import ru.devprizrakk.voidbot.api.exceptions.discord.WrongErrorEmbedFactory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 import ru.devprizrakk.voidbot.api.logging.LogType;
 import ru.devprizrakk.voidbot.api.logging.Logger;
 
@@ -32,12 +33,12 @@ public class Calc extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/calc.yml", "calc.description.command");
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Calc.FILE, "calc.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale("command/fun/calc.yml", "calc.description.option.calc"), true));
+        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Calc.FILE, "calc.description.option.calc"), true));
     }
 
     @Override
@@ -55,14 +56,33 @@ public class Calc extends BaseCommand {
         try {
             double result = evaluate(expression);
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.embed.title"));
-            embed.setDescription(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.embed.description")
-                    .replace("%result%", String.valueOf(result)));
-            embed.setFooter(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.embed.footer"));
+            embed.setTitle(
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Calc.FILE,
+                            LangMessage.Commands.Fun.Calc.Embed.TITLE
+                    ));
+            embed.setDescription(
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Calc.FILE,
+                                    LangMessage.Commands.Fun.Calc.Embed.DESCRIPTION
+                            )
+                            .replace("%result%", String.valueOf(result))
+            );
+            embed.setFooter(
+                    getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Calc.FILE,
+                            LangMessage.Commands.Fun.Calc.Embed.FOOTER
+                    ));
             event.replyEmbeds(embed.build()).queue();
         } catch (Exception e) {
             Logger.getLogger().log(LogType.ERROR,"command", "Error in calculation: ", e);
-            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale("command/fun/calc.yml", "calc.error.wrong")).build()).queue();
+            event.replyEmbeds(
+                    new WrongErrorEmbedFactory(event).wrongError(
+                            getLangManager(event).getDescriptionLocale(
+                                    LangMessage.Commands.Fun.Calc.FILE,
+                                    LangMessage.Commands.Fun.Calc.Error.WRONG
+                            )
+                    ).build()).queue();
         }
     }
     private double evaluate(String expression) {

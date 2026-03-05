@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 
 
 import java.util.List;
@@ -20,7 +21,9 @@ public class Joke extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/joke.yml", "joke.description.command");
+        return getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Description.COMMAND
+        );
     }
 
     @Override
@@ -41,14 +44,19 @@ public class Joke extends BaseCommand {
 
     @Override
     public void onExecute() {
-        int length = random.nextInt(Integer.parseInt(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.joke.length")));
-        String joke = getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.joke." + length);
+        int length = random.nextInt(Integer.parseInt(getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Jokes.LENGTH)));
+        String joke = getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Jokes.JOKE_STRING.replace("%number%", length + ""));
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.embed.title")
+        embedBuilder.setTitle(getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.TITLE)
                 .replace("%number%", length + ""));
-        embedBuilder.setDescription(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.embed.description")
+        embedBuilder.setDescription(getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.DESCRIPTION)
                 .replace("%joke%", joke));
-        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale("command/fun/joke.yml", "joke.embed.footer"));
+        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.FOOTER));
 
         event.replyEmbeds(embedBuilder.build()).queue();
     }

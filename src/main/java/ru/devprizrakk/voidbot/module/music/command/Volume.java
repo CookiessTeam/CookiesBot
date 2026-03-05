@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,13 +25,14 @@ public class Volume extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return "";
+        return getLangManager(event)
+                .getInfoLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Description.COMMAND);
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.INTEGER, "volume", "Название или URL трека", false));
+        options.add(new OptionData(OptionType.INTEGER, "volume", LangMessage.Commands.Music.Volume.Description.Option.VOLUME, false));
         return options;
     }
 
@@ -47,7 +49,7 @@ public class Volume extends BaseCommand {
     @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/volume.yml", "volume.error.no-dm"))
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.NO_DM))
                     .setEphemeral(true)
                     .queue();
             return;
@@ -58,25 +60,25 @@ public class Volume extends BaseCommand {
 
         assert memberVoiceState != null;
         if (!memberVoiceState.inAudioChannel()) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/volume.yml", "volume.error.no-found-voice")).queue();
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.NO_FOUND_VOICE)).queue();
             return;
         }
         int volume;
         if(event.getOption("volume") != null) {
             volume = Objects.requireNonNull(event.getOption("volume")).getAsInt();
             if (volume < 0 || volume > 100) {
-                event.reply(getLangManager(event).getDescriptionLocale("command/music/volume.yml", "volume.error.out-of-range")).setEphemeral(true).queue();
+                event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.OUT_OF_RANGE)).setEphemeral(true).queue();
                 return;
             }
             JDALoader.getLavalinkManager().getLavalinkClient().getOrCreateLink(Objects.requireNonNull(event.getGuild()).getIdLong())
                     .getPlayer()
                     .flatMap((player) -> player.setVolume(volume))
-                    .subscribe((player) -> event.reply(getLangManager(event).getDescriptionLocale("command/music/volume.yml", "volume.message.successful")
+                    .subscribe((player) -> event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Message.SUCCESSFUL)
                             .replace("%set-volume%", String.valueOf(player.getVolume()))).queue());
         } else {
             JDALoader.getLavalinkManager().getLavalinkClient().getOrCreateLink(Objects.requireNonNull(event.getGuild()).getIdLong())
                     .getPlayer()
-                    .subscribe((player) -> event.reply(getLangManager(event).getDescriptionLocale("command/music/volume.yml", "volume.message.info")
+                    .subscribe((player) -> event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Message.INFO)
                             .replace("%get-volume%", String.valueOf(player.getVolume()))).queue());
         }
 

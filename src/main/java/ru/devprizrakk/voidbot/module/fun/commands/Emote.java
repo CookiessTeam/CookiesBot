@@ -11,6 +11,7 @@ import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
 import ru.devprizrakk.voidbot.api.exceptions.discord.DisabledFunctionErrorEmbedFactory;
 import ru.devprizrakk.voidbot.api.exceptions.discord.WrongErrorEmbedFactory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 import ru.devprizrakk.voidbot.api.logging.LogType;
 import ru.devprizrakk.voidbot.api.logging.Logger;
 
@@ -31,41 +32,50 @@ public class Emote extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.description.command");
+        return getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Fun.Emote.FILE,
+                LangMessage.Commands.Fun.Emote.Description.COMMAND
+        );
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "action", getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.description.option.choice"),true)
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.hug"), "hug")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.kiss"), "kiss")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.pat"), "pat")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.slap"), "slap")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.cuddle"), "cuddle")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.baka"), "baka")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.blush"), "blush")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.laugh"), "laugh")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.smile"), "smile")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.love"), "love")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.poke"), "poke")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.highfive"), "highfive")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.happy"), "happy")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.wave"), "wave")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.sleepy"), "sleepy")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.facepalm"), "facepalm")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.dance"), "dance")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.shocked"), "shocked")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.pout"), "pout")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.cry"), "cry")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.wink"), "wink")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.amazing"), "amazing")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.nom"), "nom")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.tickle"), "tickle")
-                .addChoice(getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.type.uwu"), "uwu")
+        options.add(new OptionData(OptionType.STRING, "action", getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Fun.Emote.FILE,
+                LangMessage.Commands.Fun.Emote.Description.Option.CHOICE
+                ), true)
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE,LangMessage.Commands.Fun.Emote.Type.HUG), "hug")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.KISS), "kiss")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.PAT), "pat")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.SLAP), "slap")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.CUDDLE), "cuddle")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.BAKA), "baka")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.BLUSH), "blush")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.LAUGH), "laugh")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.SMILE), "smile")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.LOVE), "love")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.POKE), "poke")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.HIGHFIVE), "highfive")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.HAPPY), "happy")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.WAVE), "wave")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.SLEEPY), "sleepy")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.FACEPALM), "facepalm")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.DANCE), "dance")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.SHOCKED), "shocked")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.POUT), "pout")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.CRY), "cry")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.WINK), "wink")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.AMAZING), "amazing")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.NOM), "nom")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.TICKLE), "tickle")
+                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Type.UWU), "uwu")
 
         );
-        options.add(new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale("command/fun/emote.yml", "emote.description.option.user") , false));
+        options.add(new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Fun.Emote.FILE,
+                LangMessage.Commands.Fun.Emote.Description.Option.USER
+        ), false));
         return options;
     }
 
@@ -78,6 +88,7 @@ public class Emote extends BaseCommand {
     public List<Permission> getRequiredPermissions() {
         return List.of();
     }
+
     private static final Gson gson = new Gson();
 
     @Override
@@ -102,7 +113,7 @@ public class Emote extends BaseCommand {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            Logger.getLogger().log(LogType.ERROR,"command", "", e);
+            Logger.getLogger().log(LogType.ERROR, "command", "", e);
             event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("При опросе Kawaii API произошла!").build()).queue();
             return;
         }
@@ -111,35 +122,51 @@ public class Emote extends BaseCommand {
         //Получаем ссылку
         String gifUrl = json.get("response").getAsString();
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setTitle(getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.embed.title")
+        embed.setTitle(getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Emote.FILE,
+                        LangMessage.Commands.Fun.Emote.Embed.TITLE
+                )
                 .replace("%user-author%", Objects.requireNonNull(event.getMember()).getEffectiveName())
-                .replace("%emote%", getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.type." + action)));
+                .replace("%emote%", getLangManager(event).getDescriptionLocale(
+                        LangMessage.Commands.Fun.Emote.FILE,
+                        LangMessage.Commands.Fun.Emote.Type.BASE_PATH + action)
+                ));
         if (event.getOption("user") != null) {
             assert userMentioned != null;
-            embed.setDescription(getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.embed.description")
-                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.type-mentioned." + action)
+            embed.setDescription(getLangManager(event).getDescriptionLocale(
+                    LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Embed.DESCRIPTION)
+                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.TypeMentioned.BASE_PATH + action)
                             .replace("%user-author%", userAuthor.getEffectiveName())
                             .replace("%user-mentioned%", userMentioned.getEffectiveName())));
         } else {
-            embed.setDescription(getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.embed.description")
-                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.type-not-mentioned." + action)
+            embed.setDescription(getLangManager(event).getDescriptionLocale(
+                    LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Embed.DESCRIPTION)
+                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.TypeNotMentioned.BASE_PATH + action)
                             .replace("%user-author%", userAuthor.getEffectiveName())));
         }
         embed.setDescription(getDescription(userAuthor, userMentioned, action));
-        embed.setFooter(getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.embed.footer"));
+        embed.setFooter(getLangManager(event).getDescriptionLocale(
+                LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Embed.FOOTER));
         embed.setImage(gifUrl);
         event.replyEmbeds(embed.build()).queue();
     }
+
     private String getDescription(User userAuthor, User userMentioned, String action) {
         String description;
         if (userMentioned != null) {
-            description = getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.embed.description")
-                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.type-mentioned." + action)
+            description = getLangManager(event).getDescriptionLocale(
+                    LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Embed.DESCRIPTION)
+                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.TypeMentioned.BASE_PATH + action)
                             .replace("%user-author%", userAuthor.getAsMention())
                             .replace("%user-mentioned%", userMentioned.getAsMention()));
         } else {
-            description = getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.embed.description")
-                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale("command/fun/emote.yml", "emote.type-not-mentioned." + action)
+            description = getLangManager(event).getDescriptionLocale(
+                    LangMessage.Commands.Fun.Emote.FILE, "emote.embed.description")
+                    .replace("%emote-description%", getLangManager(event).getDescriptionLocale(
+                            LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.TypeNotMentioned.BASE_PATH + action)
                             .replace("%user-author%", userAuthor.getAsMention()));
         }
         return description;

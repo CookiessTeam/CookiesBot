@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 import ru.devprizrakk.voidbot.module.music.MusicMain;
 import ru.devprizrakk.voidbot.module.music.lavalink.AudioLoader;
 import ru.devprizrakk.voidbot.module.music.lavalink.VoiceHelper;
@@ -32,13 +33,21 @@ public class Play extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/music/play.yml", "play.description.command");
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Description.COMMAND);
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "song", getLangManager(event).getInfoLocale("command/music/play.yml", "play.description.option.song"), true));
+        options.add(new OptionData(
+                OptionType.STRING,
+                "song",
+                getLangManager(event)
+                        .getInfoLocale(
+                                LangMessage.Commands.Music.Play.FILE,
+                                LangMessage.Commands.Music.Play.Description.Option.SONG),
+                true)
+        );
         return options;
     }
 
@@ -55,7 +64,7 @@ public class Play extends BaseCommand {
     @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/play.yml", "play.no-dm"))
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, "play.no-dm"))
                     .setEphemeral(true)
                     .queue();
             return;
@@ -68,7 +77,7 @@ public class Play extends BaseCommand {
 
         assert memberVoiceState != null;
         if (!memberVoiceState.inAudioChannel()) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/play.yml", "play.error.no-found-voice")
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, "play.error.no-found-voice")
                     .replace("%voiceChannel%", Objects.requireNonNull(memberVoiceState.getChannel()).getAsMention())).queue();
             return;
         }
@@ -84,7 +93,7 @@ public class Play extends BaseCommand {
                 MediaService mediaService = new MediaService();
                 String platforms = mediaService.getAvailablePlatforms().stream().map(item -> "`" + item + "`").collect(Collectors.joining(", "));
                 event.reply(
-                        getLangManager(event).getDescriptionLocale("command/music/play.yml", "play.error.no-support-platform")
+                        getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_SUPPORT_PLATFORM)
                                 .replace("%music-platform-support%", platforms)
                 ).queue();
                 return;
@@ -95,7 +104,7 @@ public class Play extends BaseCommand {
 
         if (!VoiceHelper.connectVoiceOfMember(guild, member)) {
             event.reply(
-                    getLangManager(event).getDescriptionLocale("command/music/play.yml", "play.error.no-found-me")
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_ME)
             ).queue();
         }
 

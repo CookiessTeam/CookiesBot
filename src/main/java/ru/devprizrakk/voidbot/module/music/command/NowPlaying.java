@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 import ru.devprizrakk.voidbot.module.music.lavalink.media.MediaInfo;
 import ru.devprizrakk.voidbot.module.music.lavalink.media.MediaService;
 
@@ -31,7 +32,7 @@ public class NowPlaying extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/music/nowplaying.yml", "now-playing.description.command");
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.NowPlaying.FILE, "now-playing.description.command");
     }
 
     @Override
@@ -52,7 +53,7 @@ public class NowPlaying extends BaseCommand {
     @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.error.no-dm"))
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_DM))
                     .setEphemeral(true)
                     .queue();
             return;
@@ -64,7 +65,7 @@ public class NowPlaying extends BaseCommand {
 
         assert memberVoiceState != null;
         if (!memberVoiceState.inAudioChannel()) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.error.no-found-voice")).queue();
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_VOICE)).queue();
             return;
         }
 
@@ -73,18 +74,25 @@ public class NowPlaying extends BaseCommand {
         final var player = link.getCachedPlayer();
 
         if (player == null) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.error.no-found-player")).queue();
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_PLAYER)).queue();
             return;
         }
 
         final var track = player.getTrack();
         if (track == null) {
-            event.reply(getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.error.no-found-track")).queue();
+            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_TRACK)).queue();
             return;
         }
 
         boolean isPaused = player.getPaused();
-        String playStatus = player.getPaused() ? getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.status.sound.false") : getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.status.sound.true");
+        String playStatus = player.getPaused() ?
+                getLangManager(event).getDescriptionLocale(
+                        LangMessage.Commands.Music.NowPlaying.FILE,
+                        LangMessage.Commands.Music.NowPlaying.Status.Sound.FALSE
+                ) : getLangManager(event).getDescriptionLocale(
+                        LangMessage.Commands.Music.NowPlaying.FILE,
+                LangMessage.Commands.Music.NowPlaying.Status.Sound.TRUE
+        );
 
         MediaService mediaService = new MediaService();
         MediaInfo info = mediaService.get(track.getInfo().getUri());
@@ -98,31 +106,31 @@ public class NowPlaying extends BaseCommand {
         embed.setAuthor(track.getInfo().getAuthor());
         embed.setThumbnail(info.getThumbnail());
 
-        embed.setTitle(getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.title")
+        embed.setTitle(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.TITLE)
                 .replace("%music-play-status%", playStatus)
                 .replace("%music-name%", info.getTitle()), track.getInfo().getUri());
 
 
         if (!track.getInfo().isStream()) {
             embed.setDescription(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.description")
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.DESCRIPTION)
                             .replace("%music-progress-bar%", "\n" + getProgressBar(track.getInfo().getPosition(), track.getInfo().getLength()))
             );
             // time
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.time.video.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.time.video.description").replace("%music-current-time%", formatTime(track.getInfo().getPosition())).replace("%music-max-time%", formatTime(track.getInfo().getLength())),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Time.Video.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Time.Video.DESCRIPTION).replace("%music-current-time%", formatTime(track.getInfo().getPosition())).replace("%music-max-time%", formatTime(track.getInfo().getLength())),
                     true
             );
         } else {
             embed.setDescription(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.description")
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.DESCRIPTION)
                             .replace("%music-progress-bar%", "\n")
             );
             // time
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.time.stream.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.time.stream.description"),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Time.Stream.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Time.Stream.DESCRIPTION),
                     true
             );
         }
@@ -130,8 +138,8 @@ public class NowPlaying extends BaseCommand {
         // Fields author
         if (info.getAuthor() != null && !info.getAuthor().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.author.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.author.description").replace("%music-author%", info.getAuthor()),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Author.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Author.DESCRIPTION).replace("%music-author%", info.getAuthor()),
                     true
             );
 
@@ -139,44 +147,44 @@ public class NowPlaying extends BaseCommand {
         // Views
         if (info.getViewsCount() != null && !info.getViewsCount().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.views.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.views.description").replace("%music-views%", info.getViewsCount()),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Views.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Views.DESCRIPTION).replace("%music-views%", info.getViewsCount()),
                     true
             );
         }
         // Like
         if (info.getLikesCount() != null && !info.getLikesCount().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.like.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.like.description").replace("%music-like-count%", info.getLikesCount()),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Like.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Like.DESCRIPTION).replace("%music-like-count%", info.getLikesCount()),
                     true
             );
         }
         // date-created
         if (info.getCreatedDate() != null && !info.getCreatedDate().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.date-created.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.date-created.description").replace("%music-date-created%", info.getCreatedDate()),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.DateCreated.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.DateCreated.DESCRIPTION).replace("%music-date-created%", info.getCreatedDate()),
                     true
             );
         }
         // link
         if (track.getInfo().getUri() != null && !track.getInfo().getUri().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.link.title"),
-                    getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.link.description").replace("%music-link%", track.getInfo().getUri()),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Link.TITLE),
+                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Link.DESCRIPTION).replace("%music-link%", track.getInfo().getUri()),
                     true
             );
         }
 
         // volume
         embed.addField(
-                getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.volume.title"),
-                getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.fields.volume.description").replace("%music-volume%", volume + ""),
+                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Volume.TITLE),
+                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.Fields.Volume.DESCRIPTION).replace("%music-volume%", volume + ""),
                 true
         );
 
-        embed.setFooter(getLangManager(event).getDescriptionLocale("command/music/nowplaying.yml", "now-playing.embed.footer"));
+        embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.FOOTER));
         return embed;
     }
     private String getProgressBar(long position, long duration) {

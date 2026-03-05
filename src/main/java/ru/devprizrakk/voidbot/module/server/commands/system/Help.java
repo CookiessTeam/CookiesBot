@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.api.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.api.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.api.language.LangMessage;
 
 
 import java.awt.*;
@@ -24,7 +25,7 @@ public class Help extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale("command/system/help.yml", "help.description-command");
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Description.COMMAND);
     }
 
     @Override
@@ -45,20 +46,20 @@ public class Help extends BaseCommand {
     public void onExecute() throws SQLException {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.title"));
-        embed.setDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.description"));
-        embed.setFooter(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.footer"));
+        embed.setTitle(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.TITLE));
+        embed.setDescription(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.DESCRIPTION));
+        embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.FOOTER));
         event.replyEmbeds(embed.build()).addComponents(createSelectMenu(event)).queue();
     }
 
     public static ActionRow createSelectMenu(SlashCommandInteractionEvent event) {
         StringSelectMenu menu = StringSelectMenu.create("helpmenu")
-                .setPlaceholder(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.placeholder"))
-                .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.info.title"), "info")
-                        .withDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.info.description"))
+                .setPlaceholder(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.ActionRow.PLACEHOLDER))
+                .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.ActionRow.Info.TITLE), "info")
+                        .withDescription(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.ActionRow.Info.DESCRIPTION))
                         .withEmoji(Emoji.fromUnicode("ℹ️")))
-                .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.command.title"), "command")
-                        .withDescription(getLangManager(event).getDescriptionLocale("command/system/help.yml", "help.command.embed.actionRow.command.description"))
+                .addOptions(SelectOption.of(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.ActionRow.CommandA.TITLE), "command")
+                        .withDescription(getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Command.Embed.ActionRow.CommandA.DESCRIPTION))
                         .withEmoji(Emoji.fromUnicode("⌨️")))
                 .build();
 
