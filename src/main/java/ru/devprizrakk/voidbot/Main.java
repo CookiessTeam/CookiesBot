@@ -13,20 +13,9 @@ public class Main {
     public static void main(String[] args) {
         new LoggerLib();
         LangManager.init();
-
-        JDALoader jdaLoader = new JDALoader();
-        JDA jda = jdaLoader.init();
-
-        CoreContext context = new CoreContext(jda);
-
-        onLoad(context);
-
+        JDALoader.init();
     }
-    public static void onLoad(CoreContext coreContext) {
-        MusicMain.onLoad(coreContext, JDALoader.getLavalinkManager().getLavalinkClient());
-        ServerMain.onLoad(coreContext);
-        FunMain.onLoad(coreContext);
-    }
+
 
 
 }
