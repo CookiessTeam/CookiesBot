@@ -48,9 +48,9 @@ public class RPS extends BaseCommand {
     @Override
     public void onExecute() {
         String[] options = new String[3];
-        options[0] = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
-        options[1] = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
-        options[2] = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
+        options[0] = "rock";
+        options[1] = "paper";
+        options[2] = "scissors";
         String botChoice = options[random.nextInt(options.length)];
         String userChoice = Objects.requireNonNull(event.getOption("choice")).getAsString().toLowerCase();
 
@@ -61,13 +61,13 @@ public class RPS extends BaseCommand {
             case "rock" -> botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
             case "paper" -> botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
             case "scissors" -> botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
-            default -> botChoiceLocal = "undefiled";
+            default -> botChoiceLocal = "undefined";
         }
         switch (userChoice) {
             case "rock" -> userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
             case "paper" -> userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
             case "scissors" -> userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
-            default -> userChoiceLocal = "undefiled";
+            default -> userChoiceLocal = "undefined";
         }
         if (userChoiceLocal.equals("undefied")) {
             EmbedBuilder embed = new EmbedBuilder();
