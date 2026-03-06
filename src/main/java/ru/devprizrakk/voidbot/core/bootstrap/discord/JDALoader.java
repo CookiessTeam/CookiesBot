@@ -61,7 +61,8 @@ public class JDALoader extends Utils {
         }
         EventManager.setJDA(jda);
         jda.addEventListener(new OnReady());
-        return jda;
+        CommandManager.init(jda, commandRegister);
+        jda.addEventListener(commandRegister);
 
     }
 

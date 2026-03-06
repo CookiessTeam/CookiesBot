@@ -1,20 +1,18 @@
 package ru.devprizrakk.voidbot.commands.fun;
 
 
-import ru.devprizrakk.voidbot.api.CoreContext;
-import ru.devprizrakk.voidbot.api.command.discord.ModuleCommandRegistrar;
-import ru.devprizrakk.voidbot.module.fun.commands.*;
+import ru.devprizrakk.voidbot.commands.fun.commands.*;
+import ru.devprizrakk.voidbot.core.command.discord.CommandRegister;
 
 public class FunMain {
-    public static void onLoad(CoreContext coreContext) {
-        ModuleCommandRegistrar registrar = coreContext.getModuleCommandRegistrar();
+    public static void init(CommandRegister commandRegister) {
 
-        registrar.registerModuleCommand(new Avatar());
-        registrar.registerModuleCommand(new Calc());
-        registrar.registerModuleCommand(new CoinFlip());
-        registrar.registerModuleCommand(new Emote());
-        registrar.registerModuleCommand(new Joke());
-        registrar.registerModuleCommand(new RPS());
+        commandRegister.add(new Avatar());
+        commandRegister.add(new Calc());
+        commandRegister.add(new CoinFlip());
+        commandRegister.add(new Emote());
+        commandRegister.add(new Joke());
+        commandRegister.add(new RPS());
 
     }
 }
