@@ -50,10 +50,10 @@ public class Joke extends BaseCommand {
                 LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Jokes.JOKE_STRING.replace("%number%", length + ""));
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.TITLE)
+                        LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.TITLE)
                 .replace("%number%", length + ""));
         embedBuilder.setDescription(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.DESCRIPTION)
+                        LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.DESCRIPTION)
                 .replace("%joke%", joke));
         embedBuilder.setFooter(getLangManager(event).getDescriptionLocale(
                 LangMessage.Commands.Fun.Joke.FILE, LangMessage.Commands.Fun.Joke.Embed.FOOTER));

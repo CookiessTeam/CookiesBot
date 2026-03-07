@@ -94,7 +94,7 @@ public class Emote extends BaseCommand {
     @Override
     public void onExecute() {
         if (!getConfigManager().getConfig().getBoolean("other.kawaii-api.enable")) {
-            event.replyEmbeds(new DisabledFunctionErrorEmbedFactory(event).disabledFunction().build()).queue();
+            event.replyEmbeds(new DisabledFunctionErrorEmbedFactory(event).disabledFunction().build()).setEphemeral(true).queue();
             return;
         }
         String action = Objects.requireNonNull(event.getOption("action")).getAsString();

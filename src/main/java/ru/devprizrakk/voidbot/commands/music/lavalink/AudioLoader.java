@@ -239,6 +239,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
         embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.FOOTER));
         return embed;
     }
+
     private String getProgressBar(long position, long duration) {
         int totalBars = 19;
         int filledBars = (int) ((position * totalBars) / duration);

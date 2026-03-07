@@ -125,6 +125,8 @@ public class Play extends BaseCommand {
             event.reply(
                     getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_ME)
             ).queue();
+        } else {
+            MusicMain.getOrCreateMusicManager(event.getGuild().getIdLong());
         }
 
         Link link = JDALoader.getLavalinkManager().getLavalinkClient().getOrCreateLink(Objects.requireNonNull(event.getGuild()).getIdLong());

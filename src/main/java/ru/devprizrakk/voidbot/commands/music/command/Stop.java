@@ -22,7 +22,7 @@ public class Stop extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.Stop.FILE,LangMessage.Commands.Music.Stop.Description.COMMAND);
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.Stop.FILE, LangMessage.Commands.Music.Stop.Description.COMMAND);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Stop extends BaseCommand {
                     );
             return;
         }
-        event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Stop.FILE,LangMessage.Commands.Music.Stop.Message.SUCCESSFUL)).queue();
+        event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Stop.FILE, LangMessage.Commands.Music.Stop.Message.SUCCESSFUL)).queue();
         MusicMain.getOrCreateMusicManager(event.getGuild().getIdLong()).stop();
         event.getJDA().getDirectAudioController().disconnect(event.getGuild());
     }

@@ -75,7 +75,7 @@ public class Volume extends BaseCommand {
             return;
         }
         int volume;
-        if(event.getOption("volume") != null) {
+        if (event.getOption("volume") != null) {
             volume = Objects.requireNonNull(event.getOption("volume")).getAsInt();
             if (volume < 0 || volume > 100) {
                 event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.OUT_OF_RANGE)).setEphemeral(true).queue();

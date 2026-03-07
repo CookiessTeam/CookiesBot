@@ -58,7 +58,6 @@ public class CoinFlip extends BaseCommand {
                     LangMessage.Commands.Fun.CoinFlip.Flip.TAILS
             );
         }
-//        event.reply("Результат подбрасывания: **" + result + "**").queue();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(
                 getLangManager(event).getDescriptionLocale(
@@ -69,8 +68,8 @@ public class CoinFlip extends BaseCommand {
         embedBuilder.setDescription(
                 getLangManager(event).getDescriptionLocale(
                         LangMessage.Commands.Fun.CoinFlip.FILE,
-                                LangMessage.Commands.Fun.CoinFlip.Embed.DESCRIPTION
-                        ).replace("%coinflip%", result)
+                        LangMessage.Commands.Fun.CoinFlip.Embed.DESCRIPTION
+                ).replace("%coinflip%", result)
         );
         embedBuilder.setFooter(
                 getLangManager(event).getDescriptionLocale(

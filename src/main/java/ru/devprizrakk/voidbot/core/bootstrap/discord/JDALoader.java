@@ -3,6 +3,7 @@ package ru.devprizrakk.voidbot.core.bootstrap.discord;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.audio.AudioModuleConfig;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -48,6 +49,8 @@ public class JDALoader extends Utils {
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .enableCache(CacheFlag.ONLINE_STATUS, CacheFlag.VOICE_STATE)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    // TODO: Реализовать подключение протокола DAVE
+                    //  .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory())
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_VOICE_STATES)
                     .build();
             //lavalinkManager = new LavalinkManager();
