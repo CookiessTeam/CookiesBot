@@ -114,7 +114,7 @@ public class Emote extends BaseCommand {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             Logger.getLogger().log(LogType.ERROR, "command", "", e);
-            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("При опросе Kawaii API произошла!").build()).queue();
+            new WrongErrorEmbedFactory(event).wrongError("При опросе Kawaii API произошла!");
             return;
         }
         //Парсим JSON через Gson

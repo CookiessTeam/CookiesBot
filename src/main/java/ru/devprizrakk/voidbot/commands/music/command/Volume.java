@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.core.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.core.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
 
 import java.sql.SQLException;
@@ -49,9 +50,13 @@ public class Volume extends BaseCommand {
     @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.NO_DM))
-                    .setEphemeral(true)
-                    .queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.Volume.FILE,
+                                    LangMessage.Commands.Music.Volume.Error.NO_DM
+                            )
+                    );
             return;
         }
         Member member = event.getMember();
@@ -60,7 +65,13 @@ public class Volume extends BaseCommand {
 
         assert memberVoiceState != null;
         if (!memberVoiceState.inAudioChannel()) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.NO_FOUND_VOICE)).queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.Volume.FILE,
+                                    LangMessage.Commands.Music.Volume.Error.NO_FOUND_VOICE
+                            )
+                    );
             return;
         }
         int volume;
@@ -68,6 +79,13 @@ public class Volume extends BaseCommand {
             volume = Objects.requireNonNull(event.getOption("volume")).getAsInt();
             if (volume < 0 || volume > 100) {
                 event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.OUT_OF_RANGE)).setEphemeral(true).queue();
+                new WrongErrorEmbedFactory(event).
+                        wrongError(getLangManager(event).
+                                getDescriptionLocale(
+                                        LangMessage.Commands.Music.Volume.FILE,
+                                        LangMessage.Commands.Music.Volume.Error.OUT_OF_RANGE
+                                )
+                        );
                 return;
             }
             JDALoader.getLavalinkManager().getLavalinkClient().getOrCreateLink(Objects.requireNonNull(event.getGuild()).getIdLong())

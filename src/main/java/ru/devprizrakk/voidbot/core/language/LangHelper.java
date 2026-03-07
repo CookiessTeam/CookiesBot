@@ -41,20 +41,26 @@ public class LangHelper {
     public String getDescriptionLocale(String src, String path) {
         String message = LangManager.get("ru", src, path);
         if (message == null) {
-            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("Ключ локализации пустой! (" + "SRC: " + src + " KEY: " + path + ")").build()).queue();
-            return null;
+            if (new WrongErrorEmbedFactory(event).wrongError("Ключ локализации пустой! (" + "SRC: " + src + " KEY: " + path + ")")) {
+                return null;
+            }
         } else if (message.startsWith("§cMissing file")) {
-            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("Файл локализации не найден! (" + "SRC: " + src + " KEY: " + path + ")").build()).queue();
-            return null;
+            if (new WrongErrorEmbedFactory(event).wrongError("Файл локализации пустой! (" + "SRC: " + src + " KEY: " + path + ")")) {
+                return null;
+            }
+
         } else if (message.startsWith("§cMissing key")) {
-            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("Ключ локализации не найден! (" + "SRC: " + src + " KEY: " + path + ")").build()).queue();
-            return null;
+            if (new WrongErrorEmbedFactory(event).wrongError("Ключ локализации не найден! (" + "SRC: " + src + " KEY: " + path + ")")) {
+                return null;
+            }
         } else if (message.startsWith("§c[No language loaded]")) {
-            event.replyEmbeds(new WrongErrorEmbedFactory(event).wrongError("Локализации не найден! (" + "SRC: " + src + " KEY: " + path + ")").build()).queue();
-            return null;
+            if (new WrongErrorEmbedFactory(event).wrongError("Локализация не найдена! (" + "SRC: " + src + " KEY: " + path + ")")) {
+                return null;
+            }
         } else {
             return formatter(message);
         }
+        return null;
     }
 
     public String getInfoLocale(String src, String path) {

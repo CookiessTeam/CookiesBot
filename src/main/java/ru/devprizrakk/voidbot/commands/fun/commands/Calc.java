@@ -76,13 +76,13 @@ public class Calc extends BaseCommand {
             event.replyEmbeds(embed.build()).queue();
         } catch (Exception e) {
             Logger.getLogger().log(LogType.ERROR,"command", "Error in calculation: ", e);
-            event.replyEmbeds(
-                    new WrongErrorEmbedFactory(event).wrongError(
-                            getLangManager(event).getDescriptionLocale(
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
                                     LangMessage.Commands.Fun.Calc.FILE,
                                     LangMessage.Commands.Fun.Calc.Error.WRONG
                             )
-                    ).build()).queue();
+                    );
         }
     }
     private double evaluate(String expression) {

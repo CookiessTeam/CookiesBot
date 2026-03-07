@@ -9,7 +9,7 @@ public class WrongErrorEmbedFactory extends BaseErrorEmbedFactory{
         super(event);
     }
 
-    public EmbedBuilder wrongError(String errorCode) {
+    public boolean wrongError(String errorCode) {
         EmbedBuilder embed = createErrorEmbed(
                 "system.wrong-error.embed.title",
                 "system.wrong-error.embed.description",
@@ -20,6 +20,20 @@ public class WrongErrorEmbedFactory extends BaseErrorEmbedFactory{
         description = description.replace("%error-code%", errorCode);
         embed.setDescription(description);
 
-        return embed;
+        event.replyEmbeds(embed.build()).setEphemeral(true).queue();
+        return true;
+    }
+    public void wrongErrorHook(String errorCode) {
+        EmbedBuilder embed = createErrorEmbed(
+                "system.wrong-error.embed.title",
+                "system.wrong-error.embed.description",
+                "system.wrong-error.embed.footer"
+        );
+
+        String description = embed.getDescriptionBuilder().toString();
+        description = description.replace("%error-code%", errorCode);
+        embed.setDescription(description);
+
+        event.getHook().sendMessageEmbeds(embed.build()).setEphemeral(true).queue();
     }
 }

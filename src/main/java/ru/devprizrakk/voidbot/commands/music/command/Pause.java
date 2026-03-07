@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.core.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.core.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
 
 import java.sql.SQLException;
@@ -44,9 +45,13 @@ public class Pause extends BaseCommand {
     @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Pause.FILE, LangMessage.Commands.Music.Pause.Error.NO_DM))
-                    .setEphemeral(true)
-                    .queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.Pause.FILE,
+                                    LangMessage.Commands.Music.Pause.Error.NO_DM
+                            )
+                    );
             return;
         }
         Member member = event.getMember();
@@ -55,7 +60,13 @@ public class Pause extends BaseCommand {
 
         assert memberVoiceState != null;
         if (!memberVoiceState.inAudioChannel()) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Pause.FILE, LangMessage.Commands.Music.Pause.Error.OTHER)).queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.Pause.FILE,
+                                    LangMessage.Commands.Music.Pause.Error.OTHER
+                            )
+                    );
             return;
         }
 

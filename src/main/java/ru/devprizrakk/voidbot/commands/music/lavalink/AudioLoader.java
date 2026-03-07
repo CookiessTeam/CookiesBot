@@ -57,7 +57,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
     public void onSearchResultLoaded(@NotNull SearchResult result) {
         List<Track> tracks = result.getTracks();
         if (tracks.isEmpty()) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_QUEUE)).queue();
+            new WrongErrorEmbedFactory(event).wrongErrorHook(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_QUEUE));
             return;
         }
         Track firstTrack = tracks.get(0);
@@ -67,14 +67,18 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
 
     @Override
     public void noMatches() {
-        event.getHook().sendMessage(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_MATCHES)).queue();
+        new WrongErrorEmbedFactory(event)
+                .wrongErrorHook(getLangManager(event)
+                        .getDescriptionLocale(
+                                LangMessage.Commands.Music.Play.FILE,
+                                LangMessage.Commands.Music.Play.Error.NO_MATCHES
+                        ));
     }
 
     @Override
     public void loadFailed(@NotNull LoadFailed result) {
-        event.getHook().sendMessageEmbeds(new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.OTHER)
-                .replace("%error-code%", result.getException().getMessage())).build()).queue();
-
+        new WrongErrorEmbedFactory(event).wrongErrorHook(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.OTHER)
+                .replace("%error-code%", result.getException().getMessage()));
     }
 
     private void sendTrackEmbed(SlashCommandInteractionEvent event, Track track) {
@@ -138,7 +142,6 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
                     });
         }, 5, 5, TimeUnit.SECONDS);
     }
-
 
 
     private EmbedBuilder buildTrackEmbed(Track track, boolean isPaused, String playStatus, int volume, MediaInfo info) {

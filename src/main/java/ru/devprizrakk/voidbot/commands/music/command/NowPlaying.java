@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.core.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.core.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
+import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
 import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaInfo;
 import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaService;
@@ -53,9 +54,13 @@ public class NowPlaying extends BaseCommand {
     @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_DM))
-                    .setEphemeral(true)
-                    .queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.NowPlaying.FILE,
+                                    LangMessage.Commands.Music.NowPlaying.Error.NO_DM
+                            )
+                    );
             return;
         }
         Guild guild = event.getGuild();
@@ -65,7 +70,13 @@ public class NowPlaying extends BaseCommand {
 
         assert memberVoiceState != null;
         if (!memberVoiceState.inAudioChannel()) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_VOICE)).queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.NowPlaying.FILE,
+                                    LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_VOICE
+                            )
+                    );
             return;
         }
 
@@ -74,13 +85,25 @@ public class NowPlaying extends BaseCommand {
         final var player = link.getCachedPlayer();
 
         if (player == null) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_PLAYER)).queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.NowPlaying.FILE,
+                                    LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_PLAYER
+                            )
+                    );
             return;
         }
 
         final var track = player.getTrack();
         if (track == null) {
-            event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_TRACK)).queue();
+            new WrongErrorEmbedFactory(event).
+                    wrongError(getLangManager(event).
+                            getDescriptionLocale(
+                                    LangMessage.Commands.Music.NowPlaying.FILE,
+                                    LangMessage.Commands.Music.NowPlaying.Error.NO_FOUND_TRACK
+                            )
+                    );
             return;
         }
 
@@ -90,7 +113,7 @@ public class NowPlaying extends BaseCommand {
                         LangMessage.Commands.Music.NowPlaying.FILE,
                         LangMessage.Commands.Music.NowPlaying.Status.Sound.FALSE
                 ) : getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Music.NowPlaying.FILE,
+                LangMessage.Commands.Music.NowPlaying.FILE,
                 LangMessage.Commands.Music.NowPlaying.Status.Sound.TRUE
         );
 
@@ -187,11 +210,13 @@ public class NowPlaying extends BaseCommand {
         embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.NowPlaying.FILE, LangMessage.Commands.Music.NowPlaying.Embed.FOOTER));
         return embed;
     }
+
     private String getProgressBar(long position, long duration) {
         int totalBars = 19;
         int filledBars = (int) ((position * totalBars) / duration);
         return "▬".repeat(filledBars) + "🔵" + "▬".repeat(totalBars - filledBars);
     }
+
     private int getVolume(SlashCommandInteractionEvent event, LavalinkClient lavalinkClient) {
         AtomicInteger volume = new AtomicInteger();
         lavalinkClient.getOrCreateLink(Objects.requireNonNull(event.getGuild()).getIdLong())
@@ -200,6 +225,7 @@ public class NowPlaying extends BaseCommand {
                 .subscribe(player -> volume.set(player.getVolume()));
         return volume.get();
     }
+
     private String formatTime(long millis) {
         long seconds = millis / 1000;
         long minutes = seconds / 60;
