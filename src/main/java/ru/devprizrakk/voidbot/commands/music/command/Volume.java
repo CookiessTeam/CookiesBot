@@ -43,11 +43,6 @@ public class Volume extends BaseCommand {
     }
 
     @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
-    }
-
-    @Override
     public void onExecute() throws SQLException {
         if (event.getChannelType() != ChannelType.TEXT) {
             new WrongErrorEmbedFactory(event).

@@ -33,22 +33,14 @@ public class NowPlaying extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.NowPlaying.FILE, "now-playing.description.command");
-    }
-
-    @Override
-    public List<OptionData> getOptions() {
-        return null;
+        return getLangManager(event).getInfoLocale(
+                LangMessage.Commands.Music.NowPlaying.FILE,
+                LangMessage.Commands.Music.NowPlaying.Description.COMMAND);
     }
 
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.MUSIC;
-    }
-
-    @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
     }
 
     @Override

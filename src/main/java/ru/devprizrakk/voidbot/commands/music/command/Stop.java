@@ -26,18 +26,8 @@ public class Stop extends BaseCommand {
     }
 
     @Override
-    public List<OptionData> getOptions() {
-        return null;
-    }
-
-    @Override
     public CommandCategory getCategory() {
         return CommandCategory.MUSIC;
-    }
-
-    @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
     }
 
     @Override
