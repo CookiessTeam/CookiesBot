@@ -340,9 +340,280 @@ public final class LangMessage {
             public static final class Ban {
                 private Ban() {
                 }
-                //TODO: Реализовать Ban
+
+                public static final String FILE = "command/moderation/ban.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "ban.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String TARGET_USER = "ban.description.option.target-user";
+                        public static final String TIME = "ban.description.option.time";
+                        public static final String REASON = "ban.description.option.reason";
+                    }
+                }
+
+                public static final class Embed {
+                    private Embed() {
+                    }
+
+                    public static final String TITLE = "ban.embed.title";
+                    public static final String DESCRIPTION = "ban.embed.description";
+                    public static final String FOOTER = "ban.embed.footer";
+                }
+
+                public static final class Status {
+                    private Status() {
+                    }
+
+                    public static final String FOREVER = "ban.status.forever";
+                    public static final String TIME = "ban.status.time";
+                }
+
+                public static final class LocalTime {
+                    private LocalTime() {
+                    }
+
+                    public static final String MOUNT = "ban.local-time.mount";
+                    public static final String MOUNTS = "ban.local-time.mounts";
+                    public static final String WEEK = "ban.local-time.week";
+                    public static final String WEEKS = "ban.local-time.weeks";
+                    public static final String DAY = "ban.local-time.day";
+                    public static final String DAYS = "ban.local-time.days";
+                    public static final String HOUR = "ban.local-time.hour";
+                    public static final String HOURS = "ban.local-time.hours";
+                    public static final String MINUTE = "ban.local-time.minute";
+                    public static final String MINUTES = "ban.local-time.minutes";
+                    public static final String SECOND = "ban.local-time.second";
+                    public static final String SECONDS = "ban.local-time.seconds";
+                }
+
+                public static final class Error {
+                    private Error() {
+                    }
+
+                    public static final class LowLevelPermission {
+                        private LowLevelPermission() {
+                        }
+
+                        public static final String AUTHOR = "ban.error.low-level-permission.author";
+                        public static final String BOT = "ban.error.low-level-permission.bot";
+                    }
+
+                    public static final String USER_NOT_FOUND = "ban.error.user-not-found";
+                    public static final String NOT_CORRECTED = "ban.error.not-corrected";
+                    public static final String OTHER = "ban.error.other";
+                }
+            }
+
+            public static final class Kick {
+                private Kick() {
+                }
+
+                public static final String FILE = "command/moderation/kick.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "kick.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String TARGET_USER = "kick.description.option.target-user";
+                        public static final String REASON = "kick.description.option.reason";
+                    }
+                }
+
+                public static final class Embed {
+                    private Embed() {
+                    }
+
+                    public static final String TITLE = "kick.embed.title";
+                    public static final String DESCRIPTION = "kick.embed.description";
+                    public static final String FOOTER = "kick.embed.footer";
+                }
+
+                public static final class Error {
+                    private Error() {
+                    }
+
+                    public static final class LowLevelPermission {
+                        private LowLevelPermission() {
+                        }
+
+                        public static final String AUTHOR = "kick.error.low-level-permission.author";
+                        public static final String BOT = "kick.error.low-level-permission.bot";
+                    }
+
+                    public static final String USER_NOT_FOUND = "kick.error.user-not-found";
+                    public static final String OTHER = "kick.error.other";
+                }
+            }
+
+            public static final class Mute {
+                private Mute() {
+                }
+
+                public static final String FILE = "command/moderation/mute.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "mute.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String TARGET_USER = "mute.description.option.target-user";
+                        public static final String TIME = "mute.description.option.time";
+                        public static final String REASON = "mute.description.option.reason";
+                    }
+                }
+
+                public static final class Embed {
+                    private Embed() {
+                    }
+
+                    public static final String TITLE = "mute.embed.title";
+                    public static final String DESCRIPTION = "mute.embed.description";
+                    public static final String FOOTER = "mute.embed.footer";
+                }
+
+                public static final class Status {
+                    private Status() {
+                    }
+
+                    public static final String FOREVER = "mute.status.forever";
+                    public static final String TIME = "mute.status.time";
+                }
+
+                public static final class LocalTime {
+                    private LocalTime() {
+                    }
+
+                    public static final String MOUNT = "mute.local-time.mount";
+                    public static final String MOUNTS = "mute.local-time.mounts";
+                    public static final String WEEK = "mute.local-time.week";
+                    public static final String WEEKS = "mute.local-time.weeks";
+                    public static final String DAY = "mute.local-time.day";
+                    public static final String DAYS = "mute.local-time.days";
+                    public static final String HOUR = "mute.local-time.hour";
+                    public static final String HOURS = "mute.local-time.hours";
+                    public static final String MINUTE = "mute.local-time.minute";
+                    public static final String MINUTES = "mute.local-time.minutes";
+                    public static final String SECOND = "mute.local-time.second";
+                    public static final String SECONDS = "mute.local-time.seconds";
+                }
+
+                public static final class Error {
+                    private Error() {
+                    }
+
+                    public static final class LowLevelPermission {
+                        private LowLevelPermission() {
+                        }
+
+                        public static final String AUTHOR = "mute.error.low-level-permission.author";
+                        public static final String BOT = "mute.error.low-level-permission.bot";
+                    }
+
+                    public static final String USER_NOT_FOUND = "mute.error.user-not-found";
+                    public static final String NOT_CORRECTED = "mute.error.not-corrected";
+                    public static final String OTHER = "mute.error.other";
+                }
+            }
+
+
+            public static final class Unmute {
+                private Unmute() {
+                }
+
+                public static final String FILE = "command/moderation/unmute.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "unmute.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String TARGET_USER = "unmute.description.option.target-user";
+                    }
+                }
+
+                public static final class Embed {
+                    private Embed() {
+                    }
+
+                    public static final String TITLE = "unmute.embed.title";
+                    public static final String DESCRIPTION = "unmute.embed.description";
+                    public static final String FOOTER = "unmute.embed.footer";
+                }
+
+                public static final class Error {
+                    private Error() {
+                    }
+
+                    public static final String NO_MUTED = "unmute.error.no-muted";
+                    public static final String USER_NOT_FOUND = "unmute.error.user-not-found";
+                    public static final String OTHER = "unmute.error.other";
+                }
+            }
+
+            public static final class Unban {
+                private Unban() {
+                }
+
+                public static final String FILE = "command/moderation/unban.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "unban.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String TARGET_USER = "unban.description.option.target-user";
+                    }
+                }
+
+                public static final class Embed {
+                    private Embed() {
+                    }
+
+                    public static final String TITLE = "unban.embed.title";
+                    public static final String DESCRIPTION = "unban.embed.description";
+                    public static final String FOOTER = "unban.embed.footer";
+                }
+
+                public static final class Error {
+                    private Error() {
+                    }
+
+                    public static final String USER_NOT_FOUND = "unban.error.user-not-found";
+                    public static final String NO_MUTED = "unmute.error.no-muted";
+                    public static final String OTHER = "unban.error.other";
+                }
             }
         }
+
 
         public static final class Music {
             private Music() {
@@ -867,6 +1138,7 @@ public final class LangMessage {
                                     public static final String TITLE = "help.interacts.command.embed.actionRow.fun.title";
                                     public static final String DESCRIPTION = "help.interacts.command.embed.actionRow.fun.description";
                                 }
+
 
                                 public static final class Music {
                                     private Music() {

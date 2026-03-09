@@ -29,17 +29,8 @@ public class Help extends BaseCommand {
     }
 
     @Override
-    public List<OptionData> getOptions() {
-        return null;
-    }
-    @Override
     public CommandCategory getCategory() {
         return CommandCategory.SERVER;
-    }
-
-    @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of(Permission.MESSAGE_SEND);
     }
 
     @Override
