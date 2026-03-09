@@ -2,7 +2,7 @@
 
 system:
   debug:
-    enable: true
+    enable: false
     level: low
 database:
   type: mysql/sqlite
@@ -10,11 +10,15 @@ database:
     login: "user"
     password: "password"
     url-connect: "jdbc:mysql://127.0.0.1:3306/BotDatabase?autoReconnect=true"
+  postgres:
+    login: "user"
+    password: "password"
+    url-connect: "jdbc:postgres://127.0.0.1:3306/BotDatabase?autoReconnect=true"
 bot:
   token: "token"
   activity:
     type: playing
-    text: I like cookie!
+    text: We create our own lives, and the forge of emptiness is the beginning from which we start building our lives!
     streaming-url: https://www.twitch.tv/ender_games__
 lavalink:
   node:
@@ -24,3 +28,13 @@ lavalink:
       password: "WeryGoodPassword1234_Qwerty"
 web-api:
   port: 1111
+other:
+  kawaii-api:
+    enable: true
+    token: ""
+  youtube-api:
+    token: ""
+  minecraft:
+    enable: true
+    websocket-api: "ws://127.0.0.1:8765"
+    channel: 1392542412735385843
