@@ -41,11 +41,6 @@ public class RPS extends BaseCommand {
     }
 
     @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
-    }
-
-    @Override
     public void onExecute() {
         String[] options = new String[3];
         options[0] = "rock";

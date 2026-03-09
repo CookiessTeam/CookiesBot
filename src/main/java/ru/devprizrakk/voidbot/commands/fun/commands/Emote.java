@@ -84,11 +84,6 @@ public class Emote extends BaseCommand {
         return CommandCategory.FUN;
     }
 
-    @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
-    }
-
     private static final Gson gson = new Gson();
 
     @Override

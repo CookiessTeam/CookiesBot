@@ -33,12 +33,12 @@ public class Calc extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Calc.FILE, "calc.description.command");
+        return getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Calc.FILE, LangMessage.Commands.Fun.Calc.Description.COMMAND);
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Calc.FILE, "calc.description.option.calc"), true));
+        return List.of(new OptionData(OptionType.STRING, "calc", getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Calc.FILE, LangMessage.Commands.Fun.Calc.Description.Option.CALC), true));
     }
 
     @Override
@@ -46,10 +46,6 @@ public class Calc extends BaseCommand {
         return null;
     }
 
-    @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
-    }
     @Override
     public void onExecute() throws SQLException {
         String expression = Objects.requireNonNull(event.getOption("calc")).getAsString();

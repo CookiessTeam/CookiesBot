@@ -27,19 +27,8 @@ public class Joke extends BaseCommand {
     }
 
     @Override
-    public List<OptionData> getOptions() {
-        //return List.of();
-        return null;
-    }
-
-    @Override
     public CommandCategory getCategory() {
         return CommandCategory.FUN;
-    }
-
-    @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
     }
 
     @Override

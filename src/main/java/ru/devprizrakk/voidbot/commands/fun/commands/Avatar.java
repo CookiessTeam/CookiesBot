@@ -44,11 +44,6 @@ public class Avatar extends BaseCommand {
     }
 
     @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
-    }
-
-    @Override
     public void onExecute() {
         var user = event.getOption("user") != null ? Objects.requireNonNull(event.getOption("user")).getAsUser() : event.getUser();
         EmbedBuilder embedBuilder = new EmbedBuilder();

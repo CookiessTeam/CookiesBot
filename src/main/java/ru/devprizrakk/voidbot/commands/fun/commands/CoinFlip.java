@@ -39,11 +39,6 @@ public class CoinFlip extends BaseCommand {
     }
 
     @Override
-    public List<Permission> getRequiredPermissions() {
-        return List.of();
-    }
-
-    @Override
     public void onExecute() {
         boolean nextBoolean = random.nextBoolean();
         String result;
