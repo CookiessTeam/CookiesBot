@@ -79,5 +79,4 @@
 - [ ] Документация:
   - ADR по архитектуре, CONTRIBUTING, release-process, command-spec.
 
-## Лицензия
-Выбери и добавь лицензию проекта (например, MIT/Apache-2.0) в отдельный файл `LICENSE`.
+
