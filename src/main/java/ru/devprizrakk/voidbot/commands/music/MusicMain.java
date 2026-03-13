@@ -3,7 +3,7 @@ package ru.devprizrakk.voidbot.commands.music;
 
 import ru.devprizrakk.voidbot.core.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.commands.music.command.*;
-import ru.devprizrakk.voidbot.commands.music.lavalink.GuildMusicManager;
+import ru.devprizrakk.voidbot.core.lavalink.GuildMusicManager;
 import ru.devprizrakk.voidbot.core.command.discord.CommandRegister;
 
 import java.util.HashMap;

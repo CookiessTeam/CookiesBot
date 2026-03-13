@@ -1,7 +1,6 @@
 package ru.devprizrakk.voidbot.commands.music.command;
 
 import dev.arbjerg.lavalink.client.Link;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -14,9 +13,9 @@ import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
 import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
 import ru.devprizrakk.voidbot.commands.music.MusicMain;
-import ru.devprizrakk.voidbot.commands.music.lavalink.AudioLoader;
-import ru.devprizrakk.voidbot.commands.music.lavalink.VoiceHelper;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaService;
+import ru.devprizrakk.voidbot.core.lavalink.AudioLoader;
+import ru.devprizrakk.voidbot.core.lavalink.VoiceHelper;
+import ru.devprizrakk.voidbot.core.lavalink.media.MediaService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

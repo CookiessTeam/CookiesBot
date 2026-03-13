@@ -19,7 +19,8 @@ import ru.devprizrakk.voidbot.core.events.EventManager;
 import ru.devprizrakk.voidbot.core.utils.Utils;
 import ru.devprizrakk.voidbot.core.logging.LogType;
 import ru.devprizrakk.voidbot.core.logging.Logger;
-import ru.devprizrakk.voidbot.commands.music.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.core.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.events.autocreate.ThreadsListeners;
 
 public class JDALoader extends Utils {
     private static JDA jda;
@@ -28,8 +29,8 @@ public class JDALoader extends Utils {
     public static void init() {
         CommandRegister commandRegister = new CommandRegister();
         Logger.getLogger().log(LogType.INFO, "loader", "Подключение API Discord...");
-//        lavalinkManager  = new LavalinkManager();
         Activity activity;
+        //TODO: Продебажить работу активности
         switch (getConfigManager().getConfig().getString("bot.activity.type")) {
             case "streaming" ->
                     activity = Activity.streaming(getConfigManager().getConfig().getString("bot.activity.text"), getConfigManager().getConfig().getString("bot.activity.status.streaming-url"));
@@ -51,11 +52,9 @@ public class JDALoader extends Utils {
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .enableCache(CacheFlag.ONLINE_STATUS, CacheFlag.VOICE_STATE)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    // TODO: Реализовать подключение протокола DAVE
                     .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory(new JDaveSessionFactory()).withAudioSendFactory(new NativeAudioSendFactory()))
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_VOICE_STATES)
                     .build();
-            //lavalinkManager = new LavalinkManager();
 
         } catch (InvalidTokenException e) {
             Logger.getLogger().log(LogType.ERROR, "loader", "Неправильный токен доступа", e);
@@ -66,6 +65,7 @@ public class JDALoader extends Utils {
         }
         EventManager.setJDA(jda);
         jda.addEventListener(new OnReady());
+        jda.addEventListener(new ThreadsListeners());
         CommandManager.init(jda, commandRegister);
         jda.addEventListener(commandRegister);
 

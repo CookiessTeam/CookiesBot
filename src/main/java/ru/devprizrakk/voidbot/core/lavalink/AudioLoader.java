@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.music.lavalink;
+package ru.devprizrakk.voidbot.core.lavalink;
 
 import dev.arbjerg.lavalink.client.AbstractAudioLoadResultHandler;
 import dev.arbjerg.lavalink.client.LavalinkClient;
@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
 import ru.devprizrakk.voidbot.commands.music.MusicMain;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaService;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaInfo;
+import ru.devprizrakk.voidbot.core.lavalink.media.MediaService;
+import ru.devprizrakk.voidbot.core.lavalink.media.MediaInfo;
 
 import java.awt.*;
 import java.util.List;
@@ -60,7 +60,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
             new WrongErrorEmbedFactory(event).wrongErrorHook(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_QUEUE));
             return;
         }
-        Track firstTrack = tracks.get(0);
+        Track firstTrack = tracks.getFirst();
         this.mngr.scheduler.enqueue(firstTrack);
         sendTrackEmbed(event, firstTrack);
     }
@@ -165,8 +165,8 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
             embed.addField(
                     getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Time.Video.TITLE),
                     getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Time.Video.DESCRIPTION)
-                            .replace("%music-current-time%",
-                                    formatTime(track.getInfo().getPosition())).replace("%music-max-time%", formatTime(track.getInfo().getLength())),
+                            .replace("%music-current-time%", formatTime(track.getInfo().getPosition()))
+                            .replace("%music-max-time%", formatTime(track.getInfo().getLength())),
                     true
             );
         } else {

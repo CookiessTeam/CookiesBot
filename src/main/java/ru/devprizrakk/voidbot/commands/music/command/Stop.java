@@ -1,17 +1,14 @@
 package ru.devprizrakk.voidbot.commands.music.command;
 
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.core.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
 import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
 import ru.devprizrakk.voidbot.commands.music.MusicMain;
-import ru.devprizrakk.voidbot.commands.music.lavalink.VoiceHelper;
+import ru.devprizrakk.voidbot.core.lavalink.VoiceHelper;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class Stop extends BaseCommand {
 

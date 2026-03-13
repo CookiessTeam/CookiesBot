@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.music.lavalink.media.platform;
+package ru.devprizrakk.voidbot.core.lavalink.media.platform;
 
 
 import com.google.gson.JsonArray;
@@ -7,9 +7,9 @@ import com.google.gson.JsonParser;
 import ru.devprizrakk.voidbot.core.logging.LogType;
 import ru.devprizrakk.voidbot.core.logging.Logger;
 import ru.devprizrakk.voidbot.core.utils.Utils;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.DefaultMediaInfo;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaInfo;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.MediaPlatform;
+import ru.devprizrakk.voidbot.core.lavalink.media.DefaultMediaInfo;
+import ru.devprizrakk.voidbot.core.lavalink.media.MediaInfo;
+import ru.devprizrakk.voidbot.core.lavalink.media.MediaPlatform;
 
 import java.io.IOException;
 import java.net.URI;

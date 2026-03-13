@@ -19,7 +19,10 @@ bot:
   activity:
     type: playing
     text: We create our own lives, and the forge of emptiness is the beginning from which we start building our lives!
-    streaming-url: https://www.twitch.tv/ender_games__
+    streaming-url: https://www.twitch.tv/sahesha
+channel:
+  news: fill_id_news
+  checklist: fill_id_checklist
 lavalink:
   node:
     1:
@@ -31,8 +34,6 @@ web-api:
 other:
   kawaii-api:
     enable: true
-    token: ""
-  youtube-api:
     token: ""
   minecraft:
     enable: true

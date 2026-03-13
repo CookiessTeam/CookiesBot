@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.music.lavalink;
+package ru.devprizrakk.voidbot.core.lavalink;
 
 import dev.arbjerg.lavalink.client.LavalinkClient;
 import dev.arbjerg.lavalink.client.Link;
