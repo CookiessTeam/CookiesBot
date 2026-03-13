@@ -16,6 +16,9 @@ public class LangHelper {
         this.event = event;
     }
 
+    public LangHelper() {
+    }
+
 
     private String formatter(String message) {
         Matcher matcher = pattern.matcher(message);

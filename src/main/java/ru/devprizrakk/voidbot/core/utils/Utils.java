@@ -13,6 +13,9 @@ public class Utils {
     public static LangHelper getLangManager(IReplyCallback event) {
         return new LangHelper(event);
     }
+    public static LangHelper getLangManager() {
+        return new LangHelper();
+    }
 
     public static ConfigManager getConfigManager() {
         return configManager;

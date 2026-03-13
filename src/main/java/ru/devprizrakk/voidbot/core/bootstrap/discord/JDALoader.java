@@ -51,11 +51,9 @@ public class JDALoader extends Utils {
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .enableCache(CacheFlag.ONLINE_STATUS, CacheFlag.VOICE_STATE)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    // TODO: Реализовать подключение протокола DAVE
                     .setAudioModuleConfig(new AudioModuleConfig().withDaveSessionFactory(new JDaveSessionFactory()).withAudioSendFactory(new NativeAudioSendFactory()))
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_VOICE_STATES)
                     .build();
-            //lavalinkManager = new LavalinkManager();
 
         } catch (InvalidTokenException e) {
             Logger.getLogger().log(LogType.ERROR, "loader", "Неправильный токен доступа", e);

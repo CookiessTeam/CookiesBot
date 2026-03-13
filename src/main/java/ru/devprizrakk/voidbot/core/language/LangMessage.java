@@ -1232,6 +1232,36 @@ public final class LangMessage {
     public static final class Event {
         private Event() {
         }
+        public static final class Threads {
+            private Threads() {
+            }
+            public static final class Checklist {
+                private Checklist() {
+                }
+                public static final String FILE = "event/threads/checklist.yml";
+                public static final String TITLE = "checklist.title";
+                public static final class Embed {
+                    private Embed() {
+                    }
+                    public static final String TITLE = "checklist.embed.title";
+                    public static final String DESCRIPTION = "checklist.embed.description";
+                    public static final String FOOTER = "checklist.embed.footer";
+                }
+            }
+            public static final class News {
+                private News() {
+                }
+                public static final String FILE = "event/threads/news.yml";
+                public static final String TITLE = "news.title";
+                public static final class Embed {
+                    private Embed() {
+                    }
+                    public static final String TITLE = "news.embed.title";
+                    public static final String DESCRIPTION = "news.embed.description";
+                    public static final String FOOTER = "news.embed.footer";
+                }
+            }
+        }
 
         public static final class Level {
             private Level() {
