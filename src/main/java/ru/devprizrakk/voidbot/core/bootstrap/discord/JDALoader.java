@@ -20,6 +20,7 @@ import ru.devprizrakk.voidbot.core.utils.Utils;
 import ru.devprizrakk.voidbot.core.logging.LogType;
 import ru.devprizrakk.voidbot.core.logging.Logger;
 import ru.devprizrakk.voidbot.core.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.events.autocreate.ThreadsListeners;
 
 public class JDALoader extends Utils {
     private static JDA jda;
@@ -64,6 +65,7 @@ public class JDALoader extends Utils {
         }
         EventManager.setJDA(jda);
         jda.addEventListener(new OnReady());
+        jda.addEventListener(new ThreadsListeners());
         CommandManager.init(jda, commandRegister);
         jda.addEventListener(commandRegister);
 
