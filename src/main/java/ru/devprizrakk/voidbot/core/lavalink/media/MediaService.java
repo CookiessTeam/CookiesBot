@@ -1,8 +1,8 @@
-package ru.devprizrakk.voidbot.commands.music.lavalink.media;
+package ru.devprizrakk.voidbot.core.lavalink.media;
 
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.platform.HttpRadioPlatform;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.platform.TwitchPlatform;
-import ru.devprizrakk.voidbot.commands.music.lavalink.media.platform.YoutubePlatform;
+import ru.devprizrakk.voidbot.core.lavalink.media.platform.HttpRadioPlatform;
+import ru.devprizrakk.voidbot.core.lavalink.media.platform.TwitchPlatform;
+import ru.devprizrakk.voidbot.core.lavalink.media.platform.YoutubePlatform;
 
 import java.util.List;
 

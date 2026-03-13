@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.music.lavalink;
+package ru.devprizrakk.voidbot.core.lavalink;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;

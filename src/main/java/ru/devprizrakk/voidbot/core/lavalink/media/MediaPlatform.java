@@ -1,4 +1,4 @@
-package ru.devprizrakk.voidbot.commands.music.lavalink.media;
+package ru.devprizrakk.voidbot.core.lavalink.media;
 
 public interface MediaPlatform {
 

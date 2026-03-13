@@ -19,7 +19,7 @@ import ru.devprizrakk.voidbot.core.events.EventManager;
 import ru.devprizrakk.voidbot.core.utils.Utils;
 import ru.devprizrakk.voidbot.core.logging.LogType;
 import ru.devprizrakk.voidbot.core.logging.Logger;
-import ru.devprizrakk.voidbot.commands.music.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.core.lavalink.LavalinkManager;
 
 public class JDALoader extends Utils {
     private static JDA jda;
@@ -28,8 +28,8 @@ public class JDALoader extends Utils {
     public static void init() {
         CommandRegister commandRegister = new CommandRegister();
         Logger.getLogger().log(LogType.INFO, "loader", "Подключение API Discord...");
-//        lavalinkManager  = new LavalinkManager();
         Activity activity;
+        //TODO: Продебажить работу активности
         switch (getConfigManager().getConfig().getString("bot.activity.type")) {
             case "streaming" ->
                     activity = Activity.streaming(getConfigManager().getConfig().getString("bot.activity.text"), getConfigManager().getConfig().getString("bot.activity.status.streaming-url"));
