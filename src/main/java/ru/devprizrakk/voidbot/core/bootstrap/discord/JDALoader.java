@@ -15,11 +15,14 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import ru.devprizrakk.voidbot.OnReady;
 import ru.devprizrakk.voidbot.commands.CommandManager;
 import ru.devprizrakk.voidbot.core.command.discord.CommandRegister;
-import ru.devprizrakk.voidbot.core.events.EventManager;
 import ru.devprizrakk.voidbot.core.utils.Utils;
 import ru.devprizrakk.voidbot.core.logging.LogType;
 import ru.devprizrakk.voidbot.core.logging.Logger;
 import ru.devprizrakk.voidbot.core.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.events.MemberEventListener;
+import ru.devprizrakk.voidbot.events.MessageDeleteListener;
+import ru.devprizrakk.voidbot.events.MessageEventListener;
+import ru.devprizrakk.voidbot.events.VoiceStateListener;
 import ru.devprizrakk.voidbot.events.autocreate.ThreadsListeners;
 
 public class JDALoader extends Utils {
@@ -63,9 +66,12 @@ public class JDALoader extends Utils {
             Logger.getLogger().log(LogType.ERROR, "loader", "Другая ошибка", e);
             System.exit(1);
         }
-        EventManager.setJDA(jda);
         jda.addEventListener(new OnReady());
         jda.addEventListener(new ThreadsListeners());
+        jda.addEventListener(new MemberEventListener());
+        jda.addEventListener(new VoiceStateListener());
+        jda.addEventListener(new MessageEventListener());
+        jda.addEventListener(new MessageDeleteListener());
         CommandManager.init(jda, commandRegister);
         jda.addEventListener(commandRegister);
 

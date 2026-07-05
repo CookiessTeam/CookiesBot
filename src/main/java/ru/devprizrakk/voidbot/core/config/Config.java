@@ -43,6 +43,50 @@ public class Config {
         return v != null ? v : def;
     }
 
+    /** ------------------------ Long ------------------------ */
+
+    public Long getLong(String key) {
+        Object value = getNested(key);
+        if (value == null) return null;
+
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        }
+
+        try {
+            return Long.parseLong(value.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public long getLong(String key, long def) {
+        Long v = getLong(key);
+        return v != null ? v : def;
+    }
+
+    /** ------------------------ Double ------------------------ */
+
+    public Double getDouble(String key) {
+        Object value = getNested(key);
+        if (value == null) return null;
+
+        if (value instanceof Number) {
+            return ((Number) value).doubleValue();
+        }
+
+        try {
+            return Double.parseDouble(value.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public double getDouble(String key, double def) {
+        Double v = getDouble(key);
+        return v != null ? v : def;
+    }
+
     /** ------------------------ Boolean ------------------------ */
 
     public Boolean getBoolean(String key) {

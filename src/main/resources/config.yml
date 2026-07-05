@@ -4,6 +4,10 @@ system:
   debug:
     enable: false
     level: low
+  runtime:
+    # RELEASE — синхронизировать локализации с GitHub при запуске
+    # dev     — использовать локальные файлы, GitHub не трогать
+    profile: RELEASE
 database:
   type: mysql/sqlite
   mysql:
@@ -23,6 +27,13 @@ bot:
 channel:
   news: fill_id_news
   checklist: fill_id_checklist
+levels:
+  base-xp: 100
+  growth: 1.2
+  xp-per-message: 5
+  xp-per-voice-minute: 5
+  message-cooldown-seconds: 60
+  channel: ""
 lavalink:
   node:
     1:
