@@ -8,6 +8,53 @@ public final class LangMessage {
         private Commands() {
         }
 
+        public static final class Server {
+            private Server() {
+            }
+
+            public static final class Rank {
+                private Rank() {
+                }
+
+                public static final String FILE = "command/server/rank.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "rank.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String USER = "rank.description.option.user";
+                    }
+                }
+            }
+
+            public static final class ServerStats {
+                private ServerStats() {
+                }
+
+                public static final String FILE = "command/server/serverstats.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "serverstats.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String PERIOD = "serverstats.description.option.period";
+                    }
+                }
+            }
+        }
+
         public static final class Fun {
             private Fun() {
             }
@@ -611,6 +658,53 @@ public final class LangMessage {
                     public static final String NO_MUTED = "unmute.error.no-muted";
                     public static final String OTHER = "unban.error.other";
                 }
+            }
+        }
+
+        public static final class Warn {
+            private Warn() {
+            }
+
+            public static final String FILE = "command/moderation/warn.yml";
+
+            public static final class Description {
+                private Description() {
+                }
+
+                public static final String COMMAND = "warn.description.command";
+
+                public static final class Option {
+                    private Option() {
+                    }
+
+                    public static final String TARGET_USER = "warn.description.option.target-user";
+                    public static final String REASON = "warn.description.option.reason";
+                }
+            }
+
+            public static final class Embed {
+                private Embed() {
+                }
+
+                public static final String TITLE = "warn.embed.title";
+                public static final String DESCRIPTION = "warn.embed.description";
+                public static final String FOOTER = "warn.embed.footer";
+            }
+
+            public static final class Error {
+                private Error() {
+                }
+
+                public static final class LowLevelPermission {
+                    private LowLevelPermission() {
+                    }
+
+                    public static final String AUTHOR = "warn.error.low-level-permission.author";
+                    public static final String BOT = "warn.error.low-level-permission.bot";
+                }
+
+                public static final String USER_NOT_FOUND = "warn.error.user-not-found";
+                public static final String OTHER = "warn.error.other";
             }
         }
 
