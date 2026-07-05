@@ -16,6 +16,7 @@ import ru.devprizrakk.voidbot.core.utils.Utils;
 import java.awt.*;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,17 +92,20 @@ public class Mute extends SubCommand {
 
         String rawTime = event.getOption("time", OptionMapping::getAsString);
         if (rawTime == null || rawTime.isBlank()) {
-            String finalReason = reason;
-            targetMember.timeoutFor(Duration.ofSeconds(MAX_TIMEOUT_SECONDS))
-                    .reason(reason)
-                    .queue(
-                            success -> replySuccess(author, targetUser, finalReason, null),
-                            failure -> replyOther("TIMEOUT_FOREVER_FAILED", failure)
-                    );
-            return;
-        }
+String finalReason = reason;
+        targetMember.timeoutFor(Duration.ofSeconds(MAX_TIMEOUT_SECONDS))
+                .reason(reason)
+                .queue(
+                        success -> {
+                            persistMute(targetUser.getIdLong(), author.getIdLong(), finalReason, null);
+                            replySuccess(author, targetUser, finalReason, null);
+                        },
+                        failure -> replyOther("TIMEOUT_FOREVER_FAILED", failure)
+                );
+        return;
+    }
 
-        ParsedDuration duration = parseDuration(rawTime);
+    ParsedDuration duration = parseDuration(rawTime);
         if (duration == null || duration.totalSeconds <= 0) {
             replyError(LangMessage.Commands.Moderation.Mute.Error.NOT_CORRECTED);
             return;
@@ -112,12 +116,28 @@ public class Mute extends SubCommand {
         }
 
         String finalReason = reason;
+        Date expiresAt = new Date(System.currentTimeMillis() + duration.totalSeconds * 1000L);
         targetMember.timeoutFor(Duration.ofSeconds(duration.totalSeconds))
                 .reason(reason)
                 .queue(
-                        success -> replySuccess(author, targetUser, finalReason, duration),
+                        success -> {
+                            persistMute(targetUser.getIdLong(), author.getIdLong(), finalReason, expiresAt);
+                            replySuccess(author, targetUser, finalReason, duration);
+                        },
                         failure -> replyOther("TIMEOUT_FAILED", failure)
                 );
+    }
+
+    private void persistMute(long targetId, long moderatorId, String reason, Date expiresAt) {
+        try {
+            ru.devprizrakk.voidbot.core.database.model.Mute mute =
+                    new ru.devprizrakk.voidbot.core.database.model.Mute(
+                            0, targetId, moderatorId, reason, new Date(), expiresAt);
+            Utils.getDatabaseManager().getRepositoryManager().getMutes().save(mute);
+        } catch (Exception e) {
+            ru.devprizrakk.voidbot.core.logging.Logger.getLogger()
+                    .log(ru.devprizrakk.voidbot.core.logging.LogType.ERROR, "MOD", "Failed to persist mute", e);
+        }
     }
 
     private ParsedDuration parseDuration(String input) {
