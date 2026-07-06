@@ -14,8 +14,13 @@ public class LangManager {
     public static void init() {
         Logger.getLogger().log(LogType.INFO,"loader", "Инициализация языковой системы...");
 
-        // 1 — скачать локализации из GitHub
-        LangRepositorySync.sync();
+        // 1 — скачать локализации из GitHub (только в RELEASE-режиме)
+        if (isRemoteSyncEnabled()) {
+            LangRepositorySync.sync();
+        } else {
+            Logger.getLogger().log(LogType.INFO, "loader",
+                    "Удалённая синхронизация локализаций отключена (runtime=" + getRuntimeProfile() + ")");
+        }
 
         // 2 — загрузить
         LangLoader.loadAllLanguages();
@@ -27,6 +32,20 @@ public class LangManager {
     public static void reload() {
         Logger.getLogger().log(LogType.INFO,"loader", "Перезагрузка локалей...");
         LangLoader.loadAllLanguages();
+    }
+
+    public static String getRuntimeProfile() {
+        return ru.devprizrakk.voidbot.core.utils.Utils.getConfigManager()
+                .getConfig()
+                .getString("system.runtime.profile", "RELEASE");
+    }
+
+    public static boolean isRemoteSyncEnabled() {
+        String profile = getRuntimeProfile();
+        if (profile == null || profile.isBlank()) {
+            return true;
+        }
+        return !profile.equalsIgnoreCase("dev");
     }
 
     public static String get(String lang, String file, String key) {

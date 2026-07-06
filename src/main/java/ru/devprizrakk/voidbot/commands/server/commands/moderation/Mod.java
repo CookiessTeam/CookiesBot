@@ -5,6 +5,7 @@ import ru.devprizrakk.voidbot.commands.server.commands.moderation.subcommands.Ki
 import ru.devprizrakk.voidbot.commands.server.commands.moderation.subcommands.Mute;
 import ru.devprizrakk.voidbot.commands.server.commands.moderation.subcommands.Unban;
 import ru.devprizrakk.voidbot.commands.server.commands.moderation.subcommands.Unmute;
+import ru.devprizrakk.voidbot.commands.server.commands.moderation.subcommands.Warn;
 import ru.devprizrakk.voidbot.core.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
 import ru.devprizrakk.voidbot.core.command.discord.ISubCommand;
@@ -31,7 +32,7 @@ public class Mod extends BaseCommand {
 
     @Override
     public List<ISubCommand> getSubCommand() {
-        return List.of(new Ban(), new Kick(), new Mute(), new Unmute(), new Unban());
+        return List.of(new Ban(), new Kick(), new Mute(), new Unmute(), new Unban(), new Warn());
     }
 
     @Override

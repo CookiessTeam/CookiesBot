@@ -5,6 +5,7 @@ import ru.devprizrakk.voidbot.core.exceptions.discord.WrongErrorEmbedFactory;
 import ru.devprizrakk.voidbot.core.utils.applicationinfo.ApplicationInfo;
 import ru.devprizrakk.voidbot.core.utils.applicationinfo.Module;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,5 +80,16 @@ public class LangHelper {
         } else {
             return formatter(message);
         }
+    }
+
+    public String getInfoLocale(String src, String path, Map<String, String> replacements) {
+        String message = getInfoLocale(src, path);
+        if (replacements == null || replacements.isEmpty()) {
+            return message;
+        }
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            message = message.replace("%" + entry.getKey() + "%", entry.getValue() == null ? "" : entry.getValue());
+        }
+        return message;
     }
 }

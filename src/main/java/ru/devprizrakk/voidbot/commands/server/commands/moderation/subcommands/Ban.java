@@ -14,7 +14,9 @@ import ru.devprizrakk.voidbot.core.language.LangMessage;
 import ru.devprizrakk.voidbot.core.utils.Utils;
 
 import java.awt.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -94,7 +96,10 @@ public class Ban extends SubCommand {
             guild.ban(targetUser, 0, TimeUnit.DAYS)
                     .reason(reason)
                     .queue(
-                            success -> replySuccess(author, targetUser, finalReason, null),
+                            success -> {
+                                persistBan(targetUser.getIdLong(), author.getIdLong(), finalReason, null);
+                                replySuccess(author, targetUser, finalReason, null);
+                            },
                             failure -> replyError(LangMessage.Commands.Moderation.Ban.Error.OTHER)
                     );
             return;
@@ -116,10 +121,24 @@ public class Ban extends SubCommand {
                                     duration.totalSeconds,
                                     TimeUnit.SECONDS
                             );
+                            java.util.Date expiresAt = new java.util.Date(System.currentTimeMillis() + duration.totalSeconds * 1000L);
+                            persistBan(targetUser.getIdLong(), author.getIdLong(), finalReason, expiresAt);
                             replySuccess(author, targetUser, finalReason, duration);
                         },
                         failure -> replyError(LangMessage.Commands.Moderation.Ban.Error.OTHER)
                 );
+    }
+
+    private void persistBan(long targetId, long moderatorId, String reason, java.util.Date expiresAt) {
+        try {
+            ru.devprizrakk.voidbot.core.database.model.Ban ban =
+                    new ru.devprizrakk.voidbot.core.database.model.Ban(
+                            0, targetId, moderatorId, reason, new Date(), expiresAt);
+            Utils.getDatabaseManager().getRepositoryManager().getBans().save(ban);
+        } catch (Exception e) {
+            ru.devprizrakk.voidbot.core.logging.Logger.getLogger()
+                    .log(ru.devprizrakk.voidbot.core.logging.LogType.ERROR, "MOD", "Failed to persist ban", e);
+        }
     }
 
     private ParsedDuration parseDuration(String input) {

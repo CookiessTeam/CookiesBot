@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -119,6 +120,12 @@ public class CommandRegister extends ListenerAdapter {
         for (ICommand command : commands) {
             Logger.getLogger().log(LogType.INFO, "COMMAND_REGISTER", "Успешно зарегистрирована команда: " + command.getName());
             var data = Commands.slash(command.getName(), command.getDescription());
+            if (command.isHidden()) {
+                data.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
+            } else {
+                var dp = command.getDefaultPermissions();
+                if (dp != null) data.setDefaultPermissions(dp);
+            }
             if (command.getSubCommand() != null && !command.getSubCommand().isEmpty()) {
                 for (ISubCommand iSubCommand : command.getSubCommand()) {
                     //subCommands.add(iSubCommand); // так как мы напрямую у CommandManager не уточняем команды на регистрацию мы их получаем когда регистрируем команды
