@@ -37,8 +37,8 @@ public class FeedbackListener extends ListenerAdapter {
         String id = event.getComponentId();
         switch (id) {
             case "fb_idea" -> openIdeaModal(event);
-            case "fb_mod" -> openUserSelect(event, SELECT_MOD, "fb.select.mod.placeholder");
-            case "fb_user" -> openUserSelect(event, SELECT_USER, "fb.select.user.placeholder");
+            case "fb_mod" -> openUserSelect(event, SELECT_MOD, "feedback.select.mod.placeholder");
+            case "fb_user" -> openUserSelect(event, SELECT_USER, "feedback.select.user.placeholder");
             default -> {
             }
         }
@@ -63,7 +63,7 @@ public class FeedbackListener extends ListenerAdapter {
 
         boolean isMod = SELECT_MOD.equals(id);
         String modalId = (isMod ? MODAL_MOD : MODAL_USER) + targetId;
-        Modal modal = Modal.create(modalId, getModalTitle(isMod ? "fb.modal.mod.title" : "fb.modal.user.title"))
+        Modal modal = Modal.create(modalId, getModalTitle(isMod ? "feedback.modal.mod.title" : "feedback.modal.user.title"))
                 .addComponents(buildReasonInput())
                 .build();
         event.replyModal(modal).queue();
@@ -84,7 +84,7 @@ public class FeedbackListener extends ListenerAdapter {
     }
 
     private void openIdeaModal(ButtonInteractionEvent event) {
-        Modal modal = Modal.create(MODAL_IDEA, getModalTitle("fb.modal.idea.title"))
+        Modal modal = Modal.create(MODAL_IDEA, getModalTitle("feedback.modal.idea.title"))
                 .addComponents(buildReasonInput())
                 .build();
         event.replyModal(modal).queue();
@@ -95,7 +95,7 @@ public class FeedbackListener extends ListenerAdapter {
                 .setPlaceholder(getInfo(LangMessage.Commands.System.Feedback.FILE, placeholderKey))
                 .setRequiredRange(1, 1)
                 .build();
-        event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.select.prompt"))
+        event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.select.prompt"))
                 .addComponents(ActionRow.of(menu))
                 .setEphemeral(true)
                 .queue();
@@ -105,46 +105,46 @@ public class FeedbackListener extends ListenerAdapter {
         var mapping = event.getValue("fb_reason");
         String text = mapping == null ? null : mapping.getAsString();
         if (text == null || text.isBlank()) {
-            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.error.empty")).setEphemeral(true).queue();
+            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.error.empty")).setEphemeral(true).queue();
             return;
         }
 
-        EmbedBuilder embed = baseEmbed("fb.embed.idea.title", "fb.embed.idea.description");
-        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.field.author"),
+        EmbedBuilder embed = baseEmbed("feedback.embed.idea.title", "feedback.embed.idea.description");
+        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.field.author"),
                 event.getUser().getAsMention(), true);
-        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.field.content"), text, false);
+        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.field.content"), text, false);
 
         if (!sendToChannel(event.getGuild(), "channel.feedback.ideas", embed)) {
-            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.error.channel")).setEphemeral(true).queue();
+            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.error.channel")).setEphemeral(true).queue();
             return;
         }
-        event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.success")).setEphemeral(true).queue();
+        event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.success")).setEphemeral(true).queue();
     }
 
     private void handleReport(ModalInteractionEvent event, boolean isUserReport, long targetId) {
         var mapping = event.getValue("fb_reason");
         String text = mapping == null ? null : mapping.getAsString();
         if (text == null || text.isBlank()) {
-            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.error.empty")).setEphemeral(true).queue();
+            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.error.empty")).setEphemeral(true).queue();
             return;
         }
 
-        String titleKey = isUserReport ? "fb.embed.user.title" : "fb.embed.mod.title";
-        String descKey = isUserReport ? "fb.embed.user.description" : "fb.embed.mod.description";
+        String titleKey = isUserReport ? "feedback.embed.user.title" : "feedback.embed.mod.title";
+        String descKey = isUserReport ? "feedback.embed.user.description" : "feedback.embed.mod.description";
         String channelKey = isUserReport ? "channel.feedback.user" : "channel.feedback.moderation";
 
         EmbedBuilder embed = baseEmbed(titleKey, descKey);
-        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.field.author"),
+        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.field.author"),
                 event.getUser().getAsMention(), true);
-        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.field.target"),
+        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.field.target"),
                 "<@" + targetId + ">", true);
-        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.field.content"), text, false);
+        embed.addField(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.field.content"), text, false);
 
         if (!sendToChannel(event.getGuild(), channelKey, embed)) {
-            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.error.channel")).setEphemeral(true).queue();
+            event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.error.channel")).setEphemeral(true).queue();
             return;
         }
-        event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "fb.success")).setEphemeral(true).queue();
+        event.reply(getInfo(LangMessage.Commands.System.Feedback.FILE, "feedback.success")).setEphemeral(true).queue();
     }
 
     private EmbedBuilder baseEmbed(String titleKey, String descKey) {
@@ -192,7 +192,12 @@ public class FeedbackListener extends ListenerAdapter {
     }
 
     private String getModalTitle(String key) {
-        return getInfo(LangMessage.Commands.System.Feedback.FILE, key);
+        return clip(getInfo(LangMessage.Commands.System.Feedback.FILE, key), 45);
+    }
+
+    private String clip(String s, int max) {
+        if (s == null || s.length() <= max) return s;
+        return s.substring(0, Math.max(0, max - 1)) + "…";
     }
 
     private String getInfo(String file, String key) {
