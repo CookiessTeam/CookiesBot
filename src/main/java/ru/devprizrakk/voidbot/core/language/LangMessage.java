@@ -53,6 +53,41 @@ public final class LangMessage {
                     }
                 }
             }
+
+            public static final class UserInfo {
+                private UserInfo() {
+                }
+
+                public static final String FILE = "command/server/userinfo.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "userinfo.description.command";
+
+                    public static final class Option {
+                        private Option() {
+                        }
+
+                        public static final String USER = "userinfo.description.option.user";
+                    }
+                }
+            }
+
+            public static final class ServerInfo {
+                private ServerInfo() {
+                }
+
+                public static final String FILE = "command/server/serverinfo.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "serverinfo.description.command";
+                }
+            }
         }
 
         public static final class Fun {
