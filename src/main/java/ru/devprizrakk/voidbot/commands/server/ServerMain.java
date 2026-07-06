@@ -2,6 +2,7 @@ package ru.devprizrakk.voidbot.commands.server;
 
 import net.dv8tion.jda.api.JDA;
 import ru.devprizrakk.voidbot.commands.server.commands.moderation.Mod;
+import ru.devprizrakk.voidbot.commands.server.commands.system.Feedback;
 import ru.devprizrakk.voidbot.commands.server.commands.user.Rank;
 import ru.devprizrakk.voidbot.commands.server.commands.user.ServerInfo;
 import ru.devprizrakk.voidbot.commands.server.commands.user.ServerStats;
@@ -20,6 +21,7 @@ public class ServerMain {
         commandRegister.add(new ServerStats());
         commandRegister.add(new UserInfo());
         commandRegister.add(new ServerInfo());
+        commandRegister.add(new Feedback());
 
         jda.addEventListener(new HelpSelectMenu(commandRegister.commands));
     }

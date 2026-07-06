@@ -1355,6 +1355,38 @@ public final class LangMessage {
                     }
                 }
             }
+
+            public static final class Feedback {
+                private Feedback() {
+                }
+
+                public static final String FILE = "command/system/feedback.yml";
+
+                public static final class Description {
+                    private Description() {
+                    }
+
+                    public static final String COMMAND = "feedback.description.command";
+                }
+
+                public static final class Embed {
+                    private Embed() {
+                    }
+
+                    public static final String TITLE = "feedback.embed.title";
+                    public static final String DESCRIPTION = "feedback.embed.description";
+                    public static final String FOOTER = "feedback.embed.footer";
+                }
+
+                public static final class Button {
+                    private Button() {
+                    }
+
+                    public static final String IDEA = "feedback.button.idea";
+                    public static final String MOD = "feedback.button.mod";
+                    public static final String USER = "feedback.button.user";
+                }
+            }
         }
     }
 

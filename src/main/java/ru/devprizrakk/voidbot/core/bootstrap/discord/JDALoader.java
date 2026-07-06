@@ -19,6 +19,7 @@ import ru.devprizrakk.voidbot.core.utils.Utils;
 import ru.devprizrakk.voidbot.core.logging.LogType;
 import ru.devprizrakk.voidbot.core.logging.Logger;
 import ru.devprizrakk.voidbot.core.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.events.FeedbackListener;
 import ru.devprizrakk.voidbot.events.MemberEventListener;
 import ru.devprizrakk.voidbot.events.MessageDeleteListener;
 import ru.devprizrakk.voidbot.events.MessageEventListener;
@@ -72,6 +73,7 @@ public class JDALoader extends Utils {
         jda.addEventListener(new VoiceStateListener());
         jda.addEventListener(new MessageEventListener());
         jda.addEventListener(new MessageDeleteListener());
+        jda.addEventListener(new FeedbackListener());
         CommandManager.init(jda, commandRegister);
         jda.addEventListener(commandRegister);
 

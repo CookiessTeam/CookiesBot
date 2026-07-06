@@ -27,6 +27,10 @@ bot:
 channel:
   news: fill_id_news
   checklist: fill_id_checklist
+  feedback:
+    ideas: ""
+    moderation: ""
+    user: ""
 levels:
   base-xp: 100
   growth: 1.2
