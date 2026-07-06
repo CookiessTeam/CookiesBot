@@ -1,12 +1,17 @@
 package ru.devprizrakk.voidbot.commands.server.commands.system;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import ru.devprizrakk.voidbot.core.command.discord.BaseCommand;
 import ru.devprizrakk.voidbot.core.command.discord.CommandCategory;
 import ru.devprizrakk.voidbot.core.language.LangMessage;
+import ru.devprizrakk.voidbot.core.logging.LogType;
+import ru.devprizrakk.voidbot.core.logging.Logger;
 
 import java.awt.Color;
 import java.sql.SQLException;
@@ -30,6 +35,21 @@ public class Feedback extends BaseCommand {
     @Override
     public CommandCategory getCategory() {
         return CommandCategory.SYSTEM;
+    }
+
+    @Override
+    public List<Permission> getRequiredPermissions() {
+        return List.of(Permission.MANAGE_SERVER);
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
+    }
+
+    @Override
+    public DefaultMemberPermissions getDefaultPermissions() {
+        return DefaultMemberPermissions.DISABLED;
     }
 
     @Override
@@ -59,8 +79,36 @@ public class Feedback extends BaseCommand {
                                 LangMessage.Commands.System.Feedback.Button.USER))
                 .withEmoji(Emoji.fromUnicode("👤"));
 
-        event.replyEmbeds(embed.build())
+        if (event.getGuild() == null) {
+            event.reply("Команда доступна только на сервере.").setEphemeral(true).queue();
+            return;
+        }
+
+        String channelId = getConfigManager().getConfig().getString("channel.feedback.message", "");
+        if (channelId == null || channelId.isEmpty()) {
+            event.reply(getLangManager(event).getInfoLocale(
+                    LangMessage.Commands.System.Feedback.FILE,
+                    "feedback.notice.no-channel")).setEphemeral(true).queue();
+            return;
+        }
+        TextChannel channel = event.getGuild().getTextChannelById(channelId);
+        if (channel == null) {
+            event.reply(getLangManager(event).getInfoLocale(
+                    LangMessage.Commands.System.Feedback.FILE,
+                    "feedback.notice.no-channel")).setEphemeral(true).queue();
+            return;
+        }
+
+        channel.sendMessageEmbeds(embed.build())
                 .addComponents(ActionRow.of(idea, mod, user))
-                .queue();
+                .queue(
+                        success -> event.reply(getLangManager(event).getInfoLocale(
+                                LangMessage.Commands.System.Feedback.FILE,
+                                "feedback.notice.posted")).setEphemeral(true).queue(),
+                        failure -> {
+                            Logger.getLogger().log(LogType.ERROR, "command", "Failed to post feedback message", failure);
+                            event.reply("Не удалось отправить сообщение обратной связи.").setEphemeral(true).queue();
+                        }
+                );
     }
 }

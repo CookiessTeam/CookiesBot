@@ -28,6 +28,7 @@ channel:
   news: fill_id_news
   checklist: fill_id_checklist
   feedback:
+    message: ""
     ideas: ""
     moderation: ""
     user: ""

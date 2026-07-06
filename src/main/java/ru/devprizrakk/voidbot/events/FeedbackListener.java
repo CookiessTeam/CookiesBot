@@ -129,7 +129,7 @@ public class FeedbackListener extends ListenerAdapter {
         EmbedBuilder embed = baseEmbed("feedback.embed.idea.title", "feedback.embed.idea.description");
         embed.addField(getInfo("feedback.field.author"), event.getUser().getAsMention(), true);
         embed.addField(getInfo("feedback.field.content"), text, false);
-        embed.setFooter(getInfo("feedback.footer.pending"));
+        embed.setFooter(getInfo("feedback.footer-status.pending"));
 
         long authorId = event.getUser().getIdLong();
         if (!sendToChannelWithButtons(event.getGuild(), "channel.feedback.ideas", embed, authorId)) {
@@ -154,7 +154,7 @@ public class FeedbackListener extends ListenerAdapter {
         embed.addField(getInfo("feedback.field.author"), event.getUser().getAsMention(), true);
         embed.addField(getInfo("feedback.field.target"), "<@" + targetId + ">", true);
         embed.addField(getInfo("feedback.field.content"), text, false);
-        embed.setFooter(getInfo("feedback.footer.pending"));
+        embed.setFooter(getInfo("feedback.footer-status.pending"));
 
         long authorId = event.getUser().getIdLong();
         if (!sendToChannelWithButtons(event.getGuild(), channelKey, embed, authorId)) {
@@ -236,7 +236,7 @@ public class FeedbackListener extends ListenerAdapter {
         if (status != null && !status.isEmpty()) {
             embed.setTitle(status);
         }
-        embed.setFooter(getInfo("feedback.footer.decided"));
+        embed.setFooter(getInfo("feedback.footer-status.decided"));
         return embed;
     }
 
