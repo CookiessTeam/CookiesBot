@@ -2,7 +2,6 @@ package ru.devprizrakk.voidbot.events;
 
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildBanEvent;
 import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
@@ -10,10 +9,12 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import ru.devprizrakk.voidbot.core.database.model.MemberEvent;
-import ru.devprizrakk.voidbot.core.database.model.MemberEventType;
-import ru.devprizrakk.voidbot.core.logging.LogType;
-import ru.devprizrakk.voidbot.core.logging.Logger;
+import ru.devprizrakk.voidbot.database.model.MemberEventModel;
+import ru.devprizrakk.voidbot.database.model.MemberEventType;
+import ru.devprizrakk.voidbot.database.model.UserModel;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
+import ru.devprizrakk.voidbot.utils.Utils;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -25,9 +26,9 @@ public class MemberEventListener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         User user = event.getUser();
-        record(event.getUser(), event.getGuild().getIdLong(), MemberEventType.JOIN);
+        record(event.getUser(), MemberEventType.JOIN);
         upsertUserOnJoin(user);
-        StatisticsService.onMemberJoin(user.getIdLong());
+        StatisticsService.onMemberJoin();
     }
 
     @Override
@@ -35,94 +36,95 @@ public class MemberEventListener extends ListenerAdapter {
         User user = event.getUser();
         boolean kicked = detectKick(event);
         MemberEventType type = kicked ? MemberEventType.KICK : MemberEventType.LEAVE;
-        record(user, event.getGuild().getIdLong(), type);
+        record(user, type);
         markUserLeft(user);
-        StatisticsService.onMemberLeft(user.getIdLong());
+        StatisticsService.onMemberLeft();
     }
 
     @Override
     public void onGuildBan(@NotNull GuildBanEvent event) {
         User user = event.getUser();
-        record(user, event.getGuild().getIdLong(), MemberEventType.BAN);
+        record(user, MemberEventType.BAN);
         markUserLeft(user);
-        StatisticsService.onMemberLeft(user.getIdLong());
+        StatisticsService.onMemberLeft();
     }
 
     @Override
     public void onGuildUnban(@NotNull GuildUnbanEvent event) {
-        record(event.getUser(), event.getGuild().getIdLong(), MemberEventType.UNBAN);
+        record(event.getUser(), MemberEventType.UNBAN);
     }
 
     private boolean detectKick(GuildMemberRemoveEvent event) {
         try {
-            List<AuditLogEntry> logs = event.getGuild()
-                    .retrieveAuditLogs().type(ActionType.KICK).limit(5).complete();
+            List<AuditLogEntry> logs = event.getGuild().retrieveAuditLogs().type(ActionType.KICK).limit(5).complete();
             long targetId = event.getUser().getIdLong();
             long now = System.currentTimeMillis();
             for (AuditLogEntry entry : logs) {
-                if (entry.getTargetIdLong() == targetId
-                        && entry.getTimeCreated().toInstant().toEpochMilli() > now - 60_000L) {
+                if (entry.getTargetIdLong() == targetId && entry.getTimeCreated().toInstant().toEpochMilli() > now - 60_000L) {
                     return true;
                 }
             }
-        } catch (Exception ignored) {
+        } catch ( Exception ignored ) {
         }
         return false;
     }
 
-    private void record(User user, long guildId, MemberEventType type) {
+    private void record(User user, MemberEventType type) {
         if (user == null || user.isBot()) {
             return;
         }
+
         try {
-            MemberEvent event = new MemberEvent();
+            MemberEventModel event = new MemberEventModel();
             event.setUserId(user.getIdLong());
             event.setEventType(type);
             event.setCreatedAt(new Timestamp(new Date().getTime()));
-            ru.devprizrakk.voidbot.core.utils.Utils.getDatabaseManager()
-                    .getRepositoryManager().getMemberEvents().save(event);
-        } catch (Exception e) {
+            Utils.getDatabaseManager().getRepositoryManager().getMemberEvents().save(event);
+        } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "EVENTS", "Failed to save member event " + type, e);
         }
     }
 
-    private void upsertUserOnJoin(User user) {
-        if (user == null || user.isBot()) return;
+    private void upsertUserOnJoin(User discordUser) {
+        if (discordUser == null || discordUser.isBot()) return;
+
         try {
-            var repo = ru.devprizrakk.voidbot.core.utils.Utils.getDatabaseManager().getRepositoryManager().getUsers();
-            Optional<ru.devprizrakk.voidbot.core.database.model.User> existing = repo.findByDiscordId(user.getIdLong());
+            var repo = Utils.getDatabaseManager().getRepositoryManager().getUsers();
+            Optional<UserModel> existing = repo.findByDiscordId(discordUser.getIdLong());
             Timestamp now = new Timestamp(new Date().getTime());
+
+            UserModel user;
             if (existing.isPresent()) {
-                var u = existing.get();
-                u.setUsername(user.getEffectiveName());
-                u.setJoinedAt(now);
-                u.setLeftAt(null);
-                repo.save(u);
+                user = existing.get();
+                user.setUsername(discordUser.getEffectiveName());
+                user.setJoinedAt(now);
+                user.setLeftAt(null);
             } else {
-                var u = new ru.devprizrakk.voidbot.core.database.model.User();
-                u.setDiscordId(user.getIdLong());
-                u.setUsername(user.getEffectiveName());
-                u.setJoinedAt(now);
-                u.setLeftAt(null);
-                u.setBot(user.isBot());
-                repo.save(u);
+                user = new UserModel();
+                user.setDiscordId(discordUser.getIdLong());
+                user.setUsername(discordUser.getEffectiveName());
+                user.setJoinedAt(now);
+                user.setLeftAt(null);
+                user.setBot(discordUser.isBot());
             }
-        } catch (Exception e) {
+            repo.save(user);
+        } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "EVENTS", "Failed upsert user on join", e);
         }
     }
 
-    private void markUserLeft(User user) {
-        if (user == null || user.isBot()) return;
+    private void markUserLeft(User discordUser) {
+        if (discordUser == null || discordUser.isBot()) return;
+
         try {
-            var repo = ru.devprizrakk.voidbot.core.utils.Utils.getDatabaseManager().getRepositoryManager().getUsers();
-            Optional<ru.devprizrakk.voidbot.core.database.model.User> existing = repo.findByDiscordId(user.getIdLong());
+            var repo = Utils.getDatabaseManager().getRepositoryManager().getUsers();
+            Optional<UserModel> existing = repo.findByDiscordId(discordUser.getIdLong());
             if (existing.isPresent()) {
-                var u = existing.get();
-                u.setLeftAt(new Timestamp(new Date().getTime()));
-                repo.save(u);
+                var user = existing.get();
+                user.setLeftAt(new Timestamp(new Date().getTime()));
+                repo.save(user);
             }
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "EVENTS", "Failed mark user left", e);
         }
     }

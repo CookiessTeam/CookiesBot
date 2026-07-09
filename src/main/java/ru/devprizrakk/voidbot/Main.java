@@ -1,19 +1,16 @@
 package ru.devprizrakk.voidbot;
 
-
-import ru.devprizrakk.voidbot.core.bootstrap.discord.JDALoader;
-import ru.devprizrakk.voidbot.core.language.LangManager;
-import ru.devprizrakk.voidbot.core.logging.LoggerLib;
-import ru.devprizrakk.voidbot.core.utils.Utils;
+import ru.devprizrakk.voidbot.bootstrap.discord.JDALoader;
+import ru.devprizrakk.voidbot.language.LangManager;
+import ru.devprizrakk.voidbot.logging.LoggerLib;
+import ru.devprizrakk.voidbot.utils.Utils;
 
 public class Main {
-    public static void main(String[] args) {
+
+    static void main(String[] args) {
         new LoggerLib();
         Utils.getDatabaseManager().init();
         LangManager.init();
         JDALoader.init();
     }
-
-
-
 }

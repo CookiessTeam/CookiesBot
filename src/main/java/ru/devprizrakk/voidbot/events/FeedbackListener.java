@@ -1,6 +1,7 @@
 package ru.devprizrakk.voidbot.events;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
@@ -10,22 +11,22 @@ import net.dv8tion.jda.api.components.selections.EntitySelectMenu;
 import net.dv8tion.jda.api.components.textinput.TextInput;
 import net.dv8tion.jda.api.components.textinput.TextInputStyle;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.EntitySelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.modals.Modal;
 import org.jetbrains.annotations.NotNull;
-import ru.devprizrakk.voidbot.core.config.Config;
-import ru.devprizrakk.voidbot.core.language.LangMessage;
-import ru.devprizrakk.voidbot.core.logging.LogType;
-import ru.devprizrakk.voidbot.core.logging.Logger;
-import ru.devprizrakk.voidbot.core.utils.Utils;
+import ru.devprizrakk.voidbot.language.LangMessage;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
+import ru.devprizrakk.voidbot.utils.Utils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Collections;
 
 public class FeedbackListener extends ListenerAdapter {
@@ -66,6 +67,7 @@ public class FeedbackListener extends ListenerAdapter {
         if (event.getValues().isEmpty()) {
             return;
         }
+
         long targetId = event.getMentions().getUsers().stream()
                 .findFirst()
                 .map(User::getIdLong)
@@ -194,6 +196,7 @@ public class FeedbackListener extends ListenerAdapter {
             event.reply(getInfo("feedback.error.no-permission")).setEphemeral(true).queue();
             return;
         }
+
         Modal modal = Modal.create(MODAL_REJECT + authorId, getModalTitle("feedback.modal.reject.title"))
                 .addComponents(buildRejectReasonInput())
                 .build();
@@ -229,45 +232,50 @@ public class FeedbackListener extends ListenerAdapter {
         return member != null && member.hasPermission(Permission.MANAGE_SERVER);
     }
 
-    private EmbedBuilder rebuildFrom(net.dv8tion.jda.api.entities.Message source, Color color, String statusKey) {
-        EmbedBuilder embed = new EmbedBuilder(source.getEmbeds().isEmpty() ? null : source.getEmbeds().get(0));
+    private EmbedBuilder rebuildFrom(Message source, Color color, String statusKey) {
+        EmbedBuilder embed = new EmbedBuilder(source.getEmbeds().isEmpty() ? null : source.getEmbeds().getFirst());
         embed.setColor(color);
+
         String status = getInfo(statusKey);
         if (status != null && !status.isEmpty()) {
             embed.setTitle(status);
         }
+
         embed.setFooter(getInfo("feedback.footer-status.decided"));
         return embed;
     }
 
-    private void appendModerationFields(net.dv8tion.jda.api.entities.Message source,
-                                        EmbedBuilder embed, User moderator, String reason, boolean approved) {
+    private void appendModerationFields(Message source, EmbedBuilder embed, User moderator, String reason, boolean approved) {
         if (!source.getEmbeds().isEmpty()) {
-            var original = source.getEmbeds().get(0);
+            var original = source.getEmbeds().getFirst();
             for (var f : original.getFields()) {
                 embed.addField(f);
             }
         }
-        embed.addField(getInfo(approved ? "feedback.field.approved-by" : "feedback.field.rejected-by"),
-                moderator.getAsMention(), true);
+
+        embed.addField(getInfo(approved ? "feedback.field.approved-by" : "feedback.field.rejected-by"), moderator.getAsMention(), true);
         if (reason != null && !reason.isBlank()) {
             embed.addField(getInfo("feedback.field.rejected-reason"), reason, false);
         }
     }
 
-    private void notifyAuthor(net.dv8tion.jda.api.JDA jda, Guild guild, long authorId,
-                              User moderator, boolean approved, String reason) {
+    private void notifyAuthor(JDA jda, Guild guild, long authorId, User moderator, boolean approved, String reason) {
         if (authorId <= 0) return;
+
         try {
             jda.retrieveUserById(authorId).queue(
                     u -> u.openPrivateChannel().queue(
                             pc -> pc.sendMessageEmbeds(buildDmEmbed(guild, moderator, approved, reason).build())
-                                    .queue(s -> {}, f -> {}),
-                            f -> {}
+                                    .queue(_ -> {
+                                    }, _ -> {
+                                    }),
+                            _ -> {
+                            }
                     ),
-                    f -> {}
+                    _ -> {
+                    }
             );
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             Logger.getLogger().log(LogType.WARN, "FEEDBACK", "Failed to DM author " + authorId, e);
         }
     }
@@ -300,11 +308,13 @@ public class FeedbackListener extends ListenerAdapter {
 
     private boolean sendToChannelWithButtons(Guild guild, String configKey, EmbedBuilder embed, long authorId) {
         if (guild == null) return false;
-        String channelId = config().getString(configKey, "");
+
+        String channelId = Utils.getConfig().getString(configKey, "");
         if (channelId == null || channelId.isEmpty()) {
             Logger.getLogger().log(LogType.WARN, "FEEDBACK", "Channel key not set: " + configKey);
             return false;
         }
+
         TextChannel channel = guild.getTextChannelById(channelId);
         if (channel == null) {
             Logger.getLogger().log(LogType.WARN, "FEEDBACK", "Channel not found by id: " + channelId);
@@ -365,7 +375,7 @@ public class FeedbackListener extends ListenerAdapter {
     private long parseId(String fullId, String prefix) {
         try {
             return Long.parseLong(fullId.substring(prefix.length()));
-        } catch (NumberFormatException e) {
+        } catch ( NumberFormatException e ) {
             return 0L;
         }
     }
@@ -381,9 +391,5 @@ public class FeedbackListener extends ListenerAdapter {
 
     private String getInfo(String key) {
         return Utils.getLangManager().getInfoLocale(LangMessage.Commands.System.Feedback.FILE, key);
-    }
-
-    private Config config() {
-        return Utils.getConfigManager().getConfig();
     }
 }

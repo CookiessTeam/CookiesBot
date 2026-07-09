@@ -1,24 +1,23 @@
 package ru.devprizrakk.voidbot.events.autocreate;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import ru.devprizrakk.voidbot.core.language.LangMessage;
-import ru.devprizrakk.voidbot.core.utils.Utils;
-
-import java.util.Locale;
+import ru.devprizrakk.voidbot.language.LangMessage;
+import ru.devprizrakk.voidbot.utils.Utils;
 
 public class ThreadsListeners extends ListenerAdapter {
+
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
+
         if (event.getMessage().getAuthor().isBot()) return;
+
         // Checklist
-        final String checklist = Utils.getConfigManager().getConfig().getString("channel.checklist");
-        final String news = Utils.getConfigManager().getConfig().getString("channel.news");
+        final String checklist = Utils.getConfig().getString("channel.checklist");
+        final String news = Utils.getConfig().getString("channel.news");
         if (checklist != null && !checklist.isEmpty() && event.getChannel().getId().equals(checklist)) {
             sendThreadsEmbed(event,
                     Utils.getLangManager().getInfoLocale(
@@ -38,6 +37,7 @@ public class ThreadsListeners extends ListenerAdapter {
                             LangMessage.Event.Threads.Checklist.Embed.FOOTER
                     ));
         }
+
         if (news != null && !news.isEmpty() && event.getChannel().getId().equals(news)) {
             sendThreadsEmbed(event,
                     Utils.getLangManager().getInfoLocale(
