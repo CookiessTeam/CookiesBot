@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 import ru.devprizrakk.voidbot.command.impl.CommandManager;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.lavalink.media.MediaInfo;
 import ru.devprizrakk.voidbot.lavalink.media.MediaService;
 
@@ -49,7 +48,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
     @Override
     public void onPlaylistLoaded(@NotNull PlaylistLoaded result) {
         this.guildMusicManager.scheduler.enqueuePlaylist(result.getTracks());
-        String message = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Message.LOAD_PLAYLIST)
+        String message = getLangManager(event).getDescriptionLocale("play.message.load-playlist")
                 .replace("%size%", String.valueOf(result.getTracks().size()))
                 .replace("%playlistName%", result.getInfo().getName());
         event.getHook().sendMessage(message).queue();
@@ -60,7 +59,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
         List<Track> tracks = result.getTracks();
         if (tracks.isEmpty()) {
             new WrongErrorEmbedFactory(event).wrongErrorHook(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_QUEUE));
+                    getLangManager(event).getDescriptionLocale("play.error.no-found-queue"));
             return;
         }
 
@@ -72,13 +71,13 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
     @Override
     public void noMatches() {
         new WrongErrorEmbedFactory(event).wrongErrorHook(
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_MATCHES));
+                getLangManager(event).getDescriptionLocale("play.error.no-matches"));
     }
 
     @Override
     public void loadFailed(@NotNull LoadFailed result) {
         new WrongErrorEmbedFactory(event).wrongErrorHook(
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.OTHER)
+                getLangManager(event).getDescriptionLocale("play.error.other")
                         .replace("%error-code%", result.getException().getMessage()));
     }
 
@@ -98,8 +97,8 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
                 });
 
         String playStatus = isPaused.get()
-                ? getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Status.Sound.FALSE)
-                : getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Status.Sound.TRUE);
+                ? getLangManager(event).getDescriptionLocale("play.status.sound.false")
+                : getLangManager(event).getDescriptionLocale("play.status.sound.true");
         MediaService mediaService = new MediaService();
         MediaInfo info = mediaService.get(track.getInfo().getUri());
         EmbedBuilder embed = buildTrackEmbed(track, isPaused.get(), playStatus, volume.get(), info);
@@ -122,15 +121,14 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
                     .subscribe(player -> {
                         long currentPosition = player.getPosition();
                         String playStatus = player.getPaused()
-                                ? getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Status.Sound.FALSE)
-                                : getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Status.Sound.TRUE);
+                                ? getLangManager(event).getDescriptionLocale("play.status.sound.false")
+                                : getLangManager(event).getDescriptionLocale("play.status.sound.true");
 
                         if (currentPosition >= track.getInfo().getLength()) {
                             updateFuture.cancel(false);
                             lastEmbedMessage = null;
                             if (guildMusicManager.scheduler.queue.isEmpty()) {
                                 CommandManager.getOrCreateMusicManager(event.getGuild().getIdLong());
-                                //event.getGuild().getAudioManager().closeAudioConnection();
                             }
                             return;
                         }
@@ -147,95 +145,86 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
         embed.setThumbnail(info.getThumbnail());
 
         embed.setTitle(
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.TITLE)
+                getLangManager(event).getDescriptionLocale("play.embed.title")
                         .replace("%music-play-status%", playStatus)
                         .replace("%music-name%", info.getTitle()), track.getInfo().getUri());
 
         if (!track.getInfo().isStream()) {
             embed.setDescription(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.description")
                             .replace("%music-progress-bar%", "\n" + getProgressBar(track.getInfo().getPosition(), track.getInfo().getLength()))
             );
-            // time
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Time.Video.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Time.Video.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.time.video.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.time.video.description")
                             .replace("%music-current-time%", formatTime(track.getInfo().getPosition()))
                             .replace("%music-max-time%", formatTime(track.getInfo().getLength())),
                     true
             );
         } else {
             embed.setDescription(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.description")
                             .replace("%music-progress-bar%", "\n")
             );
-            // time
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Time.Stream.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Time.Stream.DESCRIPTION),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.time.stream.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.time.stream.description"),
                     true
             );
         }
 
-        // Fields author
         if (info.getAuthor() != null && !info.getAuthor().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Author.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Author.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.author.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.author.description")
                             .replace("%music-author%", info.getAuthor()),
                     true
             );
-
         }
 
-        // Views
         if (info.getViewsCount() != null && !info.getViewsCount().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Views.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Views.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.views.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.views.description")
                             .replace("%music-views%", info.getViewsCount()),
                     true
             );
         }
 
-        // Like
         if (info.getLikesCount() != null && !info.getLikesCount().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Like.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Like.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.like.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.like.description")
                             .replace("%music-like-count%", info.getLikesCount()),
                     true
             );
         }
 
-        // Created data
         if (info.getCreatedDate() != null && !info.getCreatedDate().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.DateCreated.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.DateCreated.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.date-created.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.date-created.description")
                             .replace("%music-date-created%", info.getCreatedDate()),
                     true
             );
         }
 
-        // Link
         if (track.getInfo().getUri() != null && !track.getInfo().getUri().isEmpty()) {
             embed.addField(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Link.TITLE),
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Link.DESCRIPTION)
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.link.title"),
+                    getLangManager(event).getDescriptionLocale("play.embed.fields.link.description")
                             .replace("%music-link%", track.getInfo().getUri()),
                     true
             );
         }
 
-        // Volume
         embed.addField(
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Volume.TITLE),
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.Fields.Volume.DESCRIPTION).replace("%music-volume%", volume + ""),
+                getLangManager(event).getDescriptionLocale("play.embed.fields.volume.title"),
+                getLangManager(event).getDescriptionLocale("play.embed.fields.volume.description").replace("%music-volume%", volume + ""),
                 true
         );
 
-        embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Embed.FOOTER));
+        embed.setFooter(getLangManager(event).getDescriptionLocale("play.embed.footer"));
         return embed;
     }
 

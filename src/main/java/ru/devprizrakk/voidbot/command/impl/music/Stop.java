@@ -5,7 +5,6 @@ import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.command.impl.CommandManager;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.lavalink.VoiceHelper;
 
 import java.sql.SQLException;
@@ -19,9 +18,7 @@ public class Stop extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Music.Stop.FILE,
-                LangMessage.Commands.Music.Stop.Description.COMMAND
+        return getLangManager(event).getInfoLocale("stop.description.command"
         );
     }
 
@@ -35,9 +32,7 @@ public class Stop extends BaseCommand {
         if (event.getChannelType() != ChannelType.TEXT) {
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event)
-                            .getDescriptionLocale(
-                                    LangMessage.Commands.Music.Stop.FILE,
-                                    LangMessage.Commands.Music.Stop.Error.NO_DM
+                            .getDescriptionLocale("stop.error.no-dm"
                             )
                     );
             return;
@@ -46,15 +41,13 @@ public class Stop extends BaseCommand {
         if (!VoiceHelper.disconnectVoice(event.getGuild())) {
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Music.Stop.FILE,
-                                    LangMessage.Commands.Music.Stop.Error.OTHER
+                            getDescriptionLocale("stop.error.other"
                             )
                     );
             return;
         }
 
-        event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Stop.FILE, LangMessage.Commands.Music.Stop.Message.SUCCESSFUL)).queue();
+        event.reply(getLangManager(event).getDescriptionLocale("stop.message.successful")).queue();
         CommandManager.getOrCreateMusicManager(event.getGuild().getIdLong()).stop();
         event.getJDA().getDirectAudioController().disconnect(event.getGuild());
     }

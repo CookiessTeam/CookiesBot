@@ -2,6 +2,8 @@ package ru.devprizrakk.voidbot.language;
 
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
 import ru.devprizrakk.voidbot.utils.applicationinfo.Module;
 
@@ -12,13 +14,14 @@ import java.util.regex.Pattern;
 public class LangHelper {
 
     private static final Pattern pattern = Pattern.compile("%([a-zA-Z0-9_-]+)(?::([a-zA-Z0-9_-]+))?%");
-    IReplyCallback event;
+    private final IReplyCallback event;
 
     public LangHelper(IReplyCallback event) {
         this.event = event;
     }
 
     public LangHelper() {
+        this.event = null;
     }
 
     private String formatter(String message) {
@@ -26,8 +29,8 @@ public class LangHelper {
         StringBuilder sb = new StringBuilder();
 
         while (matcher.find()) {
-            String key = matcher.group(1);     // "version"
-            String arg = matcher.group(2);     // "BOT"
+            String key = matcher.group(1);
+            String arg = matcher.group(2);
 
             String replacement = switch (key) {
                 case "current-time" -> Utils.getCurrentTime();
@@ -42,52 +45,59 @@ public class LangHelper {
         return sb.toString();
     }
 
-    public String getDescriptionLocale(String src, String path) {
-        String message = LangManager.get("ru", src, path);
-        if (message == null) {
-            if (new WrongErrorEmbedFactory(event).wrongError("Ключ локализации пустой! (" + "SRC: " + src + " KEY: " + path + ")")) {
-                return null;
+    public String getDescriptionLocale(String path) {
+        String message = LangManager.get("ru", path);
+        if (isError(message)) {
+            String errorMsg = "Ключ локализации не найден: " + path;
+            if (event != null) {
+                new WrongErrorEmbedFactory(event).wrongError(errorMsg);
+            } else {
+                Logger.getLogger().log(LogType.ERROR, "LANG", errorMsg);
             }
-        } else if (message.startsWith("§cMissing file")) {
-            if (new WrongErrorEmbedFactory(event).wrongError("Файл локализации пустой! (" + "SRC: " + src + " KEY: " + path + ")")) {
-                return null;
-            }
-        } else if (message.startsWith("§cMissing key")) {
-            if (new WrongErrorEmbedFactory(event).wrongError("Ключ локализации не найден! (" + "SRC: " + src + " KEY: " + path + ")")) {
-                return null;
-            }
-        } else if (message.startsWith("§c[No language loaded]")) {
-            if (new WrongErrorEmbedFactory(event).wrongError("Локализация не найдена! (" + "SRC: " + src + " KEY: " + path + ")")) {
-                return null;
-            }
-        } else {
-            return formatter(message);
+            throw new LocalizationException(errorMsg);
         }
-        return null;
+        return formatter(message);
     }
 
-    public String getInfoLocale(String src, String path) {
-        String message = LangManager.get("ru", src, path);
-        if (message == null) {
-            return "Localisation key is null! Please report administration!";
-        } else if (message.startsWith("§cMissing file")) {
-            return "Localisation file is not found! Please report administration!";
-        } else if (message.startsWith("§cMissing key")) {
-            return "Localisation key is not found! Please report administration!";
-        } else if (message.startsWith("§c[No language loaded]")) {
-            return "Localisation is not found! Please report administration!";
-        } else {
-            return formatter(message);
-        }
+    public String getDescriptionLocale(String path, Map<String, String> replacements) {
+        String result = getDescriptionLocale(path);
+        return applyReplacements(result, replacements);
     }
 
-    public String getInfoLocale(String src, String path, Map<String, String> replacements) {
-        String message = getInfoLocale(src, path);
+    public String getInfoLocale(String path) {
+        String message = LangManager.get("ru", path);
+        if (isError(message)) {
+            String errorMsg = "Ключ локализации не найден: " + path;
+            if (event != null) {
+                new WrongErrorEmbedFactory(event).wrongError(errorMsg);
+                throw new LocalizationException(errorMsg);
+            } else {
+                Logger.getLogger().log(LogType.ERROR, "LANG", errorMsg);
+                throw new LocalizationException(errorMsg);
+            }
+        }
+        return formatter(message);
+    }
+
+    public String getInfoLocale(String path, Map<String, String> replacements) {
+        String result = getInfoLocale(path);
+        return applyReplacements(result, replacements);
+    }
+
+    private boolean isError(String message) {
+        return message == null
+                || message.startsWith("§cMissing file")
+                || message.startsWith("§cMissing key")
+                || message.startsWith("§c[No language loaded]");
+    }
+
+    private String applyReplacements(String message, Map<String, String> replacements) {
         if (replacements == null || replacements.isEmpty()) {
             return message;
         }
         for (Map.Entry<String, String> entry : replacements.entrySet()) {
-            message = message.replace("%" + entry.getKey() + "%", entry.getValue() == null ? "" : entry.getValue());
+            message = message.replace("%" + entry.getKey() + "%",
+                    entry.getValue() == null ? "" : entry.getValue());
         }
         return message;
     }

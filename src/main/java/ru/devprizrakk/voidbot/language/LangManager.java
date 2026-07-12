@@ -61,4 +61,17 @@ public class LangManager {
 
         return fileData.getOrDefault(key, "§cMissing key: " + key);
     }
+
+    public static String get(String lang, String key) {
+        lang = lang.toLowerCase(Locale.ROOT);
+
+        Map<String, String> flat = LangLoader.FLAT_CACHE.get(lang);
+        if (flat == null) flat = LangLoader.FLAT_CACHE.get(DEFAULT_LANG);
+
+        if (flat == null) return "§c[No language loaded]";
+
+        String value = flat.get(key);
+        if (value == null) return "§cMissing key: " + key;
+        return value;
+    }
 }

@@ -9,7 +9,6 @@ import ru.devprizrakk.voidbot.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,13 +23,13 @@ public class Volume extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Description.COMMAND);
+        return getLangManager(event).getInfoLocale("volume.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.INTEGER, "volume", LangMessage.Commands.Music.Volume.Description.Option.VOLUME, false));
+        options.add(new OptionData(OptionType.INTEGER, "volume", "volume.description.option.volume", false));
         return options;
     }
 
@@ -44,9 +43,7 @@ public class Volume extends BaseCommand {
         if (event.getChannelType() != ChannelType.TEXT) {
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Music.Volume.FILE,
-                                    LangMessage.Commands.Music.Volume.Error.NO_DM
+                            getDescriptionLocale("volume.error.no-dm"
                             )
                     );
             return;
@@ -58,9 +55,7 @@ public class Volume extends BaseCommand {
         if (!memberVoiceState.inAudioChannel()) {
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Music.Volume.FILE,
-                                    LangMessage.Commands.Music.Volume.Error.NO_FOUND_VOICE
+                            getDescriptionLocale("volume.error.no-found-voice"
                             )
                     );
             return;
@@ -70,12 +65,10 @@ public class Volume extends BaseCommand {
         if (event.getOption("volume") != null) {
             volume = event.getOption("volume").getAsInt();
             if (volume < 0 || volume > 100) {
-                event.reply(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Error.OUT_OF_RANGE)).setEphemeral(true).queue();
+                event.reply(getLangManager(event).getDescriptionLocale("volume.error.out-of-range")).setEphemeral(true).queue();
                 new WrongErrorEmbedFactory(event).
                         wrongError(getLangManager(event).
-                                getDescriptionLocale(
-                                        LangMessage.Commands.Music.Volume.FILE,
-                                        LangMessage.Commands.Music.Volume.Error.OUT_OF_RANGE
+                                getDescriptionLocale("volume.error.out-of-range"
                                 )
                         );
                 return;
@@ -85,13 +78,13 @@ public class Volume extends BaseCommand {
                     .getPlayer()
                     .flatMap((player) -> player.setVolume(volume))
                     .subscribe((player) -> event.reply(
-                            getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Message.SUCCESSFUL)
+                            getLangManager(event).getDescriptionLocale("volume.message.successful")
                                     .replace("%set-volume%", String.valueOf(player.getVolume()))).queue());
         } else {
             JDALoader.getLavalinkManager().getLavalinkClient().getOrCreateLink(event.getGuild().getIdLong())
                     .getPlayer()
                     .subscribe((player) -> event.reply(
-                            getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Volume.FILE, LangMessage.Commands.Music.Volume.Message.INFO)
+                            getLangManager(event).getDescriptionLocale("volume.message.info")
                                     .replace("%get-volume%", String.valueOf(player.getVolume()))).queue());
         }
     }

@@ -14,12 +14,15 @@ import java.util.Objects;
 
 public class LangLoader {
 
-    // CACHE[lang][filePath][key] = value
+    // CACHE[lang][filePath][key] = value (legacy, для совместимости)
     static final Map<String, Map<String, Map<String, String>>> CACHE = new HashMap<>();
+    // FLAT_CACHE[lang][key] = value (плоский кеш по всем файлам)
+    static final Map<String, Map<String, String>> FLAT_CACHE = new HashMap<>();
     private static final Yaml YAML = new Yaml();
 
     public static void loadAllLanguages() {
         CACHE.clear();
+        FLAT_CACHE.clear();
 
         File langRoot = new File(LangManager.LANG_DIR);
         File[] langDirs = langRoot.listFiles(File::isDirectory);
@@ -33,22 +36,27 @@ public class LangLoader {
             String langCode = langDir.getName().toLowerCase(Locale.ROOT);
 
             Map<String, Map<String, String>> langFiles = new HashMap<>();
+            Map<String, String> flat = new HashMap<>();
 
-            loadRecursive(langDir, "", langFiles);
+            loadRecursive(langDir, "", langFiles, flat);
 
             CACHE.put(langCode, langFiles);
-            Logger.getLogger().log(LogType.INFO, "loader", "Загружено " + langFiles.size() + " файлов локалей для языка " + langCode);
+            FLAT_CACHE.put(langCode, flat);
+            Logger.getLogger().log(LogType.INFO, "loader",
+                    "Загружено " + langFiles.size() + " файлов (" + flat.size() + " ключей) локалей для языка " + langCode);
         }
     }
 
-    private static void loadRecursive(File folder, String relativePath, Map<String, Map<String, String>> target) {
+    private static void loadRecursive(File folder, String relativePath,
+                                       Map<String, Map<String, String>> target,
+                                       Map<String, String> flatTarget) {
         for (File f : Objects.requireNonNull(folder.listFiles())) {
             String newPath = relativePath.isEmpty()
                     ? f.getName()
                     : relativePath + "/" + f.getName();
 
             if (f.isDirectory()) {
-                loadRecursive(f, newPath, target);
+                loadRecursive(f, newPath, target, flatTarget);
                 continue;
             }
 
@@ -61,7 +69,8 @@ public class LangLoader {
                 if (parsed != null) flatten("", parsed, flat);
 
                 target.put(newPath.toLowerCase(Locale.ROOT), flat);
-            } catch ( Exception e ) {
+                flatTarget.putAll(flat);
+            } catch (Exception e) {
                 Logger.getLogger().log(LogType.ERROR, "loader", "Ошибка загрузки файла " + f.getPath(), e);
             }
         }

@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseSubCommand;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,18 +24,14 @@ public class Unmute extends BaseSubCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Moderation.Unmute.FILE,
-                LangMessage.Commands.Moderation.Unmute.Description.COMMAND
+        return getLangManager(event).getInfoLocale("unmute.description.command"
         );
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Unmute.FILE,
-                LangMessage.Commands.Moderation.Unmute.Description.Option.TARGET_USER), true));
+        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale("unmute.description.option.target-user"), true));
         return options;
     }
 
@@ -58,13 +53,13 @@ public class Unmute extends BaseSubCommand {
         Member targetMember = event.getOption("target-user", OptionMapping::getAsMember);
         User targetUser = event.getOption("target-user", OptionMapping::getAsUser);
         if (targetMember == null || targetUser == null) {
-            replyError(LangMessage.Commands.Moderation.Unmute.Error.USER_NOT_FOUND);
+            replyError("unmute.error.user-not-found");
             return;
         }
 
         Member selfMember = guild.getSelfMember();
         if (selfMember.isTimedOut()) {
-            replyError(LangMessage.Commands.Moderation.Unmute.Error.NO_MUTED);
+            replyError("unmute.error.no-muted");
             return;
         }
 
@@ -85,20 +80,14 @@ public class Unmute extends BaseSubCommand {
     private void replySuccess(User author, User targetUser, String reason) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Unmute.FILE,
-                LangMessage.Commands.Moderation.Unmute.Embed.TITLE
+        embed.setTitle(getLangManager(event).getDescriptionLocale("unmute.embed.title"
         ));
-        embed.setDescription(getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Moderation.Unmute.FILE,
-                        LangMessage.Commands.Moderation.Unmute.Embed.DESCRIPTION
+        embed.setDescription(getLangManager(event).getDescriptionLocale("unmute.embed.description"
                 )
                 .replace("%author%", author.getAsMention())
                 .replace("%target-user%", targetUser.getAsMention())
                 .replace("%reason%", reason));
-        embed.setFooter(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Unmute.FILE,
-                LangMessage.Commands.Moderation.Unmute.Embed.FOOTER
+        embed.setFooter(getLangManager(event).getDescriptionLocale("unmute.embed.footer"
         ));
         event.replyEmbeds(embed.build()).queue();
     }
@@ -106,16 +95,12 @@ public class Unmute extends BaseSubCommand {
     private void replyError(String key) {
         new WrongErrorEmbedFactory(event).
                 wrongError(getLangManager(event).
-                        getDescriptionLocale(
-                                LangMessage.Commands.Moderation.Mute.FILE,
-                                key
+                        getDescriptionLocale(key
                         ));
     }
 
     private void replyOther(String code) {
-        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Error.OTHER).replace("%code%", code));
+        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale("mute.error.other").replace("%code%", code));
     }
 
     private void replyOther(String code, Throwable throwable) {

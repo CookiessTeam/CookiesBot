@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.utils.Utils;
 
 public class ThreadsListeners extends ListenerAdapter {
@@ -20,41 +19,25 @@ public class ThreadsListeners extends ListenerAdapter {
         final String news = Utils.getConfig().getString("channel.news");
         if (checklist != null && !checklist.isEmpty() && event.getChannel().getId().equals(checklist)) {
             sendThreadsEmbed(event,
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.TITLE
+                    Utils.getLangManager().getInfoLocale("checklist.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.Embed.TITLE
+                    Utils.getLangManager().getInfoLocale("checklist.embed.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.Embed.DESCRIPTION
+                    Utils.getLangManager().getInfoLocale("checklist.embed.description"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.Embed.FOOTER
+                    Utils.getLangManager().getInfoLocale("checklist.embed.footer"
                     ));
         }
 
         if (news != null && !news.isEmpty() && event.getChannel().getId().equals(news)) {
             sendThreadsEmbed(event,
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.TITLE
+                    Utils.getLangManager().getInfoLocale("news.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.Embed.TITLE
+                    Utils.getLangManager().getInfoLocale("news.embed.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.Embed.DESCRIPTION
+                    Utils.getLangManager().getInfoLocale("news.embed.description"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.Embed.FOOTER
+                    Utils.getLangManager().getInfoLocale("news.embed.footer"
                     ));
         }
     }

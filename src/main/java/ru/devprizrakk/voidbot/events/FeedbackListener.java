@@ -21,7 +21,6 @@ import net.dv8tion.jda.api.events.interaction.component.EntitySelectInteractionE
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.modals.Modal;
 import org.jetbrains.annotations.NotNull;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -390,6 +389,6 @@ public class FeedbackListener extends ListenerAdapter {
     }
 
     private String getInfo(String key) {
-        return Utils.getLangManager().getInfoLocale(LangMessage.Commands.System.Feedback.FILE, key);
+        return Utils.getLangManager().getInfoLocale(key);
     }
 }

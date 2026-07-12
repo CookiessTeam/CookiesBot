@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.utils.Utils;
 
 import java.awt.*;
@@ -42,27 +41,27 @@ public class HelpSelectMenu extends ListenerAdapter {
         switch (selectedValue) {
             case "info" -> {
                 EmbedBuilder embed = new EmbedBuilder();
-                embed.setTitle(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.TITLE));
-                embed.setDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.DESCRIPTION));
-                embed.setFooter(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.FOOTER));
+                embed.setTitle(Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.title"));
+                embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.description"));
+                embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.footer"));
                 embed.addField(
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.Developers.TITLE),
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.Developers.DESCRIPTION),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.developers.title"),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.developers.description"),
                         true
                 );
                 embed.addField(
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.ProgramLang.TITLE),
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.ProgramLang.DESCRIPTION),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.programLang.title"),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.programLang.description"),
                         true
                 );
                 embed.addField(
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.DiscordLibs.TITLE),
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.DiscordLibs.DESCRIPTION),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.discordLibs.title"),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.discordLibs.description"),
                         true
                 );
                 embed.addField(
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.Version.TITLE),
-                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Info.Embed.Fields.Version.DESCRIPTION),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.version.title"),
+                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.version.description"),
                         true
                 );
                 event.replyEmbeds(embed.build()).setEphemeral(true).queue();
@@ -70,9 +69,9 @@ public class HelpSelectMenu extends ListenerAdapter {
             case "command" -> {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(255, 104, 0));
-                embed.setTitle(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Command.Embed.TITLE));
-                embed.setDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Command.Embed.DESCRIPTION));
-                embed.setFooter(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE, LangMessage.Commands.System.Help.Interacts.Command.Embed.FOOTER));
+                embed.setTitle(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.title"));
+                embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.description"));
+                embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.footer"));
                 event.replyEmbeds(embed.build())
                         .addComponents(createActionRow(event))
                         .setEphemeral(true)
@@ -115,8 +114,7 @@ public class HelpSelectMenu extends ListenerAdapter {
             }
             default -> {
                 embed.setDescription(Utils.getLangManager(event)
-                        .getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Category.NOT_FOUND_CATEGORY));
+                        .getDescriptionLocale("help.interacts.command.interact.embed.category.notFoundCategory"));
                 category = null;
                 categoryLocal = "notFoundCategory";
             }
@@ -125,18 +123,15 @@ public class HelpSelectMenu extends ListenerAdapter {
         embed.setColor(new Color(255, 104, 0));
         embed.setTitle(
                 Utils.getLangManager(event)
-                        .getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                LangMessage.Commands.System.Help.Interacts.Command.Embed.TITLE)
+                        .getDescriptionLocale("help.interacts.command.embed.title")
                         .replace(
                                 "%command-category%",
                                 Utils.getLangManager(event)
-                                        .getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Category.BASE_PATH + categoryLocal)
+                                        .getDescriptionLocale("help.interacts.command.interact.embed.category." + categoryLocal)
                         )
         );
         embed.setFooter(Utils.getLangManager(event)
-                .getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                        LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.FOOTER
+                .getDescriptionLocale("help.interacts.command.interact.embed.footer"
                 ));
 
         if (category != null) {
@@ -164,33 +159,26 @@ public class HelpSelectMenu extends ListenerAdapter {
         }
 
         embed.addField(
-                Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                        LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Name.TITLE),
-                Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Name.DESCRIPTION)
+                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.name.title"),
+                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.name.description")
                         .replace("%name-command%", command.getName()),
                 false
         );
 
         embed.addField(
-                Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                        LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Description.TITLE),
-                Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Description.DESCRIPTION)
+                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.description.title"),
+                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.description.description")
                         .replace("%description-command%", command.getDescription()),
                 true
         );
 
         String optionsText = !optionsDescription.isEmpty()
                 ? optionsDescription.toString()
-                : Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Option.NOT_OPTION);
+                : Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.options.not-option");
 
         embed.addField(
-                Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                        LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Option.TITLE),
-                Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                LangMessage.Commands.System.Help.Interacts.Command.Interact.Embed.Fields.Option.DESCRIPTION)
+                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.options.title"),
+                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.options.description")
                         .replace("%option-command%", optionsText),
                 true
         );
@@ -200,46 +188,34 @@ public class HelpSelectMenu extends ListenerAdapter {
         StringSelectMenu stringSelectMenu = StringSelectMenu.create("helpcommand")
                 .addOptions(
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Server.TITLE),
+                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.server.title"),
                                         "server")
-                                .withDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                        LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Server.DESCRIPTION))
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.server.description"))
                                 .withEmoji(Emoji.fromUnicode("🏠")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Admin.TITLE),
+                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.admin.title"),
                                         "admin")
-                                .withDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                        LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Admin.DESCRIPTION))
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.admin.description"))
                                 .withEmoji(Emoji.fromUnicode("🔧")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Fun.TITLE),
+                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.fun.title"),
                                         "fun")
-                                .withDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                        LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Fun.DESCRIPTION))
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.fun.description"))
                                 .withEmoji(Emoji.fromUnicode("🎉")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Music.TITLE),
+                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.music.title"),
                                         "music")
-                                .withDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                        LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Music.DESCRIPTION))
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.music.description"))
                                 .withEmoji(Emoji.fromUnicode("🎵")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.User.TITLE),
+                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.user.title"),
                                         "user")
-                                .withDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                        LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.User.DESCRIPTION))
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.user.description"))
                                 .withEmoji(Emoji.fromUnicode("🔤")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                                LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Other.TITLE),
+                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.other.title"),
                                         "other")
-                                .withDescription(Utils.getLangManager(event).getDescriptionLocale(LangMessage.Commands.System.Help.FILE,
-                                        LangMessage.Commands.System.Help.Interacts.Command.Embed.ActionRow.Other.DESCRIPTION))
+                                .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.other.description"))
                                 .withEmoji(Emoji.fromUnicode("❓"))
                 )
                 .build();

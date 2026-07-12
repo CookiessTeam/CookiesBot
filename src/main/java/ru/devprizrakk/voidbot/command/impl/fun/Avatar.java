@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +18,7 @@ public class Avatar extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Fun.Avatar.FILE,
-                LangMessage.Commands.Fun.Avatar.Description.COMMAND
+        return getLangManager(event).getInfoLocale("avatar.description.command"
         );
     }
 
@@ -30,9 +27,7 @@ public class Avatar extends BaseCommand {
         return List.of(
                 new OptionData(OptionType.USER,
                         "user",
-                        getLangManager(event).getInfoLocale(
-                                LangMessage.Commands.Fun.Avatar.FILE,
-                                LangMessage.Commands.Fun.Avatar.Description.Option.USER),
+                        getLangManager(event).getInfoLocale("avatar.description.option.user"),
                         false));
     }
 
@@ -48,40 +43,28 @@ public class Avatar extends BaseCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         if (event.getOption("name") == null) {
             embedBuilder.setTitle(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Avatar.FILE,
-                            LangMessage.Commands.Fun.Avatar.EmbedNoMentioned.TITLE
+                    getLangManager(event).getDescriptionLocale("avatar.embed-no-mentioned.title"
                     ).replace("%user-author%", user.getEffectiveName()));
             embedBuilder.setDescription(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Avatar.FILE,
-                            LangMessage.Commands.Fun.Avatar.EmbedNoMentioned.DESCRIPTION
+                    getLangManager(event).getDescriptionLocale("avatar.embed-no-mentioned.description"
                     )
             );
             embedBuilder.setImage(user.getAvatarUrl());
             embedBuilder.setFooter(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Avatar.FILE,
-                            LangMessage.Commands.Fun.Avatar.EmbedNoMentioned.FOOTER
+                    getLangManager(event).getDescriptionLocale("avatar.embed-no-mentioned.footer"
                     )
             );
         } else {
             embedBuilder.setTitle(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Avatar.FILE,
-                            LangMessage.Commands.Fun.Avatar.EmbedMentioned.TITLE
+                    getLangManager(event).getDescriptionLocale("avatar.embed-mentioned.title"
                     ).replace("%user-author%", user.getEffectiveName()));
             embedBuilder.setDescription(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Avatar.FILE,
-                            LangMessage.Commands.Fun.Avatar.EmbedMentioned.DESCRIPTION
+                    getLangManager(event).getDescriptionLocale("avatar.embed-mentioned.description"
                     )
             );
             embedBuilder.setImage(user.getAvatarUrl());
             embedBuilder.setFooter(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Avatar.FILE,
-                            LangMessage.Commands.Fun.Avatar.EmbedMentioned.FOOTER
+                    getLangManager(event).getDescriptionLocale("avatar.embed-mentioned.footer"
                     )
             );
         }

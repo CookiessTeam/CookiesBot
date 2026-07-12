@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 
@@ -33,9 +32,7 @@ public class Calc extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Fun.Calc.FILE,
-                LangMessage.Commands.Fun.Calc.Description.COMMAND
+        return getLangManager(event).getInfoLocale("calc.description.command"
         );
     }
 
@@ -44,9 +41,7 @@ public class Calc extends BaseCommand {
         return List.of(
                 new OptionData(OptionType.STRING,
                         "calc",
-                        getLangManager(event).getInfoLocale(
-                                LangMessage.Commands.Fun.Calc.FILE,
-                                LangMessage.Commands.Fun.Calc.Description.Option.CALC),
+                        getLangManager(event).getInfoLocale("calc.description.option.calc"),
                         true));
     }
 
@@ -63,30 +58,22 @@ public class Calc extends BaseCommand {
             double result = evaluate(expression);
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Calc.FILE,
-                            LangMessage.Commands.Fun.Calc.Embed.TITLE
+                    getLangManager(event).getDescriptionLocale("calc.embed.title"
                     ));
             embed.setDescription(
-                    getLangManager(event).getDescriptionLocale(
-                                    LangMessage.Commands.Fun.Calc.FILE,
-                                    LangMessage.Commands.Fun.Calc.Embed.DESCRIPTION
+                    getLangManager(event).getDescriptionLocale("calc.embed.description"
                             )
                             .replace("%result%", String.valueOf(result))
             );
             embed.setFooter(
-                    getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Calc.FILE,
-                            LangMessage.Commands.Fun.Calc.Embed.FOOTER
+                    getLangManager(event).getDescriptionLocale("calc.embed.footer"
                     ));
             event.replyEmbeds(embed.build()).queue();
         } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "command", "Error in calculation: ", e);
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Fun.Calc.FILE,
-                                    LangMessage.Commands.Fun.Calc.Error.WRONG
+                            getDescriptionLocale("calc.error.wrong"
                             )
                     );
         }

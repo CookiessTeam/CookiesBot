@@ -12,7 +12,6 @@ import ru.devprizrakk.voidbot.command.api.BaseSubCommand;
 import ru.devprizrakk.voidbot.database.model.WarnModel;
 import ru.devprizrakk.voidbot.events.StatisticsService;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -32,21 +31,15 @@ public class Warn extends BaseSubCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Warn.FILE,
-                LangMessage.Commands.Warn.Description.COMMAND
+        return getLangManager(event).getInfoLocale("warn.description.command"
         );
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Warn.FILE,
-                LangMessage.Commands.Warn.Description.Option.TARGET_USER), true));
-        options.add(new OptionData(OptionType.STRING, "reason", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Warn.FILE,
-                LangMessage.Commands.Warn.Description.Option.REASON), false));
+        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale("warn.description.option.target-user"), true));
+        options.add(new OptionData(OptionType.STRING, "reason", getLangManager(event).getDescriptionLocale("warn.description.option.reason"), false));
         return options;
     }
 
@@ -68,17 +61,17 @@ public class Warn extends BaseSubCommand {
         Member targetMember = event.getOption("target-user", OptionMapping::getAsMember);
         User targetUser = event.getOption("target-user", OptionMapping::getAsUser);
         if (targetMember == null || targetUser == null) {
-            replyError(LangMessage.Commands.Warn.Error.USER_NOT_FOUND);
+            replyError("warn.error.user-not-found");
             return;
         }
 
         Member selfMember = guild.getSelfMember();
         if (!authorMember.canInteract(targetMember)) {
-            replyError(LangMessage.Commands.Warn.Error.LowLevelPermission.AUTHOR);
+            replyError("warn.error.low-level-permission.author");
             return;
         }
         if (!selfMember.canInteract(targetMember)) {
-            replyError(LangMessage.Commands.Warn.Error.LowLevelPermission.BOT);
+            replyError("warn.error.low-level-permission.bot");
             return;
         }
 
@@ -110,36 +103,27 @@ public class Warn extends BaseSubCommand {
     private void replySuccess(User author, User targetUser, String reason, long totalWarns) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Warn.FILE,
-                LangMessage.Commands.Warn.Embed.TITLE
+        embed.setTitle(getLangManager(event).getDescriptionLocale("warn.embed.title"
         ));
-        String desc = getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Warn.FILE,
-                        LangMessage.Commands.Warn.Embed.DESCRIPTION)
+        String desc = getLangManager(event).getDescriptionLocale("warn.embed.description")
                 .replace("%target-user%", targetUser.getAsMention())
                 .replace("%author%", author.getAsMention())
                 .replace("%reason%", reason);
         if (totalWarns >= 0) {
-            desc += "\nВсего варнов на сервере: **" + totalWarns + "**";
+            desc += getLangManager(event).getInfoLocale("warn.embed.total-warns").replace("%count%", String.valueOf(totalWarns));
         }
         embed.setDescription(desc);
-        embed.setFooter(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Warn.FILE,
-                LangMessage.Commands.Warn.Embed.FOOTER
+        embed.setFooter(getLangManager(event).getDescriptionLocale("warn.embed.footer"
         ));
         event.replyEmbeds(embed.build()).queue();
     }
 
     private void replyError(String key) {
-        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Warn.FILE, key));
+        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(key));
     }
 
     private void replyOther(String code) {
-        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Warn.FILE,
-                LangMessage.Commands.Warn.Error.OTHER).replace("%code%", code));
+        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale("warn.error.other").replace("%code%", code));
     }
 
     private void replyOther(String code, Throwable throwable) {

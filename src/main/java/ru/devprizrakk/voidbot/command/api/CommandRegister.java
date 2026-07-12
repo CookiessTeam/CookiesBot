@@ -57,8 +57,10 @@ public class CommandRegister extends ListenerAdapter {
 
                 try {
                     command.execute(event);
-                } catch ( SQLException e ) {
+                } catch (SQLException e) {
                     Logger.getLogger().log(LogType.ERROR, "command", "", e);
+                } catch (ru.devprizrakk.voidbot.language.LocalizationException e) {
+                    Logger.getLogger().log(LogType.ERROR, "command", "Localization error: " + e.getMessage());
                 }
                 return;
             }
@@ -80,8 +82,10 @@ public class CommandRegister extends ListenerAdapter {
 
                 try {
                     sub.execute(event);
-                } catch ( SQLException e ) {
+                } catch (SQLException e) {
                     Logger.getLogger().log(LogType.ERROR, "sub-command", "", e);
+                } catch (ru.devprizrakk.voidbot.language.LocalizationException e) {
+                    Logger.getLogger().log(LogType.ERROR, "sub-command", "Localization error: " + e.getMessage());
                 }
                 return;
             }

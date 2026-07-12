@@ -10,7 +10,6 @@ import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.database.model.ExperienceModel;
 import ru.devprizrakk.voidbot.events.LevelService;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -29,9 +28,7 @@ public class Rank extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Server.Rank.FILE,
-                LangMessage.Commands.Server.Rank.Description.COMMAND
+        return getLangManager(event).getInfoLocale("rank.description.command"
         );
     }
 
@@ -40,9 +37,7 @@ public class Rank extends BaseCommand {
         return List.of(
                 new OptionData(OptionType.USER,
                         "user",
-                        getLangManager(event).getInfoLocale(
-                                LangMessage.Commands.Server.Rank.FILE,
-                                LangMessage.Commands.Server.Rank.Description.Option.USER),
+                        getLangManager(event).getInfoLocale("rank.description.option.user"),
                         false));
     }
 
@@ -59,7 +54,7 @@ public class Rank extends BaseCommand {
 
         Guild guild = event.getGuild();
         if (guild == null) {
-            event.reply("Команда доступна только на сервере.").setEphemeral(true).queue();
+            event.reply(getLangManager(event).getInfoLocale("system.guild-only")).setEphemeral(true).queue();
             return;
         }
 
@@ -101,7 +96,7 @@ public class Rank extends BaseCommand {
         } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "command", "Failed to render rank card", e);
             try {
-                event.getHook().sendMessage("Не удалось построить карточку рейтинга.").queue();
+                event.getHook().sendMessage(getLangManager(event).getInfoLocale("system.generic-error")).queue();
             } catch ( Exception ignored ) {
             }
         }

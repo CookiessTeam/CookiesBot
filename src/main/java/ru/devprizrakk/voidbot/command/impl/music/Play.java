@@ -12,7 +12,6 @@ import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.command.impl.CommandManager;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.lavalink.AudioLoader;
 import ru.devprizrakk.voidbot.lavalink.VoiceHelper;
 import ru.devprizrakk.voidbot.lavalink.media.MediaService;
@@ -33,7 +32,7 @@ public class Play extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Description.COMMAND);
+        return getLangManager(event).getInfoLocale("play.description.command");
     }
 
     @Override
@@ -43,9 +42,7 @@ public class Play extends BaseCommand {
                 OptionType.STRING,
                 "song",
                 getLangManager(event)
-                        .getInfoLocale(
-                                LangMessage.Commands.Music.Play.FILE,
-                                LangMessage.Commands.Music.Play.Description.Option.SONG),
+                        .getInfoLocale("play.description.option.song"),
                 true)
         );
         return options;
@@ -61,9 +58,7 @@ public class Play extends BaseCommand {
         if (event.getChannelType() != ChannelType.TEXT) {
             if (new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Music.Play.FILE,
-                                    LangMessage.Commands.Music.Play.Error.NO_DM)
+                            getDescriptionLocale("play.error.no-dm")
                     )
             ) {
                 return;
@@ -76,9 +71,7 @@ public class Play extends BaseCommand {
         GuildVoiceState memberVoiceState = member.getVoiceState();
 
         if (!memberVoiceState.inAudioChannel()) {
-            if (new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(
-                    LangMessage.Commands.Music.Play.FILE,
-                    LangMessage.Commands.Music.Play.Error.NO_FOUND_VOICE
+            if (new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale("play.error.no-found-voice"
             ))) {
                 return;
             }
@@ -96,9 +89,7 @@ public class Play extends BaseCommand {
                 String platforms = mediaService.getAvailablePlatforms().stream().map(item -> "`" + item + "`").collect(Collectors.joining(", "));
                 if (new WrongErrorEmbedFactory(event)
                         .wrongError(getLangManager(event)
-                                .getDescriptionLocale(
-                                        LangMessage.Commands.Music.Play.FILE,
-                                        LangMessage.Commands.Music.Play.Error.NO_SUPPORT_PLATFORM)
+                                .getDescriptionLocale("play.error.no-support-platform")
                                 .replace("%music-platform-support%", platforms)
                         )
                 ) {
@@ -111,7 +102,7 @@ public class Play extends BaseCommand {
 
         if (!VoiceHelper.connectToMemberVoice(guild, member)) {
             event.reply(
-                    getLangManager(event).getDescriptionLocale(LangMessage.Commands.Music.Play.FILE, LangMessage.Commands.Music.Play.Error.NO_FOUND_ME)
+                    getLangManager(event).getDescriptionLocale("play.error.no-found-me")
             ).queue();
         } else {
             CommandManager.getOrCreateMusicManager(event.getGuild().getIdLong());

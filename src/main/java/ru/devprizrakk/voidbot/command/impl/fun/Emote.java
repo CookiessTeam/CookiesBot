@@ -10,7 +10,6 @@ import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.exceptions.discord.DisabledFunctionErrorEmbedFactory;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 
@@ -45,26 +44,20 @@ public class Emote extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Fun.Emote.FILE,
-                LangMessage.Commands.Fun.Emote.Description.COMMAND
+        return getLangManager(event).getInfoLocale("emote.description.command"
         );
     }
 
     @Override
     public List<OptionData> getOptions() {
-        OptionData actionOption = new OptionData(OptionType.STRING, "action", getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Fun.Emote.FILE,
-                LangMessage.Commands.Fun.Emote.Description.Option.CHOICE
+        OptionData actionOption = new OptionData(OptionType.STRING, "action", getLangManager(event).getInfoLocale("emote.description.option.choice"
         ), true);
 
         for (String type : EMOTE_TYPES) {
             actionOption.addChoice(getEmoteTypeLocale(type), type);
         }
 
-        OptionData userOption = new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Fun.Emote.FILE,
-                LangMessage.Commands.Fun.Emote.Description.Option.USER
+        OptionData userOption = new OptionData(OptionType.USER, "user", getLangManager(event).getInfoLocale("emote.description.option.user"
         ), false);
 
         return List.of(actionOption, userOption);
@@ -88,22 +81,22 @@ public class Emote extends BaseCommand {
 
         String gifUrl = fetchGifUrl(action);
         if (gifUrl == null) {
-            new WrongErrorEmbedFactory(event).wrongError("При опросе Kawaii API произошла ошибка!");
+            new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getInfoLocale("emote.error.kawaii-api"));
             return;
         }
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(buildTitle(action))
                 .setDescription(buildDescription(userAuthor, userMentioned, action))
-                .setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Embed.FOOTER))
+                .setFooter(getLangManager(event).getDescriptionLocale("emote.embed.footer"))
                 .setImage(gifUrl);
 
         event.replyEmbeds(embed.build()).queue();
     }
 
     private String getEmoteTypeLocale(String type) {
-        String path = LangMessage.Commands.Fun.Emote.Type.BASE_PATH + type;
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Emote.FILE, path);
+        String path = "emote.type." + type;
+        return getLangManager(event).getInfoLocale(path);
     }
 
     private String fetchGifUrl(String action) {
@@ -131,34 +124,25 @@ public class Emote extends BaseCommand {
 
     private String buildTitle(String action) {
         String authorName = Objects.requireNonNull(event.getMember()).getEffectiveName();
-        String emoteName = getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Fun.Emote.FILE,
-                LangMessage.Commands.Fun.Emote.Type.BASE_PATH + action);
+        String emoteName = getLangManager(event).getDescriptionLocale("emote.type." + action);
 
-        return getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Fun.Emote.FILE,
-                        LangMessage.Commands.Fun.Emote.Embed.TITLE)
+        return getLangManager(event).getDescriptionLocale("emote.embed.title")
                 .replace("%user-author%", authorName)
                 .replace("%emote%", emoteName);
     }
 
     private String buildDescription(User userAuthor, User userMentioned, String action) {
-        String descriptionTemplate = getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Fun.Emote.FILE, LangMessage.Commands.Fun.Emote.Embed.DESCRIPTION);
+        String descriptionTemplate = getLangManager(event).getDescriptionLocale("emote.embed.description");
 
         if (userMentioned != null) {
-            String emoteDescription = getLangManager(event).getDescriptionLocale(
-                            LangMessage.Commands.Fun.Emote.FILE,
-                            LangMessage.Commands.Fun.Emote.TypeMentioned.BASE_PATH + action)
+            String emoteDescription = getLangManager(event).getDescriptionLocale("emote.type-mentioned." + action)
                     .replace("%user-author%", userAuthor.getAsMention())
                     .replace("%user-mentioned%", userMentioned.getAsMention());
 
             return descriptionTemplate.replace("%emote-description%", emoteDescription);
         }
 
-        String emoteDescription = getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Fun.Emote.FILE,
-                        LangMessage.Commands.Fun.Emote.TypeNotMentioned.BASE_PATH + action)
+        String emoteDescription = getLangManager(event).getDescriptionLocale("emote.type-not-mentioned." + action)
                 .replace("%user-author%", userAuthor.getAsMention());
 
         return descriptionTemplate.replace("%emote-description%", emoteDescription);

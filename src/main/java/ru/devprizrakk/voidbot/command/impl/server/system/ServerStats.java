@@ -9,7 +9,6 @@ import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.database.model.ExperienceModel;
 import ru.devprizrakk.voidbot.database.model.MemberEventType;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -28,9 +27,7 @@ public class ServerStats extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Server.ServerStats.FILE,
-                LangMessage.Commands.Server.ServerStats.Description.COMMAND
+        return getLangManager(event).getInfoLocale("serverstats.description.command"
         );
     }
 
@@ -39,9 +36,7 @@ public class ServerStats extends BaseCommand {
         return List.of(
                 new OptionData(OptionType.STRING,
                         "period",
-                        getLangManager(event).getInfoLocale(
-                                LangMessage.Commands.Server.ServerStats.FILE,
-                                LangMessage.Commands.Server.ServerStats.Description.Option.PERIOD),
+                        getLangManager(event).getInfoLocale("serverstats.description.option.period"),
                         false)
                         .addChoice("today", "today")
                         .addChoice("week", "week")
@@ -58,7 +53,7 @@ public class ServerStats extends BaseCommand {
     public void onExecute() {
         Guild guild = event.getGuild();
         if (guild == null) {
-            event.reply("Команда доступна только на сервере.").setEphemeral(true).queue();
+            event.reply(getLangManager(event).getInfoLocale("system.guild-only")).setEphemeral(true).queue();
             return;
         }
 
@@ -104,29 +99,29 @@ public class ServerStats extends BaseCommand {
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(new Color(110, 220, 90));
-            embed.setTitle("Аналитика сервера «" + guild.getName() + "»");
+            embed.setTitle(getLangManager(event).getInfoLocale("serverstats.embed.title").replace("%server-name%", guild.getName()));
             embed.setThumbnail(guild.getIconUrl());
 
-            embed.addField("Участники",
-                    "Всего: **" + guild.getMemberCount() + "**\n" +
-                            "Новых за период: **" + joins + "**\n" +
-                            "Вышло: **" + leaves + "**\n" +
-                            "Киков: **" + kicks + "**\n" +
-                            "Банов: **" + bans + "**\n" +
-                            "Разбанов: **" + unbans + "**",
+            embed.addField(getLangManager(event).getInfoLocale("serverstats.field.members-title"),
+                    getLangManager(event).getInfoLocale("serverstats.field.members-total").replace("%count%", String.valueOf(guild.getMemberCount())) +
+                            getLangManager(event).getInfoLocale("serverstats.field.members-new").replace("%count%", String.valueOf(joins)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.members-left").replace("%count%", String.valueOf(leaves)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.members-kicks").replace("%count%", String.valueOf(kicks)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.members-bans").replace("%count%", String.valueOf(bans)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.members-unbans").replace("%count%", String.valueOf(unbans)),
                     true);
 
-            embed.addField("Активность",
-                    "Сообщений: **" + messages + "**\n" +
-                            "Удалено: **" + deletedMessages + "**\n" +
-                            "Войс всего: **" + formatTime(totalVoiceSeconds) + "**\n" +
-                            "Сессий войса: **" + rm.getVoiceSessions().countAllSessions() + "**",
+            embed.addField(getLangManager(event).getInfoLocale("serverstats.field.activity-title"),
+                    getLangManager(event).getInfoLocale("serverstats.field.activity-messages").replace("%count%", String.valueOf(messages)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.activity-deleted").replace("%count%", String.valueOf(deletedMessages)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.activity-voice").replace("%count%", formatTime(totalVoiceSeconds)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.activity-sessions").replace("%count%", String.valueOf(rm.getVoiceSessions().countAllSessions())),
                     true);
 
-            embed.addField("Модерация",
-                    "Варнов всего: **" + totalWarns + "**\n" +
-                            "Активных банов: **" + activeBans + "**\n" +
-                            "Активных мутов: **" + activeMutes + "**",
+            embed.addField(getLangManager(event).getInfoLocale("serverstats.field.moderation-title"),
+                    getLangManager(event).getInfoLocale("serverstats.field.moderation-warns").replace("%count%", String.valueOf(totalWarns)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.moderation-active-bans").replace("%count%", String.valueOf(activeBans)) +
+                            getLangManager(event).getInfoLocale("serverstats.field.moderation-active-mutes").replace("%count%", String.valueOf(activeMutes)),
                     true);
 
             StringBuilder lb = new StringBuilder();
@@ -134,21 +129,24 @@ public class ServerStats extends BaseCommand {
             for (ExperienceModel exp : top) {
                 Member m = guild.getMemberById(exp.getDiscordId());
                 String name = m != null ? m.getEffectiveName() : "<@" + exp.getDiscordId() + ">";
-                lb.append(rank++).append(". ").append(name)
-                        .append(" — Ур. ").append(exp.getLevel())
-                        .append(" (").append(exp.getTotalExperience()).append(" XP)\n");
+                lb.append(getLangManager(event).getInfoLocale("serverstats.field.leaderboard-entry")
+                        .replace("%rank%", String.valueOf(rank))
+                        .replace("%name%", name)
+                        .replace("%level%", String.valueOf(exp.getLevel()))
+                        .replace("%xp%", String.valueOf(exp.getTotalExperience()))).append("\n");
+                rank++;
             }
             if (lb.isEmpty()) {
-                lb.append("Нет данных");
+                lb.append(getLangManager(event).getInfoLocale("serverstats.field.leaderboard-empty"));
             }
-            embed.addField("Топ по опыту", lb.toString(), false);
+            embed.addField(getLangManager(event).getInfoLocale("serverstats.field.leaderboard-title"), lb.toString(), false);
 
-            embed.setFooter("Период: " + periodLabel(period) + " | VoidBot");
+            embed.setFooter(getLangManager(event).getInfoLocale("serverstats.footer").replace("%period%", periodLabel(period)));
             event.replyEmbeds(embed.build()).queue();
 
         } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "command", "Failed to build server stats", e);
-            event.reply("Не удалось собрать аналитику.").setEphemeral(true).queue();
+            event.reply(getLangManager(event).getInfoLocale("serverstats.error.render")).setEphemeral(true).queue();
         }
     }
 
@@ -171,22 +169,22 @@ public class ServerStats extends BaseCommand {
 
     private String periodLabel(String period) {
         return switch (period) {
-            case "today" -> "сегодня";
-            case "week" -> "последние 7 дней";
-            default -> "всё время";
+            case "today" -> getLangManager(event).getInfoLocale("serverstats.period.today");
+            case "week" -> getLangManager(event).getInfoLocale("serverstats.period.week");
+            default -> getLangManager(event).getInfoLocale("serverstats.period.all");
         };
     }
 
     private String formatTime(long seconds) {
-        if (seconds <= 0) return "0м";
+        if (seconds <= 0) return "0" + ru.devprizrakk.voidbot.language.LangManager.get("ru", "system.time.minute");
         long days = seconds / 86400;
         long hours = (seconds % 86400) / 3600;
         long mins = (seconds % 3600) / 60;
         StringBuilder sb = new StringBuilder();
-        if (days > 0) sb.append(days).append("д ");
-        if (hours > 0) sb.append(hours).append("ч ");
-        if (mins > 0) sb.append(mins).append("м ");
-        if (sb.isEmpty()) sb.append(seconds % 60).append("с");
+        if (days > 0) sb.append(days).append(ru.devprizrakk.voidbot.language.LangManager.get("ru", "system.time.day")).append(" ");
+        if (hours > 0) sb.append(hours).append(ru.devprizrakk.voidbot.language.LangManager.get("ru", "system.time.hour")).append(" ");
+        if (mins > 0) sb.append(mins).append(ru.devprizrakk.voidbot.language.LangManager.get("ru", "system.time.minute")).append(" ");
+        if (sb.isEmpty()) sb.append(seconds % 60).append(ru.devprizrakk.voidbot.language.LangManager.get("ru", "system.time.second"));
         return sb.toString().trim();
     }
 }

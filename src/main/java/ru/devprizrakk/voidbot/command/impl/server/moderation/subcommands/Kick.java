@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseSubCommand;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,21 +24,15 @@ public class Kick extends BaseSubCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Moderation.Kick.FILE,
-                LangMessage.Commands.Moderation.Kick.Description.COMMAND
+        return getLangManager(event).getInfoLocale("kick.description.command"
         );
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Kick.FILE,
-                LangMessage.Commands.Moderation.Kick.Description.Option.TARGET_USER), true));
-        options.add(new OptionData(OptionType.STRING, "reason", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Kick.FILE,
-                LangMessage.Commands.Moderation.Kick.Description.Option.REASON), true));
+        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale("kick.description.option.target-user"), true));
+        options.add(new OptionData(OptionType.STRING, "reason", getLangManager(event).getDescriptionLocale("kick.description.option.reason"), true));
         return options;
     }
 
@@ -53,7 +46,7 @@ public class Kick extends BaseSubCommand {
         Guild guild = event.getGuild();
         Member authorMember = event.getMember();
         if (guild == null || authorMember == null) {
-            replyError(LangMessage.Commands.Moderation.Kick.Error.OTHER);
+            replyError("kick.error.other");
             return;
         }
 
@@ -61,17 +54,17 @@ public class Kick extends BaseSubCommand {
         Member targetMember = event.getOption("target-user", OptionMapping::getAsMember);
         User targetUser = event.getOption("target-user", OptionMapping::getAsUser);
         if (targetMember == null || targetUser == null) {
-            replyError(LangMessage.Commands.Moderation.Kick.Error.USER_NOT_FOUND);
+            replyError("kick.error.user-not-found");
             return;
         }
 
         Member selfMember = guild.getSelfMember();
         if (!authorMember.canInteract(targetMember)) {
-            replyError(LangMessage.Commands.Moderation.Kick.Error.LowLevelPermission.AUTHOR);
+            replyError("kick.error.low-level-permission.author");
             return;
         }
         if (!selfMember.canInteract(targetMember)) {
-            replyError(LangMessage.Commands.Moderation.Kick.Error.LowLevelPermission.BOT);
+            replyError("kick.error.low-level-permission.bot");
             return;
         }
 
@@ -85,27 +78,21 @@ public class Kick extends BaseSubCommand {
                 .reason(reason)
                 .queue(
                         success -> replySuccess(author, targetUser, finalReason),
-                        failure -> replyError(LangMessage.Commands.Moderation.Kick.Error.OTHER)
+                        failure -> replyError("kick.error.other")
                 );
     }
 
     private void replySuccess(User author, User targetUser, String reason) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Kick.FILE,
-                LangMessage.Commands.Moderation.Kick.Embed.TITLE
+        embed.setTitle(getLangManager(event).getDescriptionLocale("kick.embed.title"
         ));
-        embed.setDescription(getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Moderation.Kick.FILE,
-                        LangMessage.Commands.Moderation.Kick.Embed.DESCRIPTION
+        embed.setDescription(getLangManager(event).getDescriptionLocale("kick.embed.description"
                 )
                 .replace("%author%", author.getAsMention())
                 .replace("%target-user%", targetUser.getAsMention())
                 .replace("%reason%", reason));
-        embed.setFooter(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Kick.FILE,
-                LangMessage.Commands.Moderation.Kick.Embed.FOOTER
+        embed.setFooter(getLangManager(event).getDescriptionLocale("kick.embed.footer"
         ));
         event.replyEmbeds(embed.build()).queue();
     }

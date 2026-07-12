@@ -2,11 +2,9 @@ package ru.devprizrakk.voidbot.exceptions.discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
-import ru.devprizrakk.voidbot.utils.Utils;
 
 import java.awt.*;
 
-// TODO: Возможно объединить классы ошибок в один класс по типу Exceptions внутри которого методы с ошибками
 public class BaseErrorEmbedFactory {
     protected final IReplyCallback event;
 
@@ -17,9 +15,17 @@ public class BaseErrorEmbedFactory {
     protected EmbedBuilder createErrorEmbed(String titleKey, String descriptionKey, String footerKey) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(Color.RED);
-        embed.setTitle(Utils.getLangManager(event).getDescriptionLocale("system.yml", titleKey));
-        embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("system.yml", descriptionKey));
-        embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("system.yml", footerKey));
+        embed.setTitle(safeGet(titleKey, "Ошибка"));
+        embed.setDescription(safeGet(descriptionKey, "Произошла ошибка при выполнении команды."));
+        embed.setFooter(safeGet(footerKey, "VoidBot"));
         return embed;
+    }
+
+    private String safeGet(String key, String fallback) {
+        String value = ru.devprizrakk.voidbot.language.LangManager.get("ru", key);
+        if (value == null || value.startsWith("§c")) {
+            return fallback;
+        }
+        return value;
     }
 }

@@ -9,7 +9,6 @@ import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.command.impl.server.user.RankCardRenderer;
 import ru.devprizrakk.voidbot.database.model.MemberEventType;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -28,9 +27,7 @@ public class ServerInfo extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Server.ServerInfo.FILE,
-                LangMessage.Commands.Server.ServerInfo.Description.COMMAND
+        return getLangManager(event).getInfoLocale("serverinfo.description.command"
         );
     }
 
@@ -48,7 +45,7 @@ public class ServerInfo extends BaseCommand {
     public void onExecute() {
         Guild guild = event.getGuild();
         if (guild == null) {
-            event.reply("Команда доступна только на сервере.").setEphemeral(true).queue();
+            event.reply(getLangManager(event).getInfoLocale("system.guild-only")).setEphemeral(true).queue();
             return;
         }
 
@@ -57,26 +54,26 @@ public class ServerInfo extends BaseCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(88, 101, 242));
         embed.setThumbnail(guild.getIconUrl());
-        embed.setTitle("Информация о сервере «" + guild.getName() + "»");
+        embed.setTitle(getLangManager(event).getInfoLocale("serverinfo.embed.title").replace("%server-name%", guild.getName()));
 
-        embed.addField("ID", guild.getId(), true);
-        embed.addField("Владелец", guild.getOwner() != null ? guild.getOwner().getAsMention() : "—", true);
-        embed.addField("Создан", guild.getTimeCreated().format(fmt), true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.id"), guild.getId(), true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.owner"), guild.getOwner() != null ? guild.getOwner().getAsMention() : "—", true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.created"), guild.getTimeCreated().format(fmt), true);
 
-        embed.addField("Участников", String.valueOf(guild.getMemberCount()), true);
-        embed.addField("Ролей", String.valueOf(guild.getRoles().size()), true);
-        embed.addField("Boost", "Tier " + guild.getBoostTier().getKey() + " (" + guild.getBoostCount() + " бустов)", true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.members"), String.valueOf(guild.getMemberCount()), true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.roles"), String.valueOf(guild.getRoles().size()), true);
+        embed.addField("Boost", getLangManager(event).getInfoLocale("serverinfo.field.boost").replace("%tier%", String.valueOf(guild.getBoostTier().getKey())).replace("%count%", String.valueOf(guild.getBoostCount())), true);
 
         List<Category> categories = guild.getCategories();
         List<TextChannel> text = guild.getTextChannels();
         List<VoiceChannel> voice = guild.getVoiceChannels();
-        embed.addField("Каналов",
-                "Текстовых: **" + text.size() + "**\n" +
-                        "Голосовых: **" + voice.size() + "**\n" +
-                        "Категорий: **" + categories.size() + "**", true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.channels"),
+                getLangManager(event).getInfoLocale("serverinfo.field.channels-text").replace("%count%", String.valueOf(text.size())) +
+                        getLangManager(event).getInfoLocale("serverinfo.field.channels-voice").replace("%count%", String.valueOf(voice.size())) +
+                        getLangManager(event).getInfoLocale("serverinfo.field.channels-category").replace("%count%", String.valueOf(categories.size())), true);
 
-        embed.addField("Уровень проверки", guild.getVerificationLevel().name(), true);
-        embed.addField("Локаль", guild.getLocale().toString(), true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.verification"), guild.getVerificationLevel().name(), true);
+        embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.locale"), guild.getLocale().toString(), true);
 
         try {
             var rm = Utils.getDatabaseManager().getRepositoryManager();
@@ -92,28 +89,28 @@ public class ServerInfo extends BaseCommand {
             long bansTotal = rm.getMemberEvents().countByType(MemberEventType.BAN);
             long kicksTotal = rm.getMemberEvents().countByType(MemberEventType.KICK);
 
-            embed.addField("Аналитика (за всё время)",
-                    "Сообщений: **" + totalMessages + "**\n" +
-                            "Войс всего: **" + RankCardRenderer.formatTime(totalVoiceSec) + "**\n" +
-                            "Открытых войс-сессий: **" + openVoice + "**",
+            embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.analytics-title"),
+                    getLangManager(event).getInfoLocale("serverinfo.field.analytics-messages").replace("%count%", String.valueOf(totalMessages)) +
+                            getLangManager(event).getInfoLocale("serverinfo.field.analytics-voice").replace("%count%", RankCardRenderer.formatTime(totalVoiceSec)) +
+                            getLangManager(event).getInfoLocale("serverinfo.field.analytics-open-voice").replace("%count%", String.valueOf(openVoice)),
                     true);
 
-            embed.addField("События",
-                    "Входов всего: **" + joinsTotal + "**\n" +
-                            "Банов всего: **" + bansTotal + "**\n" +
-                            "Киков всего: **" + kicksTotal + "**",
+            embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.events-title"),
+                    getLangManager(event).getInfoLocale("serverinfo.field.events-joins").replace("%count%", String.valueOf(joinsTotal)) +
+                            getLangManager(event).getInfoLocale("serverinfo.field.events-bans").replace("%count%", String.valueOf(bansTotal)) +
+                            getLangManager(event).getInfoLocale("serverinfo.field.events-kicks").replace("%count%", String.valueOf(kicksTotal)),
                     true);
 
-            embed.addField("Модерация всего",
-                    "Варнов: **" + totalWarns + "**\n" +
-                            "Банов: **" + totalBans + "**\n" +
-                            "Мутов: **" + totalMutes + "**",
+            embed.addField(getLangManager(event).getInfoLocale("serverinfo.field.moderation-title"),
+                    getLangManager(event).getInfoLocale("serverinfo.field.moderation-warns").replace("%count%", String.valueOf(totalWarns)) +
+                            getLangManager(event).getInfoLocale("serverinfo.field.moderation-bans").replace("%count%", String.valueOf(totalBans)) +
+                            getLangManager(event).getInfoLocale("serverinfo.field.moderation-mutes").replace("%count%", String.valueOf(totalMutes)),
                     true);
         } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "command", "Failed to load server analytics", e);
         }
 
-        embed.setFooter("VoidBot | " + OffsetDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        embed.setFooter(OffsetDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         event.replyEmbeds(embed.build()).queue();
     }
 }

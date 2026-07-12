@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseSubCommand;
 import ru.devprizrakk.voidbot.database.model.MuteModel;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -36,24 +35,16 @@ public class Mute extends BaseSubCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Description.COMMAND
+        return getLangManager(event).getInfoLocale("mute.description.command"
         );
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Description.Option.TARGET_USER), true));
-        options.add(new OptionData(OptionType.STRING, "reason", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Description.Option.REASON), true));
-        options.add(new OptionData(OptionType.STRING, "time", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Description.Option.TIME), false));
+        options.add(new OptionData(OptionType.USER, "target-user", getLangManager(event).getDescriptionLocale("mute.description.option.target-user"), true));
+        options.add(new OptionData(OptionType.STRING, "reason", getLangManager(event).getDescriptionLocale("mute.description.option.reason"), true));
+        options.add(new OptionData(OptionType.STRING, "time", getLangManager(event).getDescriptionLocale("mute.description.option.time"), false));
         return options;
     }
 
@@ -75,17 +66,17 @@ public class Mute extends BaseSubCommand {
         Member targetMember = event.getOption("target-user", OptionMapping::getAsMember);
         User targetUser = event.getOption("target-user", OptionMapping::getAsUser);
         if (targetMember == null || targetUser == null) {
-            replyError(LangMessage.Commands.Moderation.Mute.Error.USER_NOT_FOUND);
+            replyError("mute.error.user-not-found");
             return;
         }
 
         Member selfMember = guild.getSelfMember();
         if (!authorMember.canInteract(targetMember)) {
-            replyError(LangMessage.Commands.Moderation.Mute.Error.LowLevelPermission.AUTHOR);
+            replyError("mute.error.low-level-permission.author");
             return;
         }
         if (!selfMember.canInteract(targetMember)) {
-            replyError(LangMessage.Commands.Moderation.Mute.Error.LowLevelPermission.BOT);
+            replyError("mute.error.low-level-permission.bot");
             return;
         }
 
@@ -111,7 +102,7 @@ public class Mute extends BaseSubCommand {
 
         ParsedDuration duration = parseDuration(rawTime);
         if (duration == null || duration.totalSeconds <= 0) {
-            replyError(LangMessage.Commands.Moderation.Mute.Error.NOT_CORRECTED);
+            replyError("mute.error.not-corrected");
             return;
         }
         if (duration.totalSeconds > MAX_TIMEOUT_SECONDS) {
@@ -202,14 +193,10 @@ public class Mute extends BaseSubCommand {
     private void replySuccess(User author, User targetUser, String reason, ParsedDuration duration) {
         String status;
         if (duration == null) {
-            status = getLangManager(event).getDescriptionLocale(
-                    LangMessage.Commands.Moderation.Mute.FILE,
-                    LangMessage.Commands.Moderation.Mute.Status.FOREVER
+            status = getLangManager(event).getDescriptionLocale("mute.status.forever"
             );
         } else {
-            status = getLangManager(event).getDescriptionLocale(
-                    LangMessage.Commands.Moderation.Mute.FILE,
-                    LangMessage.Commands.Moderation.Mute.Status.TIME
+            status = getLangManager(event).getDescriptionLocale("mute.status.time"
             ).replace("%time%", formatDuration(duration));
         }
 
@@ -218,22 +205,16 @@ public class Mute extends BaseSubCommand {
                 .replace("%author%", author.getAsMention())
                 .replace("%reason%", reason);
 
-        String embedDescription = getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Moderation.Mute.FILE,
-                        LangMessage.Commands.Moderation.Mute.Embed.DESCRIPTION
+        String embedDescription = getLangManager(event).getDescriptionLocale("mute.embed.description"
                 ).replace("%mute-description%", status)
                 .replace("%mute-description", status);
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Embed.TITLE
+        embed.setTitle(getLangManager(event).getDescriptionLocale("mute.embed.title"
         ));
         embed.setDescription(embedDescription);
-        embed.setFooter(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Embed.FOOTER
+        embed.setFooter(getLangManager(event).getDescriptionLocale("mute.embed.footer"
         ));
         event.replyEmbeds(embed.build()).queue();
     }
@@ -241,16 +222,12 @@ public class Mute extends BaseSubCommand {
     private void replyError(String key) {
         new WrongErrorEmbedFactory(event).
                 wrongError(getLangManager(event).
-                        getDescriptionLocale(
-                                LangMessage.Commands.Moderation.Mute.FILE,
-                                key
+                        getDescriptionLocale(key
                         ));
     }
 
     private void replyOther(String code) {
-        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Error.OTHER).replace("%code%", code));
+        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale("mute.error.other").replace("%code%", code));
     }
 
     private void replyOther(String code, Throwable throwable) {
@@ -264,23 +241,23 @@ public class Mute extends BaseSubCommand {
     private String formatDuration(ParsedDuration duration) {
         List<String> parts = new ArrayList<>();
         addTimePart(parts, duration.months,
-                LangMessage.Commands.Moderation.Mute.LocalTime.MOUNT,
-                LangMessage.Commands.Moderation.Mute.LocalTime.MOUNTS);
+                "mute.local-time.mount",
+                "mute.local-time.mounts");
         addTimePart(parts, duration.weeks,
-                LangMessage.Commands.Moderation.Mute.LocalTime.WEEK,
-                LangMessage.Commands.Moderation.Mute.LocalTime.WEEKS);
+                "mute.local-time.week",
+                "mute.local-time.weeks");
         addTimePart(parts, duration.days,
-                LangMessage.Commands.Moderation.Mute.LocalTime.DAY,
-                LangMessage.Commands.Moderation.Mute.LocalTime.DAYS);
+                "mute.local-time.day",
+                "mute.local-time.days");
         addTimePart(parts, duration.hours,
-                LangMessage.Commands.Moderation.Mute.LocalTime.HOUR,
-                LangMessage.Commands.Moderation.Mute.LocalTime.HOURS);
+                "mute.local-time.hour",
+                "mute.local-time.hours");
         addTimePart(parts, duration.minutes,
-                LangMessage.Commands.Moderation.Mute.LocalTime.MINUTE,
-                LangMessage.Commands.Moderation.Mute.LocalTime.MINUTES);
+                "mute.local-time.minute",
+                "mute.local-time.minutes");
         addTimePart(parts, duration.seconds,
-                LangMessage.Commands.Moderation.Mute.LocalTime.SECOND,
-                LangMessage.Commands.Moderation.Mute.LocalTime.SECONDS);
+                "mute.local-time.second",
+                "mute.local-time.seconds");
         return String.join(" ", parts);
     }
 
@@ -290,8 +267,8 @@ public class Mute extends BaseSubCommand {
         }
 
         String unit = value == 1
-                ? getLangManager(event).getDescriptionLocale(LangMessage.Commands.Moderation.Mute.FILE, singularKey)
-                : getLangManager(event).getDescriptionLocale(LangMessage.Commands.Moderation.Mute.FILE, pluralKey);
+                ? getLangManager(event).getDescriptionLocale(singularKey)
+                : getLangManager(event).getDescriptionLocale(pluralKey);
 
         parts.add(value + " " + unit);
     }

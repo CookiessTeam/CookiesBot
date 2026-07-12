@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseSubCommand;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,18 +24,14 @@ public class Unban extends BaseSubCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Moderation.Unban.FILE,
-                LangMessage.Commands.Moderation.Unban.Description.COMMAND
+        return getLangManager(event).getInfoLocale("unban.description.command"
         );
     }
 
     @Override
     public List<OptionData> getOptions() {
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "target-user", getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Unban.FILE,
-                LangMessage.Commands.Moderation.Unban.Description.Option.TARGET_USER), true));
+        options.add(new OptionData(OptionType.STRING, "target-user", getLangManager(event).getDescriptionLocale("unban.description.option.target-user"), true));
         return options;
     }
 
@@ -55,14 +50,14 @@ public class Unban extends BaseSubCommand {
         }
 
         if (event.getOption("target-user", OptionMapping::getAsString) != null && event.getOption("target-user", OptionMapping::getAsString).isEmpty()) {
-            replyError(LangMessage.Commands.Moderation.Unban.Error.USER_NOT_FOUND);
+            replyError("unban.error.user-not-found");
             return;
         }
 
         User author = event.getUser();
         User targetUser = event.getJDA().getUserById(event.getOption("target-user", OptionMapping::getAsString));
         if (targetUser == null) {
-            replyError(LangMessage.Commands.Moderation.Unban.Error.USER_NOT_FOUND);
+            replyError("unban.error.user-not-found");
             return;
         }
 
@@ -77,20 +72,14 @@ public class Unban extends BaseSubCommand {
     private void replySuccess(User author, User targetUser) {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Unban.FILE,
-                LangMessage.Commands.Moderation.Unban.Embed.TITLE
+        embed.setTitle(getLangManager(event).getDescriptionLocale("unban.embed.title"
         ));
-        embed.setDescription(getLangManager(event).getDescriptionLocale(
-                                LangMessage.Commands.Moderation.Unban.FILE,
-                                LangMessage.Commands.Moderation.Unban.Embed.DESCRIPTION
+        embed.setDescription(getLangManager(event).getDescriptionLocale("unban.embed.description"
                         )
                         .replace("%author%", author.getAsMention())
                         .replace("%target-user%", targetUser.getAsMention())
         );
-        embed.setFooter(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Unban.FILE,
-                LangMessage.Commands.Moderation.Unban.Embed.FOOTER
+        embed.setFooter(getLangManager(event).getDescriptionLocale("unban.embed.footer"
         ));
         event.replyEmbeds(embed.build()).queue();
     }
@@ -98,16 +87,12 @@ public class Unban extends BaseSubCommand {
     private void replyError(String key) {
         new WrongErrorEmbedFactory(event).
                 wrongError(getLangManager(event).
-                        getDescriptionLocale(
-                                LangMessage.Commands.Moderation.Mute.FILE,
-                                key
+                        getDescriptionLocale(key
                         ));
     }
 
     private void replyOther(String code) {
-        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale(
-                LangMessage.Commands.Moderation.Mute.FILE,
-                LangMessage.Commands.Moderation.Mute.Error.OTHER).replace("%code%", code));
+        new WrongErrorEmbedFactory(event).wrongError(getLangManager(event).getDescriptionLocale("mute.error.other").replace("%code%", code));
     }
 
     private void replyOther(Throwable throwable) {

@@ -7,7 +7,6 @@ import ru.devprizrakk.voidbot.bootstrap.discord.JDALoader;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
 import ru.devprizrakk.voidbot.exceptions.discord.WrongErrorEmbedFactory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.sql.SQLException;
 import java.util.Objects;
@@ -21,7 +20,7 @@ public class Pause extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Music.Pause.FILE, LangMessage.Commands.Music.Pause.Description.COMMAND);
+        return getLangManager(event).getInfoLocale("pause.description.command");
     }
 
     @Override
@@ -34,9 +33,7 @@ public class Pause extends BaseCommand {
         if (event.getChannelType() != ChannelType.TEXT) {
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Music.Pause.FILE,
-                                    LangMessage.Commands.Music.Pause.Error.NO_DM
+                            getDescriptionLocale("pause.error.no-dm"
                             )
                     );
             return;
@@ -49,9 +46,7 @@ public class Pause extends BaseCommand {
         if (!memberVoiceState.inAudioChannel()) {
             new WrongErrorEmbedFactory(event).
                     wrongError(getLangManager(event).
-                            getDescriptionLocale(
-                                    LangMessage.Commands.Music.Pause.FILE,
-                                    LangMessage.Commands.Music.Pause.Error.OTHER
+                            getDescriptionLocale("pause.error.other"
                             )
                     );
             return;
@@ -61,15 +56,12 @@ public class Pause extends BaseCommand {
                 .getPlayer()
                 .flatMap((player) -> player.setPaused(!player.getPaused()))
                 .subscribe((player) ->
-                        event.reply(getLangManager(event).getDescriptionLocale(
-                                        LangMessage.Commands.Music.Pause.FILE, LangMessage.Commands.Music.Pause.Message.SUCCESSFUL)
+                        event.reply(getLangManager(event).getDescriptionLocale("pause.message.successful")
                                 .replace("%pause-status%",
                                         (
-                                                player.getPaused() ? getLangManager(event).getDescriptionLocale(
-                                                        LangMessage.Commands.Music.Pause.FILE, LangMessage.Commands.Music.Pause.Status.FALSE)
+                                                player.getPaused() ? getLangManager(event).getDescriptionLocale("pause.status.false")
                                                         :
-                                                        getLangManager(event).getDescriptionLocale(
-                                                                LangMessage.Commands.Music.Pause.FILE, LangMessage.Commands.Music.Pause.Status.TRUE)
+                                                        getLangManager(event).getDescriptionLocale("pause.status.true")
                                         )
                                 )
                         ).queue());

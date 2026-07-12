@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import ru.devprizrakk.voidbot.database.model.ExperienceModel;
 import ru.devprizrakk.voidbot.database.repository.ExperienceRepository;
-import ru.devprizrakk.voidbot.language.LangMessage;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -95,17 +94,11 @@ public final class LevelService {
         replacements.put("required-experience", String.valueOf(requiredXpForLevel(exp.getLevel())));
 
         String title = Utils.getLangManager().getInfoLocale(
-                LangMessage.Event.Level.FILE,
-                LangMessage.Event.Level.Up.Embed.TITLE,
-                replacements);
+                "level.up.embed.title", replacements);
         String description = Utils.getLangManager().getInfoLocale(
-                LangMessage.Event.Level.FILE,
-                LangMessage.Event.Level.Up.Embed.DESCRIPTION,
-                replacements);
+                "level.up.embed.description", replacements);
         String footer = Utils.getLangManager().getInfoLocale(
-                LangMessage.Event.Level.FILE,
-                LangMessage.Event.Level.Up.Embed.FOOTER,
-                replacements);
+                "level.up.embed.footer", replacements);
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle(title);

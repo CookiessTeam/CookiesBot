@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,15 +21,15 @@ public class RPS extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Description.COMMAND);
+        return getLangManager(event).getInfoLocale("rps.description.command");
     }
 
     @Override
     public List<OptionData> getOptions() {
-        return List.of(new OptionData(OptionType.STRING, "choice", getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Description.Option.CHOICE), true)
-                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK), "rock")
-                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER), "paper")
-                .addChoice(getLangManager(event).getInfoLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS), "scissors")
+        return List.of(new OptionData(OptionType.STRING, "choice", getLangManager(event).getInfoLocale("rps.description.option.choice"), true)
+                .addChoice(getLangManager(event).getInfoLocale("rps.type.rock"), "rock")
+                .addChoice(getLangManager(event).getInfoLocale("rps.type.paper"), "paper")
+                .addChoice(getLangManager(event).getInfoLocale("rps.type.scissors"), "scissors")
         );
     }
 
@@ -53,53 +52,53 @@ public class RPS extends BaseCommand {
 
         switch (botChoice) {
             case "rock" ->
-                    botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
+                    botChoiceLocal = getLangManager(event).getDescriptionLocale("rps.type.rock");
             case "paper" ->
-                    botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
+                    botChoiceLocal = getLangManager(event).getDescriptionLocale("rps.type.paper");
             case "scissors" ->
-                    botChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
+                    botChoiceLocal = getLangManager(event).getDescriptionLocale("rps.type.scissors");
             default -> botChoiceLocal = "undefined";
         }
         switch (userChoice) {
             case "rock" ->
-                    userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.ROCK);
+                    userChoiceLocal = getLangManager(event).getDescriptionLocale("rps.type.rock");
             case "paper" ->
-                    userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.PAPER);
+                    userChoiceLocal = getLangManager(event).getDescriptionLocale("rps.type.paper");
             case "scissors" ->
-                    userChoiceLocal = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Type.SCISSORS);
+                    userChoiceLocal = getLangManager(event).getDescriptionLocale("rps.type.scissors");
             default -> userChoiceLocal = "undefined";
         }
         if (userChoiceLocal.equals("undefied")) {
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setTitle(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "system.wrong-error.embed.title"));
-            embed.setDescription(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "system.wrong-error.embed.description")
-                    .replace("%error-code%", getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "rps.error.undefied-choice")));
-            embed.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, "system.wrong-error.embed.footer"));
+            embed.setTitle(getLangManager(event).getDescriptionLocale("system.wrong-error.embed.title"));
+            embed.setDescription(getLangManager(event).getDescriptionLocale("system.wrong-error.embed.description")
+                    .replace("%error-code%", getLangManager(event).getDescriptionLocale("rps.error.undefied-choice")));
+            embed.setFooter(getLangManager(event).getDescriptionLocale("system.wrong-error.embed.footer"));
             event.replyEmbeds(embed.build()).queue();
             return;
         }
 
         String result;
         if (userChoice.equals(botChoice))
-            result = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Status.DRAW);
+            result = getLangManager(event).getDescriptionLocale("rps.status.draw");
         else if ((userChoice.equals("rock") && botChoice.equals("scissors")) ||
                 (userChoice.equals("scissors") && botChoice.equals("paper")) ||
                 (userChoice.equals("paper") && botChoice.equals("rock")))
-            result = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Status.WIN);
+            result = getLangManager(event).getDescriptionLocale("rps.status.win");
         else
-            result = getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Status.LOSE);
+            result = getLangManager(event).getDescriptionLocale("rps.status.lose");
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Embed.TITLE)
+                getLangManager(event).getDescriptionLocale("rps.embed.title")
         );
         embedBuilder.setDescription(
-                getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Embed.DESCRIPTION)
+                getLangManager(event).getDescriptionLocale("rps.embed.description")
                         .replace("%user-choice%", userChoiceLocal)
                         .replace("%bot-choice%", botChoiceLocal)
                         .replace("%result%", result)
         );
-        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale(LangMessage.Commands.Fun.Rps.FILE, LangMessage.Commands.Fun.Rps.Embed.FOOTER));
+        embedBuilder.setFooter(getLangManager(event).getDescriptionLocale("rps.embed.footer"));
         event.replyEmbeds(embedBuilder.build()).queue();
     }
 }

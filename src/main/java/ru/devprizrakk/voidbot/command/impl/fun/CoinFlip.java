@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
-import ru.devprizrakk.voidbot.language.LangMessage;
 
 import java.util.List;
 import java.util.Random;
@@ -20,9 +19,7 @@ public class CoinFlip extends BaseCommand {
 
     @Override
     public String getDescription() {
-        return getLangManager(event).getInfoLocale(
-                LangMessage.Commands.Fun.CoinFlip.FILE,
-                LangMessage.Commands.Fun.CoinFlip.Description.COMMAND
+        return getLangManager(event).getInfoLocale("coinflip.description.command"
         );
     }
 
@@ -42,35 +39,25 @@ public class CoinFlip extends BaseCommand {
         boolean nextBoolean = random.nextBoolean();
         String result;
         if (nextBoolean) {
-            result = getLangManager(event).getDescriptionLocale(
-                    LangMessage.Commands.Fun.CoinFlip.FILE,
-                    LangMessage.Commands.Fun.CoinFlip.Flip.EAGLE
+            result = getLangManager(event).getDescriptionLocale("coinflip.flip.eagle"
             );
         } else {
-            result = getLangManager(event).getDescriptionLocale(
-                    LangMessage.Commands.Fun.CoinFlip.FILE,
-                    LangMessage.Commands.Fun.CoinFlip.Flip.TAILS
+            result = getLangManager(event).getDescriptionLocale("coinflip.flip.tails"
             );
         }
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(
-                getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Fun.CoinFlip.FILE,
-                        LangMessage.Commands.Fun.CoinFlip.Embed.TITLE
+                getLangManager(event).getDescriptionLocale("coinflip.embed.title"
                 )
         );
         embedBuilder.setDescription(
-                getLangManager(event).getDescriptionLocale(
-                                LangMessage.Commands.Fun.CoinFlip.FILE,
-                                LangMessage.Commands.Fun.CoinFlip.Embed.DESCRIPTION
+                getLangManager(event).getDescriptionLocale("coinflip.embed.description"
                         )
                         .replace("%coinflip%", result)
         );
         embedBuilder.setFooter(
-                getLangManager(event).getDescriptionLocale(
-                        LangMessage.Commands.Fun.CoinFlip.FILE,
-                        LangMessage.Commands.Fun.CoinFlip.Embed.FOOTER
+                getLangManager(event).getDescriptionLocale("coinflip.embed.footer"
                 )
         );
         event.replyEmbeds(embedBuilder.build()).queue();
