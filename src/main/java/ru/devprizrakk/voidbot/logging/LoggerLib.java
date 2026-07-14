@@ -5,44 +5,51 @@ import ch.qos.logback.classic.LoggerContext;
 import org.slf4j.LoggerFactory;
 import ru.devprizrakk.voidbot.utils.Utils;
 
-import java.util.Objects;
-
-// TODO: В помойку и сделать лучше
 public class LoggerLib {
 
     public LoggerLib() {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-        if (Objects.equals(Utils.getConfig().getString("system.debug.enable"), "true")) {
-            switch (Utils.getConfig().getString("system.debug.level")) {
-                case "high":
-                    break;
-                case "medium":
-                    break; // TODO: Реализовать логгер уровни
-                case "low": {
-                    disableExternalLogs(loggerContext);
-                    break;
-                }
+        String enabled = Utils.getConfig().getString("system.debug.enable", "false");
+        String level = Utils.getConfig().getString("system.debug.level", "low");
+
+        if ("true".equalsIgnoreCase(enabled)) {
+            switch (level.toLowerCase()) {
+                case "high" -> setRootLevel(loggerContext, Level.DEBUG);
+                case "medium" -> setRootLevel(loggerContext, Level.INFO);
+                default -> configureDefault(loggerContext);
             }
         } else {
-            disableExternalLogs(loggerContext);
+            configureDefault(loggerContext);
         }
     }
 
-    private void disableExternalLogs(LoggerContext loggerContext) {
-        String[] loggers = {
+    private void setRootLevel(LoggerContext context, Level lvl) {
+        context.getLogger("root").setLevel(lvl);
+    }
+
+    private void configureDefault(LoggerContext loggerContext) {
+        // Критические логи JDA/Lavalink — ERROR (видим ошибки, глушим спам)
+        String[] errorOnly = {
                 "net.dv8tion.jda",
-                "net.dv8tion.jda.internal.requests.Requester",
-                "net.dv8tion.jda.api.requests.RestRateLimiter",
                 "net.dv8tion.jda.api.JDA",
-                "net.dv8tion.jda.api.utils.SessionControllerAdapter",
-                "reactor.util.Loggers",
+                "dev.arbjerg.lavalink",
                 "dev.arbjerg.lavalink.internal.LavalinkSocket",
                 "spark",
                 "org.eclipse.jetty"
         };
+        for (String name : errorOnly) {
+            loggerContext.getLogger(name).setLevel(Level.ERROR);
+        }
 
-        for (String name : loggers) {
+        // Шумные подлоггеры — полностью OFF
+        String[] silent = {
+                "net.dv8tion.jda.internal.requests.Requester",
+                "net.dv8tion.jda.api.requests.RestRateLimiter",
+                "net.dv8tion.jda.api.utils.SessionControllerAdapter",
+                "reactor.util.Loggers"
+        };
+        for (String name : silent) {
             loggerContext.getLogger(name).setLevel(Level.OFF);
         }
     }

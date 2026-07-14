@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionE
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import ru.devprizrakk.voidbot.command.api.BaseCommand;
+import ru.devprizrakk.voidbot.command.api.BaseSubCommand;
 import ru.devprizrakk.voidbot.command.api.CommandCategory;
+import ru.devprizrakk.voidbot.command.api.CommandRegister;
 import ru.devprizrakk.voidbot.utils.Utils;
 
 import java.awt.*;
@@ -17,19 +19,12 @@ import java.util.List;
 
 public class HelpSelectMenu extends ListenerAdapter {
 
-    private final List<BaseCommand> commands;
-
-    public HelpSelectMenu(List<BaseCommand> commands) {
-        this.commands = commands;
-    }
-
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
         if (event.getComponentId().equals("helpmenu")) {
             handleHelpMenuRoot(event);
             return;
         }
-
         if (event.getComponentId().equals("helpcommand")) {
             handleHelpCommand(event);
         }
@@ -47,23 +42,19 @@ public class HelpSelectMenu extends ListenerAdapter {
                 embed.addField(
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.developers.title"),
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.developers.description"),
-                        true
-                );
+                        true);
                 embed.addField(
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.programLang.title"),
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.programLang.description"),
-                        true
-                );
+                        true);
                 embed.addField(
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.discordLibs.title"),
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.discordLibs.description"),
-                        true
-                );
+                        true);
                 embed.addField(
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.version.title"),
                         Utils.getLangManager(event).getDescriptionLocale("help.interacts.info.embed.fields.version.description"),
-                        true
-                );
+                        true);
                 event.replyEmbeds(embed.build()).setEphemeral(true).queue();
             }
             case "command" -> {
@@ -73,7 +64,7 @@ public class HelpSelectMenu extends ListenerAdapter {
                 embed.setDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.description"));
                 embed.setFooter(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.footer"));
                 event.replyEmbeds(embed.build())
-                        .addComponents(createActionRow(event))
+                        .addComponents(createCategorySelect(event))
                         .setEphemeral(true)
                         .queue();
             }
@@ -82,63 +73,37 @@ public class HelpSelectMenu extends ListenerAdapter {
 
     private void handleHelpCommand(StringSelectInteractionEvent event) {
         String selectedValue = event.getValues().getFirst();
-        EmbedBuilder embed = new EmbedBuilder();
 
         CommandCategory category;
         String categoryLocal;
 
         switch (selectedValue) {
-            case "server" -> {
-                category = CommandCategory.SERVER;
-                categoryLocal = "server";
-            }
-            case "admin" -> {
-                category = CommandCategory.ADMINISTRATION;
-                categoryLocal = "admin";
-            }
-            case "fun" -> {
-                category = CommandCategory.FUN;
-                categoryLocal = "fun";
-            }
-            case "music" -> {
-                category = CommandCategory.MUSIC;
-                categoryLocal = "music";
-            }
-            case "user" -> {
-                category = CommandCategory.USER;
-                categoryLocal = "user";
-            }
-            case "other" -> {
-                category = CommandCategory.OTHER;
-                categoryLocal = "other";
-            }
+            case "server" -> { category = CommandCategory.SERVER; categoryLocal = "server"; }
+            case "admin" -> { category = CommandCategory.ADMINISTRATION; categoryLocal = "admin"; }
+            case "fun" -> { category = CommandCategory.FUN; categoryLocal = "fun"; }
+            case "music" -> { category = CommandCategory.MUSIC; categoryLocal = "music"; }
+            case "user" -> { category = CommandCategory.USER; categoryLocal = "user"; }
+            case "other" -> { category = CommandCategory.OTHER; categoryLocal = "other"; }
             default -> {
-                embed.setDescription(Utils.getLangManager(event)
-                        .getDescriptionLocale("help.interacts.command.interact.embed.category.notFoundCategory"));
                 category = null;
                 categoryLocal = "notFoundCategory";
             }
         }
 
+        EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(255, 104, 0));
-        embed.setTitle(
-                Utils.getLangManager(event)
-                        .getDescriptionLocale("help.interacts.command.embed.title")
-                        .replace(
-                                "%command-category%",
-                                Utils.getLangManager(event)
-                                        .getDescriptionLocale("help.interacts.command.interact.embed.category." + categoryLocal)
-                        )
-        );
-        embed.setFooter(Utils.getLangManager(event)
-                .getDescriptionLocale("help.interacts.command.interact.embed.footer"
-                ));
+        embed.setTitle(Utils.getLangManager(event)
+                .getDescriptionLocale("help.interacts.command.embed.title")
+                .replace("%command-category%",
+                        Utils.getLangManager(event).getDescriptionLocale(
+                                "help.interacts.command.interact.embed.category." + categoryLocal)));
+        embed.setFooter(Utils.getLangManager(event).getDescriptionLocale(
+                "help.interacts.command.interact.embed.footer"));
 
-        if (category != null) {
-            for (BaseCommand command : commands) {
-                if (command.getCategory() == category) {
-                    appendCommandInfo(embed, event, command);
-                }
+        if (category != null && CommandRegister.getInstance() != null) {
+            for (BaseCommand command : CommandRegister.getInstance().getCommands()) {
+                if (command.getCategory() != category || command.isHidden()) continue;
+                appendCommandInfo(embed, event, command);
             }
         }
 
@@ -146,80 +111,94 @@ public class HelpSelectMenu extends ListenerAdapter {
     }
 
     private void appendCommandInfo(EmbedBuilder embed, StringSelectInteractionEvent event, BaseCommand command) {
-        StringBuilder optionsDescription = new StringBuilder();
-        List<OptionData> options = command.getOptions();
+        String nameKey = "help.interacts.command.interact.embed.fields.name.title";
+        String nameDesc = "help.interacts.command.interact.embed.fields.name.description";
+        String descKey = "help.interacts.command.interact.embed.fields.description.title";
+        String descDesc = "help.interacts.command.interact.embed.fields.description.description";
+        String optKey = "help.interacts.command.interact.embed.fields.options.title";
+        String optDesc = "help.interacts.command.interact.embed.fields.options.description";
+        String noOpt = "help.interacts.command.interact.embed.fields.options.not-option";
+        String subKey = "help.interacts.command.interact.embed.fields.subcommands.title";
+        String subDesc = "help.interacts.command.interact.embed.fields.subcommands.description";
+        String noSub = "help.interacts.command.interact.embed.fields.subcommands.not-subcommands";
 
+        embed.addField(
+                Utils.getLangManager(event).getDescriptionLocale(nameKey),
+                Utils.getLangManager(event).getDescriptionLocale(nameDesc).replace("%name-command%", command.getName()),
+                false);
+
+        embed.addField(
+                Utils.getLangManager(event).getDescriptionLocale(descKey),
+                Utils.getLangManager(event).getDescriptionLocale(descDesc).replace("%description-command%", command.getDescription()),
+                true);
+
+        StringBuilder optionsText = new StringBuilder();
+        List<OptionData> options = command.getOptions();
         if (options != null) {
             for (OptionData option : options) {
-                optionsDescription.append(option.getName())
-                        .append(": ")
-                        .append(option.getDescription())
-                        .append("\n");
+                optionsText.append(option.getName()).append(": ").append(option.getDescription()).append("\n");
             }
         }
-
         embed.addField(
-                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.name.title"),
-                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.name.description")
-                        .replace("%name-command%", command.getName()),
-                false
-        );
+                Utils.getLangManager(event).getDescriptionLocale(optKey),
+                Utils.getLangManager(event).getDescriptionLocale(optDesc)
+                        .replace("%option-command%",
+                                optionsText.isEmpty()
+                                        ? Utils.getLangManager(event).getDescriptionLocale(noOpt)
+                                        : optionsText.toString()),
+                true);
 
+        List<BaseSubCommand> subs = command.getSubCommands();
+        StringBuilder subsText = new StringBuilder();
+        if (subs != null && !subs.isEmpty()) {
+            for (BaseSubCommand sub : subs) {
+                subsText.append(sub.getName()).append(": ").append(sub.getDescription()).append("\n");
+            }
+        }
         embed.addField(
-                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.description.title"),
-                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.description.description")
-                        .replace("%description-command%", command.getDescription()),
-                true
-        );
-
-        String optionsText = !optionsDescription.isEmpty()
-                ? optionsDescription.toString()
-                : Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.options.not-option");
-
-        embed.addField(
-                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.options.title"),
-                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.interact.embed.fields.options.description")
-                        .replace("%option-command%", optionsText),
-                true
-        );
+                Utils.getLangManager(event).getDescriptionLocale(subKey),
+                Utils.getLangManager(event).getDescriptionLocale(subDesc)
+                        .replace("%subcommands%",
+                                subsText.isEmpty()
+                                        ? Utils.getLangManager(event).getDescriptionLocale(noSub)
+                                        : subsText.toString()),
+                true);
     }
 
-    private ActionRow createActionRow(StringSelectInteractionEvent event) {
-        StringSelectMenu stringSelectMenu = StringSelectMenu.create("helpcommand")
+    private ActionRow createCategorySelect(StringSelectInteractionEvent event) {
+        StringSelectMenu menu = StringSelectMenu.create("helpcommand")
                 .addOptions(
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.server.title"),
-                                        "server")
+                                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.server.title"),
+                                "server")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.server.description"))
                                 .withEmoji(Emoji.fromUnicode("🏠")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.admin.title"),
-                                        "admin")
+                                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.admin.title"),
+                                "admin")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.admin.description"))
                                 .withEmoji(Emoji.fromUnicode("🔧")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.fun.title"),
-                                        "fun")
+                                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.fun.title"),
+                                "fun")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.fun.description"))
                                 .withEmoji(Emoji.fromUnicode("🎉")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.music.title"),
-                                        "music")
+                                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.music.title"),
+                                "music")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.music.description"))
                                 .withEmoji(Emoji.fromUnicode("🎵")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.user.title"),
-                                        "user")
+                                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.user.title"),
+                                "user")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.user.description"))
                                 .withEmoji(Emoji.fromUnicode("🔤")),
                         SelectOption.of(
-                                        Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.other.title"),
-                                        "other")
+                                Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.other.title"),
+                                "other")
                                 .withDescription(Utils.getLangManager(event).getDescriptionLocale("help.interacts.command.embed.actionRow.other.description"))
-                                .withEmoji(Emoji.fromUnicode("❓"))
-                )
+                                .withEmoji(Emoji.fromUnicode("❓")))
                 .build();
-
-        return ActionRow.of(stringSelectMenu);
+        return ActionRow.of(menu);
     }
 }

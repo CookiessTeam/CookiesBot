@@ -80,12 +80,33 @@ public class ExperienceRepository extends JdbcRepository<ExperienceModel> {
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM experience WHERE guild_id = ? ORDER BY total_experience DESC LIMIT ?")) {
             stmt.setLong(1, guildId);
-            stmt.setInt(2, Math.max(1, Math.min(limit, 25)));
-
+            stmt.setInt(2, Math.max(1, Math.min(limit, 100)));
             try (ResultSet rs = stmt.executeQuery()) {
                 List<ExperienceModel> items = new ArrayList<>();
                 while (rs.next()) items.add(map(rs));
                 return items;
+            }
+        }
+    }
+public List<ExperienceModel> getTopByLevel(long guildId, int limit) throws SQLException {
+        try (Connection conn = databaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM experience WHERE guild_id = ? ORDER BY level DESC, total_experience DESC LIMIT ?")) {
+            stmt.setLong(1, guildId);
+            stmt.setInt(2, Math.max(1, Math.min(limit, 100)));
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<ExperienceModel> items = new ArrayList<>();
+                while (rs.next()) items.add(map(rs));
+                return items;
+            }
+        }
+    }
+
+    public long countByGuild(long guildId) throws SQLException {
+        try (Connection conn = databaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM experience WHERE guild_id = ?")) {
+            stmt.setLong(1, guildId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getLong(1) : 0L;
             }
         }
     }

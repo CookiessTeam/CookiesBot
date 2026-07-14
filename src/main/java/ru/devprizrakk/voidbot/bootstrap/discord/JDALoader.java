@@ -18,6 +18,7 @@ import ru.devprizrakk.voidbot.command.impl.CommandManager;
 import ru.devprizrakk.voidbot.events.*;
 import ru.devprizrakk.voidbot.events.autocreate.ThreadsListeners;
 import ru.devprizrakk.voidbot.lavalink.LavalinkManager;
+import ru.devprizrakk.voidbot.logging.DiscordEventManager;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
 import ru.devprizrakk.voidbot.utils.Utils;
@@ -35,6 +36,7 @@ public class JDALoader extends Utils {
 
         try {
             jda = JDABuilder.createDefault(getConfig().getString("bot.token"))
+                    .setEventManager(new DiscordEventManager())
                     .setVoiceDispatchInterceptor(lavalinkManager.getVoiceUpdateListener())
                     .setStatus(OnlineStatus.ONLINE)
                     .setActivity(buildActivity())
@@ -59,6 +61,7 @@ public class JDALoader extends Utils {
         jda.addEventListener(new MessageReceiveListener());
         jda.addEventListener(new MessageDeleteListener());
         jda.addEventListener(new FeedbackListener());
+        jda.addEventListener(new LeaderboardListener());
         CommandManager.init(jda, commandRegister);
         jda.addEventListener(commandRegister);
     }

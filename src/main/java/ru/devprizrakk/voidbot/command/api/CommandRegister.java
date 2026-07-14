@@ -21,10 +21,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: Переписать класс и добавить реализацию префиксных команд
 public class CommandRegister extends ListenerAdapter {
 
     private final List<BaseCommand> commands = new ArrayList<>();
+    private static CommandRegister instance;
+
+    public CommandRegister() {
+        instance = this;
+    }
+
+    public static CommandRegister getInstance() {
+        return instance;
+    }
 
     @Override
     public void onReady(@NotNull final ReadyEvent event) {
@@ -61,6 +69,9 @@ public class CommandRegister extends ListenerAdapter {
                     Logger.getLogger().log(LogType.ERROR, "command", "", e);
                 } catch (ru.devprizrakk.voidbot.language.LocalizationException e) {
                     Logger.getLogger().log(LogType.ERROR, "command", "Localization error: " + e.getMessage());
+                } catch (Throwable t) {
+                    Logger.getLogger().log(LogType.ERROR, "command", "Uncaught error in command /" + command.getName(), t);
+                    try { event.reply("Произошла непредвиденная ошибка при выполнении команды.").setEphemeral(true).queue(); } catch (Exception ignored) {}
                 }
                 return;
             }
@@ -86,6 +97,9 @@ public class CommandRegister extends ListenerAdapter {
                     Logger.getLogger().log(LogType.ERROR, "sub-command", "", e);
                 } catch (ru.devprizrakk.voidbot.language.LocalizationException e) {
                     Logger.getLogger().log(LogType.ERROR, "sub-command", "Localization error: " + e.getMessage());
+                } catch (Throwable t) {
+                    Logger.getLogger().log(LogType.ERROR, "sub-command", "Uncaught error in sub-command /" + command.getName() + " " + sub.getName(), t);
+                    try { event.reply("Произошла непредвиденная ошибка при выполнении команды.").setEphemeral(true).queue(); } catch (Exception ignored) {}
                 }
                 return;
             }
@@ -148,5 +162,17 @@ public class CommandRegister extends ListenerAdapter {
 
     public List<BaseCommand> getCommands() {
         return Collections.unmodifiableList(commands);
+    }
+
+    public List<BaseCommand> getCommandsByCategory(CommandCategory category) {
+        return commands.stream()
+                .filter(c -> c.getCategory() == category)
+                .toList();
+    }
+
+    public List<BaseCommand> getVisibleCommands() {
+        return commands.stream()
+                .filter(c -> !c.isHidden())
+                .toList();
     }
 }

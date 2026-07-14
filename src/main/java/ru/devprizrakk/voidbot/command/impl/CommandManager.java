@@ -7,6 +7,7 @@ import ru.devprizrakk.voidbot.command.impl.fun.*;
 import ru.devprizrakk.voidbot.command.impl.music.*;
 import ru.devprizrakk.voidbot.command.impl.server.moderation.Mod;
 import ru.devprizrakk.voidbot.command.impl.server.system.*;
+import ru.devprizrakk.voidbot.command.impl.server.user.Leaderboard;
 import ru.devprizrakk.voidbot.command.impl.server.user.Rank;
 import ru.devprizrakk.voidbot.command.impl.server.user.UserInfo;
 import ru.devprizrakk.voidbot.lavalink.GuildMusicManager;
@@ -44,8 +45,9 @@ public class CommandManager {
         commandRegister.addCommand(new UserInfo());
         commandRegister.addCommand(new ServerInfo());
         commandRegister.addCommand(new Feedback());
+        commandRegister.addCommand(new Leaderboard());
 
-        jda.addEventListener(new HelpSelectMenu(commandRegister.getCommands()));
+        jda.addEventListener(new HelpSelectMenu());
     }
 
     private static void initFun(CommandRegister commandRegister) {

@@ -134,6 +134,29 @@ public class VoiceSessionRepository extends JdbcRepository<VoiceSessionModel> {
         }
     }
 
+public List<long[]> topUsersByVoiceTime(int limit) throws SQLException {
+        try (Connection conn = databaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT user_id, COALESCE(SUM(duration_seconds), 0) AS total FROM voice_sessions GROUP BY user_id ORDER BY total DESC LIMIT ?")) {
+            stmt.setInt(1, Math.max(1, Math.min(limit, 100)));
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<long[]> items = new ArrayList<>();
+                while (rs.next()) {
+                    items.add(new long[]{rs.getLong("user_id"), rs.getLong("total")});
+                }
+                return items;
+            }
+        }
+    }
+
+    public long countDistinctUsers() throws SQLException {
+        try (Connection conn = databaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(DISTINCT user_id) FROM voice_sessions");
+             ResultSet rs = stmt.executeQuery()) {
+            return rs.next() ? rs.getLong(1) : 0L;
+        }
+    }
+
     public long countAllSessions() throws SQLException {
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM voice_sessions");
