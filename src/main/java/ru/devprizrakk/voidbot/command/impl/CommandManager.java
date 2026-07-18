@@ -45,6 +45,7 @@ public class CommandManager {
         commandRegister.addCommand(new UserInfo());
         commandRegister.addCommand(new ServerInfo());
         commandRegister.addCommand(new Feedback());
+        commandRegister.addCommand(new VoiceRoom());
         commandRegister.addCommand(new Leaderboard());
 
         jda.addEventListener(new HelpSelectMenu());

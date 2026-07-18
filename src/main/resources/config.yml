@@ -35,6 +35,18 @@ channel:
     ideas: ""
     moderation: ""
     user: ""
+voice-room:
+  # Включить систему приватных голосовых комнат
+  enabled: true
+  # ID голосового канала-триггера: при входе создаётся приватная комната
+  create-channel: "fill_id_create_voice"
+  # ID текстового канала, в котором лежит embed управления с кнопками
+  text-channel: "fill_id_voice_text"
+  # Отсчёт (в секундах) до удаления пустой приватной комнаты после выхода владельца
+  countdown-seconds: 30
+  # Лимит пользователей по умолчанию (0 — без лимита)
+  default-user-limit: 0
+
 
 levels:
   base-xp: 100

@@ -17,6 +17,7 @@ import ru.devprizrakk.voidbot.command.api.CommandRegister;
 import ru.devprizrakk.voidbot.command.impl.CommandManager;
 import ru.devprizrakk.voidbot.events.*;
 import ru.devprizrakk.voidbot.events.autocreate.ThreadsListeners;
+import ru.devprizrakk.voidbot.events.voiceroom.VoiceRoomListener;
 import ru.devprizrakk.voidbot.lavalink.LavalinkManager;
 import ru.devprizrakk.voidbot.logging.DiscordEventManager;
 import ru.devprizrakk.voidbot.logging.LogType;
@@ -62,6 +63,7 @@ public class JDALoader extends Utils {
         jda.addEventListener(new MessageDeleteListener());
         jda.addEventListener(new FeedbackListener());
         jda.addEventListener(new LeaderboardListener());
+        jda.addEventListener(new VoiceRoomListener());
         CommandManager.init(jda, commandRegister);
         jda.addEventListener(commandRegister);
     }

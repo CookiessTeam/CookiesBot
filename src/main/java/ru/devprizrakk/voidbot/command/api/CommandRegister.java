@@ -110,18 +110,18 @@ public class CommandRegister extends ListenerAdapter {
 
     private void syncGuildCommands(Guild guild) {
         List<CommandData> built = new ArrayList<>();
-
         for (BaseCommand command : commands) {
             Logger.getLogger().log(LogType.INFO, "COMMAND_REGISTER", "Успешно зарегистрирована команда: " + command.getName());
 
             var commandData = Commands.slash(command.getName(), command.getDescription());
             var commandOptions = command.getOptions();
 
-            if (command.isHidden()) {
+            var defaultPerm = command.getDefaultPermissions();
+            if (command.isHidden() && defaultPerm == DefaultMemberPermissions.ENABLED) {
+                // Скрытая команда без явного указания прав — недоступна никому по умолчанию
                 commandData.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
-            } else {
-                var defaultPerm = command.getDefaultPermissions();
-                if (defaultPerm != null) commandData.setDefaultPermissions(defaultPerm);
+            } else if (defaultPerm != null) {
+                commandData.setDefaultPermissions(defaultPerm);
             }
 
             List<BaseSubCommand> subCommands = command.getSubCommands();
