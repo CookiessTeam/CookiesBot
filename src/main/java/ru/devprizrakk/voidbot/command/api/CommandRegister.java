@@ -2,6 +2,8 @@ package ru.devprizrakk.voidbot.command.api;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -12,14 +14,18 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 import ru.devprizrakk.voidbot.exceptions.discord.NoPermissionErrorEmbedFactory;
+import ru.devprizrakk.voidbot.language.LangManager;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
+import ru.devprizrakk.voidbot.utils.Utils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class CommandRegister extends ListenerAdapter {
 
@@ -50,6 +56,13 @@ public class CommandRegister extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+        // Отсечение посторонних в профиле dev (default_member_permissions = DISABLED,
+        // но администратор сервера может включить override в Integrations — запасная проверка).
+        if (!isDevAccessGranted(event)) {
+            event.reply(getDevAccessDeniedMessage(event)).setEphemeral(true).queue();
+            return;
+        }
+
         for (BaseCommand command : commands) {
             if (!command.getName().equals(event.getName())) {
                 continue;
@@ -109,6 +122,21 @@ public class CommandRegister extends ListenerAdapter {
     }
 
     private void syncGuildCommands(Guild guild) {
+        boolean devMode = !LangManager.isRemoteSyncEnabled(); // true, когда profile == dev
+        List<Long> devRoleIdList = Utils.getConfig().getLongList("system.runtime.dev-access-roles");
+        Set<Long> devRoleIds = new HashSet<>(devRoleIdList);
+
+        if (devMode) {
+            Logger.getLogger().log(LogType.INFO, "COMMAND_REGISTER",
+                    "Профиль dev: команды регистрируются с default_member_permissions = DISABLED. "
+                            + "Допуск участников — по ролям из system.runtime.dev-access-roles ("
+                            + (devRoleIds.isEmpty()
+                                ? "список пуст, допускаются только администраторы сервера"
+                                : devRoleIds.size() + " ролей")
+                            + "). Чтобы роли ВИДЕЛИ команды, администратор сервера должен включить "
+                            + "их в Server Settings > Integrations > VoidBot — бот сам это сделать не может.");
+        }
+
         List<CommandData> built = new ArrayList<>();
         for (BaseCommand command : commands) {
             Logger.getLogger().log(LogType.INFO, "COMMAND_REGISTER", "Успешно зарегистрирована команда: " + command.getName());
@@ -117,7 +145,12 @@ public class CommandRegister extends ListenerAdapter {
             var commandOptions = command.getOptions();
 
             var defaultPerm = command.getDefaultPermissions();
-            if (command.isHidden() && defaultPerm == DefaultMemberPermissions.ENABLED) {
+            if (devMode) {
+                // В dev-режиме скрываем команду от всех по умолчанию (видно только админам),
+                // остальным доступ открывается либо админом (через Integrations), либо по ролям
+                // из system.runtime.dev-access-roles на уровне runtime-гейта (см. onSlashCommandInteraction).
+                commandData.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
+            } else if (command.isHidden() && defaultPerm == DefaultMemberPermissions.ENABLED) {
                 // Скрытая команда без явного указания прав — недоступна никому по умолчанию
                 commandData.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
             } else if (defaultPerm != null) {
@@ -158,6 +191,33 @@ public class CommandRegister extends ListenerAdapter {
 
     public void addCommand(BaseCommand command) {
         commands.add(command);
+    }
+
+    // ------------------------ Dev-mode access ------------------------
+
+    private static boolean isDevMode() {
+        return !LangManager.isRemoteSyncEnabled(); // true, когда profile == dev
+    }
+
+    private static boolean isDevAccessGranted(SlashCommandInteractionEvent event) {
+        if (!isDevMode()) return true; // Прод-режим — пропуск
+        Member member = event.getMember();
+        if (member == null) return false; // Не из гильдии — нет
+        if (member.hasPermission(Permission.ADMINISTRATOR)) return true;
+
+        List<Long> allowedRoleIds = Utils.getConfig().getLongList("system.runtime.dev-access-roles");
+        if (allowedRoleIds.isEmpty()) return false; // Список пуст — пускаем только админов (выше)
+
+        for (Role role : member.getRoles()) {
+            if (allowedRoleIds.contains(role.getIdLong())) return true;
+        }
+        return false;
+    }
+
+    private static String getDevAccessDeniedMessage(SlashCommandInteractionEvent event) {
+        String profile = LangManager.getRuntimeProfile();
+        return "Команды бота временно скрыты (профиль `" + (profile != null ? profile : "dev")
+                + "`). Доступны только членам команды разработки.";
     }
 
     public List<BaseCommand> getCommands() {

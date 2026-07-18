@@ -1,6 +1,9 @@
 package ru.devprizrakk.voidbot.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public record Config(Map<String, Object> properties) {
 
@@ -110,6 +113,41 @@ public record Config(Map<String, Object> properties) {
     public float getFloat(String key, float def) {
         Float v = getFloat(key);
         return v != null ? v : def;
+    }
+
+    // ------------------------ List<String> ------------------------
+
+    @SuppressWarnings("unchecked")
+    public List<String> getStringList(String key) {
+        Object value = getNested(key);
+        if (!(value instanceof List)) return List.of();
+
+        return ((List<Object>) value).stream()
+                .map(v -> v == null ? null : v.toString())
+                .collect(Collectors.toList());
+    }
+
+    // ------------------------ List<Long> ------------------------
+
+    @SuppressWarnings("unchecked")
+    public List<Long> getLongList(String key) {
+        Object value = getNested(key);
+        if (!(value instanceof List)) return List.of();
+
+        List<Long> result = new ArrayList<>();
+        for (Object o : (List<Object>) value) {
+            if (o == null) continue;
+            if (o instanceof Number) {
+                result.add(((Number) o).longValue());
+            } else {
+                try {
+                    result.add(Long.parseLong(o.toString().trim()));
+                } catch (NumberFormatException ignored) {
+                    // пропускаем нечисловые элементы
+                }
+            }
+        }
+        return result;
     }
 
     // ------------------------ Set Property ------------------------
