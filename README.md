@@ -1,9 +1,9 @@
 ﻿# VoidBot
 
 [![Java](https://img.shields.io/badge/Java-25-orange)](https://adoptium.net/)
-[![JDA](https://img.shields.io/badge/JDA-6.3.1-blue)](https://github.com/DV8FromTheWorld/JDA)
+[![JDA](https://img.shields.io/badge/JDA-6.5.0-blue)](https://github.com/DV8FromTheWorld/JDA)
 [![Lavalink](https://img.shields.io/badge/Lavalink-3.4.0-green)](https://github.com/lavalink-devs/Lavalink)
-[![Version](https://img.shields.io/badge/version-2.0.0--beta.5-red)]()
+[![Version](https://img.shields.io/badge/version-2.0.0--beta.6-red)]()
 
 **VoidBot** — бот-помощник для Discord-сообществ, объединяющий модерацию, развлекательные функции, систему уровней, аналитику и инфраструктуру для связи Discord ↔ веб-панель ↔ игровые серверы.
 
