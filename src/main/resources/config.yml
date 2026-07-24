@@ -5,9 +5,18 @@ system:
     enable: false
     level: low
   runtime:
-    # RELEASE — синхронизировать локализации с GitHub при запуске
-    # dev     — использовать локальные файлы, GitHub не трогать
+    # RELEASE - синхронизировать локализации с GitHub при запуске
+    # dev     - использовать локальные файлы, GitHub не трогать
     profile: RELEASE
+    # В профиле dev команды скрываются от посторонних (default_member_permissions = DISABLED),
+    # а бот принимает вызовы только от участников с ролями, перечисленными ниже (по ID),
+    # либо от администраторов сервера.
+    # Формат: [id1, id2, id3, ...]   Пустой список — допускаются только администраторы сервера.
+    # ВАЖНО: чтобы такие участники ВИДЕЛИ команды в автокомплите Discord, администратор сервера
+    # должен вручную включить эти роли в Server Settings > Integrations > VoidBot.
+    # Бот сам не может выставлять per-role видимость — Discord закрыл это API в 2023 году.
+    dev-access-roles: [ ]
+
 database:
   type: mysql/sqlite
   mysql:
@@ -18,12 +27,14 @@ database:
     login: "user"
     password: "password"
     url-connect: "jdbc:postgres://127.0.0.1:3306/BotDatabase?autoReconnect=true"
+
 bot:
   token: "token"
   activity:
     type: playing
     text: We create our own lives, and the forge of emptiness is the beginning from which we start building our lives!
     streaming-url: https://www.twitch.tv/sahesha
+
 channel:
   news: fill_id_news
   checklist: fill_id_checklist
@@ -32,6 +43,19 @@ channel:
     ideas: ""
     moderation: ""
     user: ""
+voice-room:
+  # Включить систему приватных голосовых комнат
+  enabled: true
+  # ID голосового канала-триггера: при входе создаётся приватная комната
+  create-channel: "fill_id_create_voice"
+  # ID текстового канала, в котором лежит embed управления с кнопками
+  text-channel: "fill_id_voice_text"
+  # Отсчёт (в секундах) до удаления пустой приватной комнаты после выхода владельца
+  countdown-seconds: 30
+  # Лимит пользователей по умолчанию (0 — без лимита)
+  default-user-limit: 0
+
+
 levels:
   base-xp: 100
   growth: 1.2
@@ -39,18 +63,23 @@ levels:
   xp-per-voice-minute: 5
   message-cooldown-seconds: 60
   channel: ""
+
 lavalink:
   node:
     1:
       name: "Cool node #1"
       url: "ws://127.0.0.1:2333"
-      password: "WeryGoodPassword1234_Qwerty"
+      password: "VeryGoodPassword1234_Qwerty"
+
 web-api:
   port: 1111
+
 other:
   kawaii-api:
     enable: true
     token: ""
+  youtube-api:
+    token: "token"
   minecraft:
     enable: true
     websocket-api: "ws://127.0.0.1:8765"

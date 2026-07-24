@@ -4,13 +4,12 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import ru.devprizrakk.voidbot.core.config.Config;
-import ru.devprizrakk.voidbot.core.database.model.Experience;
-import ru.devprizrakk.voidbot.core.database.repository.ExperienceRepository;
-import ru.devprizrakk.voidbot.core.language.LangMessage;
-import ru.devprizrakk.voidbot.core.logging.LogType;
-import ru.devprizrakk.voidbot.core.logging.Logger;
-import ru.devprizrakk.voidbot.core.utils.Utils;
+import ru.devprizrakk.voidbot.database.model.ExperienceModel;
+import ru.devprizrakk.voidbot.database.model.UserModel;
+import ru.devprizrakk.voidbot.database.repository.ExperienceRepository;
+import ru.devprizrakk.voidbot.logging.LogType;
+import ru.devprizrakk.voidbot.logging.Logger;
+import ru.devprizrakk.voidbot.utils.Utils;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -23,27 +22,23 @@ public final class LevelService {
     }
 
     private static long baseXp() {
-        return getConfig().getLong("levels.base-xp", 100L);
+        return Utils.getConfig().getLong("levels.base-xp", 100L);
     }
 
     private static double growth() {
-        return getConfig().getDouble("levels.growth", 1.2D);
+        return Utils.getConfig().getDouble("levels.growth", 1.2D);
     }
 
     private static long xpPerMessage() {
-        return getConfig().getLong("levels.xp-per-message", 5L);
+        return Utils.getConfig().getLong("levels.xp-per-message", 5L);
     }
 
     private static long xpPerVoiceMinute() {
-        return getConfig().getLong("levels.xp-per-voice-minute", 5L);
+        return Utils.getConfig().getLong("levels.xp-per-voice-minute", 5L);
     }
 
     public static long requiredXpForLevel(long level) {
         return Math.max(1L, (long) Math.floor(baseXp() * Math.pow(growth(), level)));
-    }
-
-    private static Config getConfig() {
-        return Utils.getConfigManager().getConfig();
     }
 
     private static ExperienceRepository repo() {
@@ -59,8 +54,8 @@ public final class LevelService {
         long guildId = guild.getIdLong();
 
         try {
-            Experience exp = repo().findByDiscordIdAndGuild(discordId, guildId)
-                    .orElseGet(() -> new Experience(0, discordId, guildId, 0, 0, 0, null));
+            ExperienceModel exp = repo().findByDiscordIdAndGuild(discordId, guildId)
+                    .orElseGet(() -> new ExperienceModel(0, discordId, guildId, 0, 0, 0, null));
 
             long startLevel = exp.getLevel();
             exp.setExperience(exp.getExperience() + amount);
@@ -77,7 +72,7 @@ public final class LevelService {
             if (exp.getLevel() > startLevel) {
                 notifyLevelUp(user, guild, exp);
             }
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "LEVEL", "Failed to add experience", e);
         }
     }
@@ -93,31 +88,25 @@ public final class LevelService {
         addExperience(user, guild, minutes * xpPerVoiceMinute());
     }
 
-    private static void notifyLevelUp(User user, Guild guild, Experience exp) {
+    private static void notifyLevelUp(User user, Guild guild, ExperienceModel exp) {
         Map<String, String> replacements = new HashMap<>();
         replacements.put("server-name", guild.getName());
         replacements.put("level", String.valueOf(exp.getLevel()));
         replacements.put("required-experience", String.valueOf(requiredXpForLevel(exp.getLevel())));
 
         String title = Utils.getLangManager().getInfoLocale(
-                LangMessage.Event.Level.FILE,
-                LangMessage.Event.Level.Up.Embed.TITLE,
-                replacements);
+                "level.up.embed.title", replacements);
         String description = Utils.getLangManager().getInfoLocale(
-                LangMessage.Event.Level.FILE,
-                LangMessage.Event.Level.Up.Embed.DESCRIPTION,
-                replacements);
+                "level.up.embed.description", replacements);
         String footer = Utils.getLangManager().getInfoLocale(
-                LangMessage.Event.Level.FILE,
-                LangMessage.Event.Level.Up.Embed.FOOTER,
-                replacements);
+                "level.up.embed.footer", replacements);
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle(title);
         embed.setDescription(description);
         embed.setFooter(footer);
 
-        String channelId = getConfig().getString("levels.channel", "");
+        String channelId = Utils.getConfig().getString("levels.channel", "");
         if (channelId != null && !channelId.isEmpty()) {
             TextChannel channel = guild.getTextChannelById(channelId);
             if (channel != null) {
@@ -126,12 +115,28 @@ public final class LevelService {
             }
         }
 
+        boolean dmEnabled = true;
+        try {
+            UserModel userModel = Utils.getDatabaseManager().getRepositoryManager().getUsers().findByDiscordId(user.getIdLong()).orElse(null);
+            if (userModel != null) {
+                dmEnabled = userModel.isLevelUpDmEnabled();
+            }
+        } catch (Exception ignored) {
+        }
+
+        if (!dmEnabled) {
+            return;
+        }
+
         user.openPrivateChannel().queue(
                 pc -> pc.sendMessageEmbeds(embed.build()).queue(
-                        s -> {},
-                        f -> {}
+                        _ -> {
+                        },
+                        _ -> {
+                        }
                 ),
-                f -> {}
+                _ -> {
+                }
         );
     }
 
@@ -139,13 +144,13 @@ public final class LevelService {
         return new Timestamp(new Date().getTime());
     }
 
-    public static Optional<Experience> get(User user, Guild guild) {
+    public static Optional<ExperienceModel> get(User user, Guild guild) {
         if (user == null || guild == null) {
             return Optional.empty();
         }
         try {
             return repo().findByDiscordIdAndGuild(user.getIdLong(), guild.getIdLong());
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             Logger.getLogger().log(LogType.ERROR, "LEVEL", "Failed to load experience", e);
             return Optional.empty();
         }

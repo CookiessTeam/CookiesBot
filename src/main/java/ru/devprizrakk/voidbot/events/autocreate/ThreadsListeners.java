@@ -1,60 +1,43 @@
 package ru.devprizrakk.voidbot.events.autocreate;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import ru.devprizrakk.voidbot.core.language.LangMessage;
-import ru.devprizrakk.voidbot.core.utils.Utils;
-
-import java.util.Locale;
+import ru.devprizrakk.voidbot.utils.Utils;
 
 public class ThreadsListeners extends ListenerAdapter {
+
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
+
         if (event.getMessage().getAuthor().isBot()) return;
+
         // Checklist
-        final String checklist = Utils.getConfigManager().getConfig().getString("channel.checklist");
-        final String news = Utils.getConfigManager().getConfig().getString("channel.news");
+        final String checklist = Utils.getConfig().getString("channel.checklist");
+        final String news = Utils.getConfig().getString("channel.news");
         if (checklist != null && !checklist.isEmpty() && event.getChannel().getId().equals(checklist)) {
             sendThreadsEmbed(event,
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.TITLE
+                    Utils.getLangManager().getInfoLocale("checklist.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.Embed.TITLE
+                    Utils.getLangManager().getInfoLocale("checklist.embed.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.Embed.DESCRIPTION
+                    Utils.getLangManager().getInfoLocale("checklist.embed.description"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.Checklist.FILE,
-                            LangMessage.Event.Threads.Checklist.Embed.FOOTER
+                    Utils.getLangManager().getInfoLocale("checklist.embed.footer"
                     ));
         }
+
         if (news != null && !news.isEmpty() && event.getChannel().getId().equals(news)) {
             sendThreadsEmbed(event,
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.TITLE
+                    Utils.getLangManager().getInfoLocale("news.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.Embed.TITLE
+                    Utils.getLangManager().getInfoLocale("news.embed.title"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.Embed.DESCRIPTION
+                    Utils.getLangManager().getInfoLocale("news.embed.description"
                     ),
-                    Utils.getLangManager().getInfoLocale(
-                            LangMessage.Event.Threads.News.FILE,
-                            LangMessage.Event.Threads.News.Embed.FOOTER
+                    Utils.getLangManager().getInfoLocale("news.embed.footer"
                     ));
         }
     }
