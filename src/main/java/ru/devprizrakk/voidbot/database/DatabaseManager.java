@@ -6,6 +6,7 @@ import ru.devprizrakk.voidbot.database.migration.MigrationManager;
 import ru.devprizrakk.voidbot.database.migration.migrations.CreateExperienceTable;
 import ru.devprizrakk.voidbot.database.migration.migrations.CreateMemberEventsTable;
 import ru.devprizrakk.voidbot.database.migration.migrations.CreateMessagesTable;
+import ru.devprizrakk.voidbot.database.migration.migrations.AddLevelUpDmColumn;
 import ru.devprizrakk.voidbot.database.migration.migrations.CreateUserTable;
 import ru.devprizrakk.voidbot.database.migration.migrations.activity.CreateDailyStatisticsTable;
 import ru.devprizrakk.voidbot.database.migration.migrations.activity.CreateServerStatisticsTable;
@@ -79,6 +80,7 @@ public class DatabaseManager {
     private List<IMigration> getMigrations() {
         return List.of(
                 new CreateUserTable(),
+                new AddLevelUpDmColumn(),
                 new CreateMessagesTable(),
                 new CreateVoiceSessionsTable(),
                 new CreateMemberEventsTable(),

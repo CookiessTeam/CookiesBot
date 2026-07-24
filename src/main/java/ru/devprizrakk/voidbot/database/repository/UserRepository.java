@@ -20,14 +20,15 @@ public class UserRepository extends JdbcRepository<UserModel> {
 
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement stmt = prepareInsert(conn, """
-                     INSERT INTO users (discord_id, username, joined_at, left_at, is_bot)
-                     VALUES (?, ?, ?, ?, ?)
+                     INSERT INTO users (discord_id, username, joined_at, left_at, is_bot, level_up_dm_enabled)
+                     VALUES (?, ?, ?, ?, ?, ?)
                      """)) {
             stmt.setLong(1, user.getDiscordId());
             stmt.setString(2, user.getUsername());
             stmt.setTimestamp(3, user.getJoinedAt());
             stmt.setTimestamp(4, user.getLeftAt());
             stmt.setBoolean(5, user.isBot());
+            stmt.setBoolean(6, user.isLevelUpDmEnabled());
             stmt.executeUpdate();
 
             long id = generatedId(stmt);
@@ -45,7 +46,7 @@ public class UserRepository extends JdbcRepository<UserModel> {
         try (Connection conn = databaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement("""
                      UPDATE users
-                     SET discord_id = ?, username = ?, joined_at = ?, left_at = ?, is_bot = ?
+                     SET discord_id = ?, username = ?, joined_at = ?, left_at = ?, is_bot = ?, level_up_dm_enabled = ?
                      WHERE id = ?
                      """)) {
             stmt.setLong(1, user.getDiscordId());
@@ -53,7 +54,8 @@ public class UserRepository extends JdbcRepository<UserModel> {
             stmt.setTimestamp(3, user.getJoinedAt());
             stmt.setTimestamp(4, user.getLeftAt());
             stmt.setBoolean(5, user.isBot());
-            stmt.setLong(6, user.getId());
+            stmt.setBoolean(6, user.isLevelUpDmEnabled());
+            stmt.setLong(7, user.getId());
             stmt.executeUpdate();
         }
     }
@@ -85,7 +87,7 @@ public class UserRepository extends JdbcRepository<UserModel> {
 
     @Override
     protected UserModel map(ResultSet rs) throws SQLException {
-        return new UserModel(
+        UserModel model = new UserModel(
                 rs.getLong("id"),
                 rs.getLong("discord_id"),
                 rs.getString("username"),
@@ -93,5 +95,10 @@ public class UserRepository extends JdbcRepository<UserModel> {
                 rs.getTimestamp("left_at"),
                 rs.getBoolean("is_bot")
         );
+        try {
+            model.setLevelUpDmEnabled(rs.getBoolean("level_up_dm_enabled"));
+        } catch (SQLException ignored) {
+        }
+        return model;
     }
 }

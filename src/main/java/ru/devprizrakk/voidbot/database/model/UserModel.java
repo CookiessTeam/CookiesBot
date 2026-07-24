@@ -10,6 +10,7 @@ public class UserModel {
     private Timestamp joinedAt;
     private Timestamp leftAt;
     private boolean bot;
+    private boolean levelUpDmEnabled = true;
 
     public UserModel() {
     }
@@ -21,6 +22,7 @@ public class UserModel {
         this.joinedAt = joinedAt;
         this.leftAt = leftAt;
         this.bot = bot;
+        this.levelUpDmEnabled = true;
     }
 
     public long getId() {
@@ -69,5 +71,13 @@ public class UserModel {
 
     public void setBot(boolean bot) {
         this.bot = bot;
+    }
+
+    public boolean isLevelUpDmEnabled() {
+        return levelUpDmEnabled;
+    }
+
+    public void setLevelUpDmEnabled(boolean levelUpDmEnabled) {
+        this.levelUpDmEnabled = levelUpDmEnabled;
     }
 }

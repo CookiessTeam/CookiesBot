@@ -7,6 +7,7 @@ import ru.devprizrakk.voidbot.command.impl.fun.*;
 import ru.devprizrakk.voidbot.command.impl.music.*;
 import ru.devprizrakk.voidbot.command.impl.server.moderation.Mod;
 import ru.devprizrakk.voidbot.command.impl.server.system.*;
+import ru.devprizrakk.voidbot.command.impl.server.settings.Settings;
 import ru.devprizrakk.voidbot.command.impl.server.user.Leaderboard;
 import ru.devprizrakk.voidbot.command.impl.server.user.Rank;
 import ru.devprizrakk.voidbot.command.impl.server.user.UserInfo;
@@ -40,6 +41,7 @@ public class CommandManager {
     private static void initServer(JDA jda, CommandRegister commandRegister) {
         commandRegister.addCommand(new Help());
         commandRegister.addCommand(new Mod());
+        commandRegister.addCommand(new Settings());
         commandRegister.addCommand(new Rank());
         commandRegister.addCommand(new ServerStats());
         commandRegister.addCommand(new UserInfo());

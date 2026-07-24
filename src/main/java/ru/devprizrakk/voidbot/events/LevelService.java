@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import ru.devprizrakk.voidbot.database.model.ExperienceModel;
+import ru.devprizrakk.voidbot.database.model.UserModel;
 import ru.devprizrakk.voidbot.database.repository.ExperienceRepository;
 import ru.devprizrakk.voidbot.logging.LogType;
 import ru.devprizrakk.voidbot.logging.Logger;
@@ -112,6 +113,19 @@ public final class LevelService {
                 channel.sendMessage(user.getAsMention()).setEmbeds(embed.build()).queue();
                 return;
             }
+        }
+
+        boolean dmEnabled = true;
+        try {
+            UserModel userModel = Utils.getDatabaseManager().getRepositoryManager().getUsers().findByDiscordId(user.getIdLong()).orElse(null);
+            if (userModel != null) {
+                dmEnabled = userModel.isLevelUpDmEnabled();
+            }
+        } catch (Exception ignored) {
+        }
+
+        if (!dmEnabled) {
+            return;
         }
 
         user.openPrivateChannel().queue(
