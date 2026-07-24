@@ -1,7 +1,7 @@
 package ru.devprizrakk.voidbot.utils.applicationinfo;
 
 public enum Module {
-    BOT("Bot", "2.0.0-beta.5", "Основной модуль"),
+    BOT("Bot", "2.0.0-beta.6", "Основной модуль"),
     FUN_CALC_ENGINE("Calc Engine", "0.2", "Калькулятор"),
     LIB_JDA("Java Discord Api", "6.3.1", "Библиотека дискорд"),
     JAVA("Java", "17", "Язык программирования"),
